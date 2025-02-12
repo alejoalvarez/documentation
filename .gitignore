@@ -1,0 +1,42 @@
+.idea
+.serverless
+ts-files.txt
+.arn-mfa*
+.DS_Store
+
+*.js
+!lambda.js
+!jest.config*
+lib/**/*.js 
+*.test.js
+
+node_modules
+package-lock.json
+bin/*.js
+**/*.d.ts
+
+# Lambda
+lambda/package-lock.json
+
+# CDK asset staging directory
+.cdk.staging
+cdk.out
+
+# Parcel build directories
+.cache
+.build
+
+# Testing
+.npmrc
+**/__snapshots__/
+
+# CDK asset staging directory
+api-docs/
+dist
+**/cdk.out
+
+coverage/
+.vscode/
+docs/
+ci
+tsconfig.tsbuildinfo
