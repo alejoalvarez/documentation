@@ -77,11 +77,6 @@ export default {
               "label": "Projects"
             }
           ]
-        },
-        {
-          "href": "https://github.com/alejoalvarez/documentation",
-          "label": "GitHub",
-          "position": "right"
         }
       ],
       "hideOnScroll": false
