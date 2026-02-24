@@ -1,0 +1,56 @@
+{
+  "id": "ai-architect/clean-architecture",
+  "title": "Clean Architecture para Proyectos AI",
+  "description": "Estructura proyectos AI con Clean Architecture — separación de capas, inyección de dependencias y testing sin infraestructura.",
+  "source": "@site/docs/ai-architect/clean-architecture.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/clean-architecture",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/clean-architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/clean-architecture.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "arquitectura",
+      "permalink": "/ai-roadmap-docs/docs/tags/arquitectura"
+    },
+    {
+      "inline": true,
+      "label": "clean-architecture",
+      "permalink": "/ai-roadmap-docs/docs/tags/clean-architecture"
+    },
+    {
+      "inline": true,
+      "label": "estructura",
+      "permalink": "/ai-roadmap-docs/docs/tags/estructura"
+    },
+    {
+      "inline": true,
+      "label": "testing",
+      "permalink": "/ai-roadmap-docs/docs/tags/testing"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "clean-architecture",
+    "title": "Clean Architecture para Proyectos AI",
+    "sidebar_label": "🧹 Clean Architecture",
+    "description": "Estructura proyectos AI con Clean Architecture — separación de capas, inyección de dependencias y testing sin infraestructura.",
+    "tags": [
+      "arquitectura",
+      "clean-architecture",
+      "estructura",
+      "testing"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Introducción",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect"
+  },
+  "next": {
+    "title": "Arquitectura Software",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/arquitectura-software"
+  }
+}

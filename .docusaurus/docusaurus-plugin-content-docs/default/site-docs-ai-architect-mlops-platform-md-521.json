@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/mlops-platform",
+  "title": "Mlops Platform",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/mlops-platform.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/mlops-platform",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/mlops-platform",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/mlops-platform.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "mlops-platform",
+    "title": "Mlops Platform",
+    "sidebar_label": "Mlops Platform",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Data Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/data-architecture"
+  },
+  "next": {
+    "title": "Rag Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/rag-architecture"
+  }
+}

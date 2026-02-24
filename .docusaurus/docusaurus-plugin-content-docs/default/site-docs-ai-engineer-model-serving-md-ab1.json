@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/model-serving",
+  "title": "Model Serving",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/model-serving.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/model-serving",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/model-serving",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/model-serving.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "model-serving",
+    "title": "Model Serving",
+    "sidebar_label": "Model Serving",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Multimodal Ai",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai"
+  },
+  "next": {
+    "title": "Ml Pipelines",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-pipelines"
+  }
+}

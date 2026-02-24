@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/data-architecture",
+  "title": "Data Architecture",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/data-architecture.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/data-architecture",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/data-architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/data-architecture.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "data-architecture",
+    "title": "Data Architecture",
+    "sidebar_label": "Data Architecture",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Comprension Modelos",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/comprension-modelos"
+  },
+  "next": {
+    "title": "Mlops Platform",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/mlops-platform"
+  }
+}

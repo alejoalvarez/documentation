@@ -1,0 +1,50 @@
+{
+  "id": "ai-engineer/python-avanzado",
+  "title": "Python Avanzado",
+  "description": "Domina Python a nivel avanzado para proyectos de AI — tipado estático, async, NumPy vectorizado y profiling.",
+  "source": "@site/docs/ai-engineer/python-avanzado.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/python-avanzado",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/python-avanzado",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/python-avanzado.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "python",
+      "permalink": "/ai-roadmap-docs/docs/tags/python"
+    },
+    {
+      "inline": true,
+      "label": "fundamentos",
+      "permalink": "/ai-roadmap-docs/docs/tags/fundamentos"
+    },
+    {
+      "inline": true,
+      "label": "fase-1",
+      "permalink": "/ai-roadmap-docs/docs/tags/fase-1"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "python-avanzado",
+    "title": "Python Avanzado",
+    "sidebar_label": "🐍 Python Avanzado",
+    "description": "Domina Python a nivel avanzado para proyectos de AI — tipado estático, async, NumPy vectorizado y profiling.",
+    "tags": [
+      "python",
+      "fundamentos",
+      "fase-1"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Introducción",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer"
+  },
+  "next": {
+    "title": "Matematicas Ml",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/matematicas-ml"
+  }
+}

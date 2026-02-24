@@ -1,0 +1,24 @@
+{
+  "id": "referencias2/tools-stack2",
+  "title": "Tools & Stack 2024-2025",
+  "description": "El ecosistema de herramientas AI evoluciona rápidamente. Esta es la selección curada del stack más relevante.",
+  "source": "@site/docs/referencias2/tools-stack2.md",
+  "sourceDirName": "referencias2",
+  "slug": "/referencias2/tools-stack2",
+  "permalink": "/ai-roadmap-docs/docs/referencias2/tools-stack2",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/referencias2/tools-stack2.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "tools-stack2",
+    "title": "Tools & Stack 2024-2025",
+    "sidebar_label": "🛠️ Tools & Stack"
+  },
+  "sidebar": "references2Sidebar",
+  "next": {
+    "title": "📚 Fuentes y Recursos",
+    "permalink": "/ai-roadmap-docs/docs/referencias2/fuentes2"
+  }
+}

@@ -1,0 +1,281 @@
+{
+  "docusaurus-plugin-content-docs": {
+    "default": {
+      "path": "/ai-roadmap-docs/docs",
+      "versions": [
+        {
+          "name": "current",
+          "label": "Next",
+          "isLast": true,
+          "path": "/ai-roadmap-docs/docs",
+          "mainDocId": "ai-engineer/index",
+          "docs": [
+            {
+              "id": "ai-architect/ai-governance",
+              "path": "/ai-roadmap-docs/docs/ai-architect/ai-governance",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/ai-security",
+              "path": "/ai-roadmap-docs/docs/ai-architect/ai-security",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/arquitectura-software",
+              "path": "/ai-roadmap-docs/docs/ai-architect/arquitectura-software",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/clean-architecture",
+              "path": "/ai-roadmap-docs/docs/ai-architect/clean-architecture",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/cloud-architecture",
+              "path": "/ai-roadmap-docs/docs/ai-architect/cloud-architecture",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/comprension-modelos",
+              "path": "/ai-roadmap-docs/docs/ai-architect/comprension-modelos",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/data-architecture",
+              "path": "/ai-roadmap-docs/docs/ai-architect/data-architecture",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/finops-ai",
+              "path": "/ai-roadmap-docs/docs/ai-architect/finops-ai",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/gpu-infrastructure",
+              "path": "/ai-roadmap-docs/docs/ai-architect/gpu-infrastructure",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/index",
+              "path": "/ai-roadmap-docs/docs/ai-architect",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/inference-optimization",
+              "path": "/ai-roadmap-docs/docs/ai-architect/inference-optimization",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/llm-gateway",
+              "path": "/ai-roadmap-docs/docs/ai-architect/llm-gateway",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/mlops-platform",
+              "path": "/ai-roadmap-docs/docs/ai-architect/mlops-platform",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/model-selection",
+              "path": "/ai-roadmap-docs/docs/ai-architect/model-selection",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/multi-agent-systems",
+              "path": "/ai-roadmap-docs/docs/ai-architect/multi-agent-systems",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/rag-architecture",
+              "path": "/ai-roadmap-docs/docs/ai-architect/rag-architecture",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/scalability-design",
+              "path": "/ai-roadmap-docs/docs/ai-architect/scalability-design",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/security-architecture",
+              "path": "/ai-roadmap-docs/docs/ai-architect/security-architecture",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/sistemas-distribuidos",
+              "path": "/ai-roadmap-docs/docs/ai-architect/sistemas-distribuidos",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/streaming-architectures",
+              "path": "/ai-roadmap-docs/docs/ai-architect/streaming-architectures",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/technical-leadership",
+              "path": "/ai-roadmap-docs/docs/ai-architect/technical-leadership",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-architect/vector-databases",
+              "path": "/ai-roadmap-docs/docs/ai-architect/vector-databases",
+              "sidebar": "architectSidebar"
+            },
+            {
+              "id": "ai-engineer/ai-agents",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/ai-agents",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/ai-safety",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/ai-safety",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/cloud-containers",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/cloud-containers",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/data-engineering",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/data-engineering",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/deep-learning",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/deep-learning",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/evaluacion-metricas",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/evaluacion-metricas",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/feature-engineering",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/feature-engineering",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/fine-tuning-peft",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/index",
+              "path": "/ai-roadmap-docs/docs/ai-engineer",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/llm-evaluation",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/llm-evaluation",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/llms-transformers",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/llms-transformers",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/matematicas-ml",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/matematicas-ml",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/ml-clasico",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/ml-clasico",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/ml-pipelines",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/ml-pipelines",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/model-serving",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/model-serving",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/monitoring",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/monitoring",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/multimodal-ai",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/prompt-engineering",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/prompt-engineering",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/python-avanzado",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/python-avanzado",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/rag-embeddings",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/rag-embeddings",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "ai-engineer/software-engineering",
+              "path": "/ai-roadmap-docs/docs/ai-engineer/software-engineering",
+              "sidebar": "engineerSidebar"
+            },
+            {
+              "id": "referencias/fuentes",
+              "path": "/ai-roadmap-docs/docs/referencias/fuentes",
+              "sidebar": "referencesSidebar"
+            },
+            {
+              "id": "referencias/tools-stack",
+              "path": "/ai-roadmap-docs/docs/referencias/tools-stack",
+              "sidebar": "referencesSidebar"
+            },
+            {
+              "id": "referencias2/fuentes2",
+              "path": "/ai-roadmap-docs/docs/referencias2/fuentes2",
+              "sidebar": "references2Sidebar"
+            },
+            {
+              "id": "referencias2/tools-stack2",
+              "path": "/ai-roadmap-docs/docs/referencias2/tools-stack2",
+              "sidebar": "references2Sidebar"
+            }
+          ],
+          "draftIds": [],
+          "sidebars": {
+            "engineerSidebar": {
+              "link": {
+                "path": "/ai-roadmap-docs/docs/ai-engineer",
+                "label": "🤖 Introduction"
+              }
+            },
+            "architectSidebar": {
+              "link": {
+                "path": "/ai-roadmap-docs/docs/ai-architect",
+                "label": "🏗️ Introduction"
+              }
+            },
+            "referencesSidebar": {
+              "link": {
+                "path": "/ai-roadmap-docs/docs/referencias/tools-stack",
+                "label": "referencias/tools-stack"
+              }
+            },
+            "references2Sidebar": {
+              "link": {
+                "path": "/ai-roadmap-docs/docs/referencias2/tools-stack2",
+                "label": "referencias2/tools-stack2"
+              }
+            }
+          }
+        }
+      ],
+      "breadcrumbs": true
+    }
+  }
+}

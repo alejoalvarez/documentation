@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/llm-gateway",
+  "title": "Llm Gateway",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/llm-gateway.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/llm-gateway",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/llm-gateway",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/llm-gateway.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "llm-gateway",
+    "title": "Llm Gateway",
+    "sidebar_label": "Llm Gateway",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Multi Agent Systems",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/multi-agent-systems"
+  },
+  "next": {
+    "title": "Vector Databases",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/vector-databases"
+  }
+}

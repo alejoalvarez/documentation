@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/ai-security",
+  "title": "Ai Security",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/ai-security.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/ai-security",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-security",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/ai-security.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "ai-security",
+    "title": "Ai Security",
+    "sidebar_label": "Ai Security",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Ai Governance",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-governance"
+  },
+  "next": {
+    "title": "Finops Ai",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/finops-ai"
+  }
+}

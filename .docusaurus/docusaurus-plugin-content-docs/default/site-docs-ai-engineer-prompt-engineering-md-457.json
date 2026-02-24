@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/prompt-engineering",
+  "title": "Prompt Engineering",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/prompt-engineering.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/prompt-engineering",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/prompt-engineering",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/prompt-engineering.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "prompt-engineering",
+    "title": "Prompt Engineering",
+    "sidebar_label": "Prompt Engineering",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Rag Embeddings",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/rag-embeddings"
+  },
+  "next": {
+    "title": "Ai Agents",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-agents"
+  }
+}

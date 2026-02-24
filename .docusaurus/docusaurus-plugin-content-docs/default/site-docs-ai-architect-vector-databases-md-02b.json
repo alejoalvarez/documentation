@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/vector-databases",
+  "title": "Vector Databases",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/vector-databases.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/vector-databases",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/vector-databases",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/vector-databases.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "vector-databases",
+    "title": "Vector Databases",
+    "sidebar_label": "Vector Databases",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Llm Gateway",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/llm-gateway"
+  },
+  "next": {
+    "title": "Model Selection",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/model-selection"
+  }
+}

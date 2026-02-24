@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/scalability-design",
+  "title": "Scalability Design",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/scalability-design.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/scalability-design",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/scalability-design",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/scalability-design.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "scalability-design",
+    "title": "Scalability Design",
+    "sidebar_label": "Scalability Design",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Inference Optimization",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/inference-optimization"
+  },
+  "next": {
+    "title": "Ai Governance",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-governance"
+  }
+}

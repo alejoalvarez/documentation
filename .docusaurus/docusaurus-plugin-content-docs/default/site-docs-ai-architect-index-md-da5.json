@@ -1,0 +1,25 @@
+{
+  "id": "ai-architect/index",
+  "title": "AI Architect — Introducción",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/index.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/index.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "index",
+    "title": "AI Architect — Introducción",
+    "sidebar_label": "Introducción",
+    "slug": "/ai-architect"
+  },
+  "sidebar": "architectSidebar",
+  "next": {
+    "title": "🧹 Clean Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/clean-architecture"
+  }
+}

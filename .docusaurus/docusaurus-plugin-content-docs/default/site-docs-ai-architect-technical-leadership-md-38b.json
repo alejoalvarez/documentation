@@ -1,0 +1,33 @@
+{
+  "id": "ai-architect/technical-leadership",
+  "title": "Technical Leadership",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/technical-leadership.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/technical-leadership",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/technical-leadership",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/technical-leadership.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "technical-leadership",
+    "title": "Technical Leadership",
+    "sidebar_label": "Technical Leadership",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Finops Ai",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/finops-ai"
+  }
+}

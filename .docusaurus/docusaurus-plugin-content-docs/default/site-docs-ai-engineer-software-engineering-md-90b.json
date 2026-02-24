@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/software-engineering",
+  "title": "Software Engineering",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/software-engineering.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/software-engineering",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/software-engineering",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/software-engineering.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "software-engineering",
+    "title": "Software Engineering",
+    "sidebar_label": "Software Engineering",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Data Engineering",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/data-engineering"
+  },
+  "next": {
+    "title": "Ml Clasico",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-clasico"
+  }
+}

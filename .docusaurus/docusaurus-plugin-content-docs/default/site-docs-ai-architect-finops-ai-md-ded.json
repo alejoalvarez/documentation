@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/finops-ai",
+  "title": "Finops Ai",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/finops-ai.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/finops-ai",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/finops-ai",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/finops-ai.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "finops-ai",
+    "title": "Finops Ai",
+    "sidebar_label": "Finops Ai",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Ai Security",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-security"
+  },
+  "next": {
+    "title": "Technical Leadership",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/technical-leadership"
+  }
+}

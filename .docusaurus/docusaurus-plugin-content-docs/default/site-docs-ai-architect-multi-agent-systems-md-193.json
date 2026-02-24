@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/multi-agent-systems",
+  "title": "Multi Agent Systems",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/multi-agent-systems.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/multi-agent-systems",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/multi-agent-systems",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/multi-agent-systems.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "multi-agent-systems",
+    "title": "Multi Agent Systems",
+    "sidebar_label": "Multi Agent Systems",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Rag Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/rag-architecture"
+  },
+  "next": {
+    "title": "Llm Gateway",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/llm-gateway"
+  }
+}

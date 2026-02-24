@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/cloud-architecture",
+  "title": "Cloud Architecture",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/cloud-architecture.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/cloud-architecture",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/cloud-architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/cloud-architecture.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "cloud-architecture",
+    "title": "Cloud Architecture",
+    "sidebar_label": "Cloud Architecture",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Arquitectura Software",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/arquitectura-software"
+  },
+  "next": {
+    "title": "Sistemas Distribuidos",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/sistemas-distribuidos"
+  }
+}

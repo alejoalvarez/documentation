@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/data-engineering",
+  "title": "Data Engineering",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/data-engineering.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/data-engineering",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/data-engineering",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/data-engineering.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "data-engineering",
+    "title": "Data Engineering",
+    "sidebar_label": "Data Engineering",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Matematicas Ml",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/matematicas-ml"
+  },
+  "next": {
+    "title": "Software Engineering",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/software-engineering"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/monitoring",
+  "title": "Monitoring",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/monitoring.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/monitoring",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/monitoring",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/monitoring.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "monitoring",
+    "title": "Monitoring",
+    "sidebar_label": "Monitoring",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Ml Pipelines",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-pipelines"
+  },
+  "next": {
+    "title": "Cloud Containers",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/cloud-containers"
+  }
+}

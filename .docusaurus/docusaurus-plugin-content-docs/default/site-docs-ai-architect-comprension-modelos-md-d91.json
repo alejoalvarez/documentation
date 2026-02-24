@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/comprension-modelos",
+  "title": "Comprension Modelos",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/comprension-modelos.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/comprension-modelos",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/comprension-modelos",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/comprension-modelos.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "comprension-modelos",
+    "title": "Comprension Modelos",
+    "sidebar_label": "Comprension Modelos",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Security Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/security-architecture"
+  },
+  "next": {
+    "title": "Data Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/data-architecture"
+  }
+}

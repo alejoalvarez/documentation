@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/deep-learning",
+  "title": "Deep Learning",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/deep-learning.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/deep-learning",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/deep-learning",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/deep-learning.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "deep-learning",
+    "title": "Deep Learning",
+    "sidebar_label": "Deep Learning",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Ml Clasico",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-clasico"
+  },
+  "next": {
+    "title": "Evaluacion Metricas",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/evaluacion-metricas"
+  }
+}

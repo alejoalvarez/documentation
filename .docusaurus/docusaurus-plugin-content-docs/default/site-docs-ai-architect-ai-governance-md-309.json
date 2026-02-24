@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/ai-governance",
+  "title": "Ai Governance",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/ai-governance.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/ai-governance",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-governance",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/ai-governance.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "ai-governance",
+    "title": "Ai Governance",
+    "sidebar_label": "Ai Governance",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Scalability Design",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/scalability-design"
+  },
+  "next": {
+    "title": "Ai Security",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/ai-security"
+  }
+}

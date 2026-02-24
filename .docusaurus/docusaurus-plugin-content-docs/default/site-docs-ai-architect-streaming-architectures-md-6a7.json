@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/streaming-architectures",
+  "title": "Streaming Architectures",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/streaming-architectures.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/streaming-architectures",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/streaming-architectures",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/streaming-architectures.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "streaming-architectures",
+    "title": "Streaming Architectures",
+    "sidebar_label": "Streaming Architectures",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Model Selection",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/model-selection"
+  },
+  "next": {
+    "title": "Gpu Infrastructure",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/gpu-infrastructure"
+  }
+}

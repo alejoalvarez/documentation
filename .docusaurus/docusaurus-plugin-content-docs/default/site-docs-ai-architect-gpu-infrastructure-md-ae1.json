@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/gpu-infrastructure",
+  "title": "Gpu Infrastructure",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/gpu-infrastructure.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/gpu-infrastructure",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/gpu-infrastructure",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/gpu-infrastructure.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "gpu-infrastructure",
+    "title": "Gpu Infrastructure",
+    "sidebar_label": "Gpu Infrastructure",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Streaming Architectures",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/streaming-architectures"
+  },
+  "next": {
+    "title": "Inference Optimization",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/inference-optimization"
+  }
+}

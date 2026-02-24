@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/sistemas-distribuidos",
+  "title": "Sistemas Distribuidos",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/sistemas-distribuidos.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/sistemas-distribuidos",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/sistemas-distribuidos",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/sistemas-distribuidos.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "sistemas-distribuidos",
+    "title": "Sistemas Distribuidos",
+    "sidebar_label": "Sistemas Distribuidos",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Cloud Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/cloud-architecture"
+  },
+  "next": {
+    "title": "Security Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/security-architecture"
+  }
+}

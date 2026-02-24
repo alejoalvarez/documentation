@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/multimodal-ai",
+  "title": "Multimodal Ai",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/multimodal-ai.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/multimodal-ai",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/multimodal-ai.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "multimodal-ai",
+    "title": "Multimodal Ai",
+    "sidebar_label": "Multimodal Ai",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Fine Tuning Peft",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft"
+  },
+  "next": {
+    "title": "Model Serving",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/model-serving"
+  }
+}

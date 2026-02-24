@@ -1,0 +1,25 @@
+{
+  "id": "ai-engineer/index",
+  "title": "AI Engineer — Introducción",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/index.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/index.md",
+  "tags": [],
+  "version": "current",
+  "frontMatter": {
+    "id": "index",
+    "title": "AI Engineer — Introducción",
+    "sidebar_label": "Introducción",
+    "slug": "/ai-engineer"
+  },
+  "sidebar": "engineerSidebar",
+  "next": {
+    "title": "🐍 Python Avanzado",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/python-avanzado"
+  }
+}

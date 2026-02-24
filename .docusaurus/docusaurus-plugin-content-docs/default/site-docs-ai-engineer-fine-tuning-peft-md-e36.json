@@ -1,0 +1,37 @@
+{
+  "id": "ai-engineer/fine-tuning-peft",
+  "title": "Fine Tuning Peft",
+  "description": "AI Engineer",
+  "source": "@site/docs/ai-engineer/fine-tuning-peft.md",
+  "sourceDirName": "ai-engineer",
+  "slug": "/ai-engineer/fine-tuning-peft",
+  "permalink": "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/fine-tuning-peft.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-engineer",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "fine-tuning-peft",
+    "title": "Fine Tuning Peft",
+    "sidebar_label": "Fine Tuning Peft",
+    "tags": [
+      "ai-engineer"
+    ]
+  },
+  "sidebar": "engineerSidebar",
+  "previous": {
+    "title": "Ai Agents",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-agents"
+  },
+  "next": {
+    "title": "Multimodal Ai",
+    "permalink": "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/inference-optimization",
+  "title": "Inference Optimization",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/inference-optimization.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/inference-optimization",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/inference-optimization",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/inference-optimization.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "inference-optimization",
+    "title": "Inference Optimization",
+    "sidebar_label": "Inference Optimization",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Gpu Infrastructure",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/gpu-infrastructure"
+  },
+  "next": {
+    "title": "Scalability Design",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/scalability-design"
+  }
+}

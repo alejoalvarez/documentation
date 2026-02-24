@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/arquitectura-software",
+  "title": "Arquitectura Software",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/arquitectura-software.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/arquitectura-software",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/arquitectura-software",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/arquitectura-software.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "arquitectura-software",
+    "title": "Arquitectura Software",
+    "sidebar_label": "Arquitectura Software",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "🧹 Clean Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/clean-architecture"
+  },
+  "next": {
+    "title": "Cloud Architecture",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/cloud-architecture"
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/model-selection",
+  "title": "Model Selection",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/model-selection.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/model-selection",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/model-selection",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/model-selection.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "model-selection",
+    "title": "Model Selection",
+    "sidebar_label": "Model Selection",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Vector Databases",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/vector-databases"
+  },
+  "next": {
+    "title": "Streaming Architectures",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/streaming-architectures"
+  }
+}

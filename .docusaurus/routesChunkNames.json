@@ -1,0 +1,256 @@
+{
+  "/ai-roadmap-docs/search-bf9": {
+    "__comp": "1a4e3797",
+    "__context": {
+      "plugin": "138e0e15"
+    }
+  },
+  "/ai-roadmap-docs/docs-651": {
+    "__comp": "5e95c892",
+    "__context": {
+      "plugin": "aba21aa0"
+    }
+  },
+  "/ai-roadmap-docs/docs-aa3": {
+    "__comp": "a7bd4aaa",
+    "__props": "2f38af0e"
+  },
+  "/ai-roadmap-docs/docs/tags-594": {
+    "__comp": "3720c009",
+    "__props": "96034cdb"
+  },
+  "/ai-roadmap-docs/docs/tags/ai-architect-9c6": {
+    "__comp": "df203c0f",
+    "__props": "1f1cc318"
+  },
+  "/ai-roadmap-docs/docs/tags/ai-engineer-84d": {
+    "__comp": "df203c0f",
+    "__props": "bd7760c9"
+  },
+  "/ai-roadmap-docs/docs/tags/arquitectura-f2a": {
+    "__comp": "df203c0f",
+    "__props": "c762103a"
+  },
+  "/ai-roadmap-docs/docs/tags/clean-architecture-b1f": {
+    "__comp": "df203c0f",
+    "__props": "ddaff43e"
+  },
+  "/ai-roadmap-docs/docs/tags/estructura-443": {
+    "__comp": "df203c0f",
+    "__props": "915ab6d3"
+  },
+  "/ai-roadmap-docs/docs/tags/fase-1-3da": {
+    "__comp": "df203c0f",
+    "__props": "7f0715ad"
+  },
+  "/ai-roadmap-docs/docs/tags/fundamentos-8d0": {
+    "__comp": "df203c0f",
+    "__props": "9236905c"
+  },
+  "/ai-roadmap-docs/docs/tags/python-c20": {
+    "__comp": "df203c0f",
+    "__props": "8eedf18e"
+  },
+  "/ai-roadmap-docs/docs/tags/testing-215": {
+    "__comp": "df203c0f",
+    "__props": "cc85dd53"
+  },
+  "/ai-roadmap-docs/docs-c87": {
+    "__comp": "a94703ab"
+  },
+  "/ai-roadmap-docs/docs/ai-architect-b3f": {
+    "__comp": "17896441",
+    "content": "da5c3ea7"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/ai-governance-746": {
+    "__comp": "17896441",
+    "content": "30984aab"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/ai-security-b70": {
+    "__comp": "17896441",
+    "content": "a2b57e59"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/arquitectura-software-890": {
+    "__comp": "17896441",
+    "content": "604b9d5d"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/clean-architecture-3dd": {
+    "__comp": "17896441",
+    "content": "0227967b"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/cloud-architecture-f65": {
+    "__comp": "17896441",
+    "content": "980534ef"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/comprension-modelos-854": {
+    "__comp": "17896441",
+    "content": "d91b194a"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/data-architecture-d18": {
+    "__comp": "17896441",
+    "content": "c8283bf8"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/finops-ai-36d": {
+    "__comp": "17896441",
+    "content": "dedb4eb6"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/gpu-infrastructure-81f": {
+    "__comp": "17896441",
+    "content": "ae142650"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/inference-optimization-6d4": {
+    "__comp": "17896441",
+    "content": "8d2fec0e"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/llm-gateway-084": {
+    "__comp": "17896441",
+    "content": "bdca8beb"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/mlops-platform-f58": {
+    "__comp": "17896441",
+    "content": "5215f0b2"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/model-selection-8d5": {
+    "__comp": "17896441",
+    "content": "26036bf6"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/multi-agent-systems-c5b": {
+    "__comp": "17896441",
+    "content": "1930c826"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/rag-architecture-50a": {
+    "__comp": "17896441",
+    "content": "0013a945"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/scalability-design-caf": {
+    "__comp": "17896441",
+    "content": "f201e992"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/security-architecture-456": {
+    "__comp": "17896441",
+    "content": "0977cb23"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/sistemas-distribuidos-3b6": {
+    "__comp": "17896441",
+    "content": "b24887c2"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/streaming-architectures-7e5": {
+    "__comp": "17896441",
+    "content": "6a75247b"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/technical-leadership-034": {
+    "__comp": "17896441",
+    "content": "38b989c2"
+  },
+  "/ai-roadmap-docs/docs/ai-architect/vector-databases-5c7": {
+    "__comp": "17896441",
+    "content": "02b25efc"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer-f7d": {
+    "__comp": "17896441",
+    "content": "cf0f5e72"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/ai-agents-a99": {
+    "__comp": "17896441",
+    "content": "2080e6b7"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/ai-safety-f28": {
+    "__comp": "17896441",
+    "content": "ffe72591"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/cloud-containers-09a": {
+    "__comp": "17896441",
+    "content": "809d55ba"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/data-engineering-3a3": {
+    "__comp": "17896441",
+    "content": "4ca703f4"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/deep-learning-84a": {
+    "__comp": "17896441",
+    "content": "3e3a4972"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/evaluacion-metricas-353": {
+    "__comp": "17896441",
+    "content": "f75c41d0"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/feature-engineering-138": {
+    "__comp": "17896441",
+    "content": "5aaf3f8c"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft-67f": {
+    "__comp": "17896441",
+    "content": "e365f39c"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/llm-evaluation-52d": {
+    "__comp": "17896441",
+    "content": "f33c39b8"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/llms-transformers-399": {
+    "__comp": "17896441",
+    "content": "db04bc5c"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/matematicas-ml-947": {
+    "__comp": "17896441",
+    "content": "d67a1658"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/ml-clasico-cc6": {
+    "__comp": "17896441",
+    "content": "ee6fdc56"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/ml-pipelines-c59": {
+    "__comp": "17896441",
+    "content": "a0e641c5"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/model-serving-343": {
+    "__comp": "17896441",
+    "content": "ab1fcccd"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/monitoring-29b": {
+    "__comp": "17896441",
+    "content": "1d7aec42"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai-7fb": {
+    "__comp": "17896441",
+    "content": "18cab96f"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/prompt-engineering-26e": {
+    "__comp": "17896441",
+    "content": "457462cf"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/python-avanzado-cc8": {
+    "__comp": "17896441",
+    "content": "0f98e45d"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/rag-embeddings-ec2": {
+    "__comp": "17896441",
+    "content": "1c505c94"
+  },
+  "/ai-roadmap-docs/docs/ai-engineer/software-engineering-c7b": {
+    "__comp": "17896441",
+    "content": "90bdf0e6"
+  },
+  "/ai-roadmap-docs/docs/referencias/fuentes-2b5": {
+    "__comp": "17896441",
+    "content": "233f2bb2"
+  },
+  "/ai-roadmap-docs/docs/referencias/tools-stack-b06": {
+    "__comp": "17896441",
+    "content": "2d8e1e28"
+  },
+  "/ai-roadmap-docs/docs/referencias2/fuentes2-0f3": {
+    "__comp": "17896441",
+    "content": "748febea"
+  },
+  "/ai-roadmap-docs/docs/referencias2/tools-stack2-656": {
+    "__comp": "17896441",
+    "content": "67e17c5a"
+  },
+  "/ai-roadmap-docs/-4d7": {
+    "__comp": "c4f5d8e4",
+    "__context": {
+      "plugin": "a7456010"
+    },
+    "config": "5e9f5e1a"
+  }
+}

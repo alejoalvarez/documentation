@@ -1,0 +1,37 @@
+{
+  "id": "ai-architect/rag-architecture",
+  "title": "Rag Architecture",
+  "description": "AI Architect",
+  "source": "@site/docs/ai-architect/rag-architecture.md",
+  "sourceDirName": "ai-architect",
+  "slug": "/ai-architect/rag-architecture",
+  "permalink": "/ai-roadmap-docs/docs/ai-architect/rag-architecture",
+  "draft": false,
+  "unlisted": false,
+  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/rag-architecture.md",
+  "tags": [
+    {
+      "inline": true,
+      "label": "ai-architect",
+      "permalink": "/ai-roadmap-docs/docs/tags/ai-architect"
+    }
+  ],
+  "version": "current",
+  "frontMatter": {
+    "id": "rag-architecture",
+    "title": "Rag Architecture",
+    "sidebar_label": "Rag Architecture",
+    "tags": [
+      "ai-architect"
+    ]
+  },
+  "sidebar": "architectSidebar",
+  "previous": {
+    "title": "Mlops Platform",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/mlops-platform"
+  },
+  "next": {
+    "title": "Multi Agent Systems",
+    "permalink": "/ai-roadmap-docs/docs/ai-architect/multi-agent-systems"
+  }
+}
