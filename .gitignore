@@ -37,6 +37,6 @@ dist
 
 coverage/
 .vscode/
-docs/
+#docs/
 ci
 tsconfig.tsbuildinfo
