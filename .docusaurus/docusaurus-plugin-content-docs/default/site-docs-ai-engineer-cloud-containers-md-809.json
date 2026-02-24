@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/cloud-containers.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/cloud-containers",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/cloud-containers",
+  "permalink": "/documentation/docs/ai-engineer/cloud-containers",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/cloud-containers.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/cloud-containers.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "cloud-containers",
     "title": "Cloud Containers",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Monitoring",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/monitoring"
+    "permalink": "/documentation/docs/ai-engineer/monitoring"
   },
   "next": {
     "title": "Ai Safety",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-safety"
+    "permalink": "/documentation/docs/ai-engineer/ai-safety"
   }
 }

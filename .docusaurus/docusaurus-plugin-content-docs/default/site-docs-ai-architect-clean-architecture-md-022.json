@@ -5,33 +5,35 @@
   "source": "@site/docs/ai-architect/clean-architecture.md",
   "sourceDirName": "ai-architect",
   "slug": "/ai-architect/clean-architecture",
-  "permalink": "/ai-roadmap-docs/docs/ai-architect/clean-architecture",
+  "permalink": "/documentation/docs/ai-architect/clean-architecture",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-architect/clean-architecture.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-architect/clean-architecture.md",
   "tags": [
     {
       "inline": true,
       "label": "arquitectura",
-      "permalink": "/ai-roadmap-docs/docs/tags/arquitectura"
+      "permalink": "/documentation/docs/tags/arquitectura"
     },
     {
       "inline": true,
       "label": "clean-architecture",
-      "permalink": "/ai-roadmap-docs/docs/tags/clean-architecture"
+      "permalink": "/documentation/docs/tags/clean-architecture"
     },
     {
       "inline": true,
       "label": "estructura",
-      "permalink": "/ai-roadmap-docs/docs/tags/estructura"
+      "permalink": "/documentation/docs/tags/estructura"
     },
     {
       "inline": true,
       "label": "testing",
-      "permalink": "/ai-roadmap-docs/docs/tags/testing"
+      "permalink": "/documentation/docs/tags/testing"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "clean-architecture",
     "title": "Clean Architecture para Proyectos AI",
@@ -47,10 +49,10 @@
   "sidebar": "architectSidebar",
   "previous": {
     "title": "Introducción",
-    "permalink": "/ai-roadmap-docs/docs/ai-architect"
+    "permalink": "/documentation/docs/ai-architect"
   },
   "next": {
     "title": "Arquitectura Software",
-    "permalink": "/ai-roadmap-docs/docs/ai-architect/arquitectura-software"
+    "permalink": "/documentation/docs/ai-architect/arquitectura-software"
   }
 }

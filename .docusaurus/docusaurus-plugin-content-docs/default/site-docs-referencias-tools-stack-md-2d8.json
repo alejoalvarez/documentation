@@ -5,12 +5,14 @@
   "source": "@site/docs/referencias/tools-stack.md",
   "sourceDirName": "referencias",
   "slug": "/referencias/tools-stack",
-  "permalink": "/ai-roadmap-docs/docs/referencias/tools-stack",
+  "permalink": "/documentation/docs/referencias/tools-stack",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/referencias/tools-stack.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/referencias/tools-stack.md",
   "tags": [],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "tools-stack",
     "title": "Tools & Stack 2024-2025",
@@ -19,6 +21,6 @@
   "sidebar": "referencesSidebar",
   "next": {
     "title": "📚 Fuentes y Recursos",
-    "permalink": "/ai-roadmap-docs/docs/referencias/fuentes"
+    "permalink": "/documentation/docs/referencias/fuentes"
   }
 }

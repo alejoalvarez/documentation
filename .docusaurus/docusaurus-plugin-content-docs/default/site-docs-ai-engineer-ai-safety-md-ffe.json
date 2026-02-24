@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/ai-safety.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/ai-safety",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-safety",
+  "permalink": "/documentation/docs/ai-engineer/ai-safety",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/ai-safety.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/ai-safety.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "ai-safety",
     "title": "Ai Safety",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Cloud Containers",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/cloud-containers"
+    "permalink": "/documentation/docs/ai-engineer/cloud-containers"
   },
   "next": {
     "title": "Llm Evaluation",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/llm-evaluation"
+    "permalink": "/documentation/docs/ai-engineer/llm-evaluation"
   }
 }

@@ -5,12 +5,14 @@
   "source": "@site/docs/referencias/fuentes.md",
   "sourceDirName": "referencias",
   "slug": "/referencias/fuentes",
-  "permalink": "/ai-roadmap-docs/docs/referencias/fuentes",
+  "permalink": "/documentation/docs/referencias/fuentes",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/referencias/fuentes.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/referencias/fuentes.md",
   "tags": [],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "fuentes",
     "title": "Fuentes y Recursos",
@@ -19,6 +21,6 @@
   "sidebar": "referencesSidebar",
   "previous": {
     "title": "🛠️ Tools & Stack",
-    "permalink": "/ai-roadmap-docs/docs/referencias/tools-stack"
+    "permalink": "/documentation/docs/referencias/tools-stack"
   }
 }

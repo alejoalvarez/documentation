@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/evaluacion-metricas.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/evaluacion-metricas",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/evaluacion-metricas",
+  "permalink": "/documentation/docs/ai-engineer/evaluacion-metricas",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/evaluacion-metricas.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/evaluacion-metricas.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "evaluacion-metricas",
     "title": "Evaluacion Metricas",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Deep Learning",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/deep-learning"
+    "permalink": "/documentation/docs/ai-engineer/deep-learning"
   },
   "next": {
     "title": "Feature Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/feature-engineering"
+    "permalink": "/documentation/docs/ai-engineer/feature-engineering"
   }
 }

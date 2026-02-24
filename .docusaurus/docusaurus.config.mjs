@@ -7,10 +7,10 @@ export default {
   "title": "Alejo",
   "tagline": "Complete technical guide to master AI Engineering and AI Architecture",
   "favicon": "img/favicon.ico",
-  "url": "https://tu-usuario.github.io",
-  "baseUrl": "/ai-roadmap-docs/",
-  "organizationName": "tu-usuario",
-  "projectName": "ai-roadmap-docs",
+  "url": "https://alejoalvarez.github.io",
+  "baseUrl": "/documentation/",
+  "organizationName": "alejoalvarez",
+  "projectName": "documentation",
   "onBrokenLinks": "warn",
   "onBrokenMarkdownLinks": "warn",
   "i18n": {
@@ -27,7 +27,7 @@ export default {
       {
         "docs": {
           "sidebarPath": "/Users/alejoalvarez/Documents/Alejo/documentation/sidebars.js",
-          "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/",
+          "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/",
           "showLastUpdateTime": true,
           "showLastUpdateAuthor": true
         },
@@ -79,7 +79,7 @@ export default {
           ]
         },
         {
-          "href": "https://github.com/tu-usuario/ai-roadmap-docs",
+          "href": "https://github.com/alejoalvarez/documentation",
           "label": "GitHub",
           "position": "right"
         }
@@ -158,7 +158,7 @@ export default {
           ]
         }
       ],
-      "copyright": "Copyright © 2026 AI Roadmap Docs. Built with Docusaurus."
+      "copyright": "Copyright © 2026 Documentation. Alejo."
     },
     "tableOfContents": {
       "minHeadingLevel": 2,

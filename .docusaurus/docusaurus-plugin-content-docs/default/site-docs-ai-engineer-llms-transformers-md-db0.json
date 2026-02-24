@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/llms-transformers.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/llms-transformers",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/llms-transformers",
+  "permalink": "/documentation/docs/ai-engineer/llms-transformers",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/llms-transformers.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/llms-transformers.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "llms-transformers",
     "title": "Llms Transformers",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Feature Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/feature-engineering"
+    "permalink": "/documentation/docs/ai-engineer/feature-engineering"
   },
   "next": {
     "title": "Rag Embeddings",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/rag-embeddings"
+    "permalink": "/documentation/docs/ai-engineer/rag-embeddings"
   }
 }

@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/rag-embeddings.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/rag-embeddings",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/rag-embeddings",
+  "permalink": "/documentation/docs/ai-engineer/rag-embeddings",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/rag-embeddings.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/rag-embeddings.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "rag-embeddings",
     "title": "Rag Embeddings",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Llms Transformers",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/llms-transformers"
+    "permalink": "/documentation/docs/ai-engineer/llms-transformers"
   },
   "next": {
     "title": "Prompt Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/prompt-engineering"
+    "permalink": "/documentation/docs/ai-engineer/prompt-engineering"
   }
 }

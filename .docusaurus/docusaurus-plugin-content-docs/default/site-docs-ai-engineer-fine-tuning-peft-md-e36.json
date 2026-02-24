@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/fine-tuning-peft.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/fine-tuning-peft",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft",
+  "permalink": "/documentation/docs/ai-engineer/fine-tuning-peft",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/fine-tuning-peft.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/fine-tuning-peft.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "fine-tuning-peft",
     "title": "Fine Tuning Peft",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Ai Agents",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-agents"
+    "permalink": "/documentation/docs/ai-engineer/ai-agents"
   },
   "next": {
     "title": "Multimodal Ai",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/multimodal-ai"
+    "permalink": "/documentation/docs/ai-engineer/multimodal-ai"
   }
 }

@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/ml-pipelines.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/ml-pipelines",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-pipelines",
+  "permalink": "/documentation/docs/ai-engineer/ml-pipelines",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/ml-pipelines.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/ml-pipelines.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "ml-pipelines",
     "title": "Ml Pipelines",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Model Serving",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/model-serving"
+    "permalink": "/documentation/docs/ai-engineer/model-serving"
   },
   "next": {
     "title": "Monitoring",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/monitoring"
+    "permalink": "/documentation/docs/ai-engineer/monitoring"
   }
 }

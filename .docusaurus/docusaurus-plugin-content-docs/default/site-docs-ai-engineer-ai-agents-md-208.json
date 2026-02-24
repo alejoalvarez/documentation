@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/ai-agents.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/ai-agents",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-agents",
+  "permalink": "/documentation/docs/ai-engineer/ai-agents",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/ai-agents.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/ai-agents.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "ai-agents",
     "title": "Ai Agents",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Prompt Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/prompt-engineering"
+    "permalink": "/documentation/docs/ai-engineer/prompt-engineering"
   },
   "next": {
     "title": "Fine Tuning Peft",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/fine-tuning-peft"
+    "permalink": "/documentation/docs/ai-engineer/fine-tuning-peft"
   }
 }

@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/matematicas-ml.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/matematicas-ml",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/matematicas-ml",
+  "permalink": "/documentation/docs/ai-engineer/matematicas-ml",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/matematicas-ml.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/matematicas-ml.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "matematicas-ml",
     "title": "Matematicas Ml",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "🐍 Python Avanzado",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/python-avanzado"
+    "permalink": "/documentation/docs/ai-engineer/python-avanzado"
   },
   "next": {
     "title": "Data Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/data-engineering"
+    "permalink": "/documentation/docs/ai-engineer/data-engineering"
   }
 }

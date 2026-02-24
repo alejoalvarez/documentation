@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/ml-clasico.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/ml-clasico",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/ml-clasico",
+  "permalink": "/documentation/docs/ai-engineer/ml-clasico",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/ml-clasico.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/ml-clasico.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "ml-clasico",
     "title": "Ml Clasico",
@@ -28,10 +30,10 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Software Engineering",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/software-engineering"
+    "permalink": "/documentation/docs/ai-engineer/software-engineering"
   },
   "next": {
     "title": "Deep Learning",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/deep-learning"
+    "permalink": "/documentation/docs/ai-engineer/deep-learning"
   }
 }

@@ -5,18 +5,20 @@
   "source": "@site/docs/ai-engineer/llm-evaluation.md",
   "sourceDirName": "ai-engineer",
   "slug": "/ai-engineer/llm-evaluation",
-  "permalink": "/ai-roadmap-docs/docs/ai-engineer/llm-evaluation",
+  "permalink": "/documentation/docs/ai-engineer/llm-evaluation",
   "draft": false,
   "unlisted": false,
-  "editUrl": "https://github.com/tu-usuario/ai-roadmap-docs/tree/main/docs/ai-engineer/llm-evaluation.md",
+  "editUrl": "https://github.com/alejoalvarez/documentation/tree/main/docs/ai-engineer/llm-evaluation.md",
   "tags": [
     {
       "inline": true,
       "label": "ai-engineer",
-      "permalink": "/ai-roadmap-docs/docs/tags/ai-engineer"
+      "permalink": "/documentation/docs/tags/ai-engineer"
     }
   ],
   "version": "current",
+  "lastUpdatedBy": "Alejo Alvarez",
+  "lastUpdatedAt": 1771894896000,
   "frontMatter": {
     "id": "llm-evaluation",
     "title": "Llm Evaluation",
@@ -28,6 +30,6 @@
   "sidebar": "engineerSidebar",
   "previous": {
     "title": "Ai Safety",
-    "permalink": "/ai-roadmap-docs/docs/ai-engineer/ai-safety"
+    "permalink": "/documentation/docs/ai-engineer/ai-safety"
   }
 }
