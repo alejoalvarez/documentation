@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Stack Visualizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#04050d;--text:#e9f5ff;--neon-cyan:#00e5ff;--neon-cyan-soft:rgba(0,229,255,.2);
+  --neon-pink:#ff4fd8;--neon-lime:#7dff9b;--neon-amber:#ffb347;
+}
+body{
+  margin:0;background:radial-gradient(circle at 50% 20%,#11152b 0%,var(--bg) 45%,#02030a 100%);
+  color:var(--text);font-family:'Fira Code',monospace;display:flex;justify-content:center;align-items:flex-start;padding:0;
+}
+.container{
+  width:calc(100% - 32px);max-width:1200px;min-height:unset;height:auto;margin:16px auto;padding:20px;
+  display:flex;flex-direction:column;gap:16px;background:linear-gradient(180deg,rgba(10,13,26,.9),rgba(6,9,20,.95));
+  border:1px solid var(--neon-cyan-soft);border-radius:14px;box-shadow:0 0 28px rgba(0,229,255,.2),0 0 70px rgba(0,229,255,.08);
+}
+.form-rows{display:flex;flex-direction:column;gap:12px}
+.row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.input-group{display:flex;gap:8px;align-items:center}
+button,input{
+  padding:6px 10px;background:rgba(5,8,18,.8);border:2px solid var(--neon-cyan);color:var(--neon-cyan);
+  border-radius:8px;box-shadow:0 0 10px rgba(0,229,255,.15);
+}
+button:hover{background:var(--neon-cyan);color:#031018}
+.stack-wrap{display:flex;justify-content:center;margin-top:8px}
+.stack{
+  width:160px;min-height:320px;display:flex;flex-direction:column-reverse;align-items:center;justify-content:flex-start;gap:6px;
+  border:2px dashed rgba(0,229,255,.35);border-radius:12px;padding:10px;background:rgba(0,229,255,.04);
+}
+.box{
+  width:120px;height:50px;border:2px solid var(--neon-cyan);display:flex;justify-content:center;align-items:center;
+  border-radius:8px;background:rgba(0,229,255,.06);transition:all .2s ease;
+}
+.top{background:rgba(0,229,255,.85);color:#001018}
+.stats{color:var(--neon-amber)}.math{color:var(--neon-lime);font-size:13px;white-space:pre-line}
+.operation-box{
+  margin-top:8px;padding:10px 12px;border:2px solid var(--neon-cyan);border-radius:10px;
+  background:rgba(0,229,255,.08);box-shadow:0 0 14px rgba(0,229,255,.2);transition:all .25s ease;
+}
+.operation-box.info{border-color:var(--neon-cyan)}
+.operation-box.success{border-color:var(--neon-lime);background:rgba(125,255,155,.12)}
+.operation-box.error{border-color:var(--neon-pink);background:rgba(255,79,216,.1)}
+.operation-box.search{border-color:var(--neon-amber);background:rgba(255,179,71,.1)}
+</style>
+</head>
+<body>
+<div class="container">
+  <h2>Stack Visualizer (LIFO)</h2>
+
+  <div class="form-rows">
+    <div class="row">
+      <div class="input-group">
+        <input id="valueInput" placeholder="Value">
+        <button onclick="pushValue()">Push</button>
+        <button onclick="popValue()">Pop</button>
+        <button onclick="peekValue()">Peek</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-group">
+        <button onclick="runDemo()">Run Demo</button>
+        <button onclick="clearStack()">Clear</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="stack-wrap">
+    <div id="stackContainer" class="stack"></div>
+  </div>
+
+  <div id="stats" class="stats"></div>
+  <div id="math" class="math"></div>
+  <div id="message" class="operation-box info"></div>
+</div>
+
+<script>
+let stack = [];
+let operations = 0;
+let interval = null;
+
+function stopDemo() {
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+  }
+}
+
+function setMessage(text, type = "info") {
+  const m = document.getElementById("message");
+  m.textContent = text;
+  m.className = "operation-box " + type;
+}
+
+function render(highlightTop = false) {
+  const container = document.getElementById("stackContainer");
+  container.innerHTML = "";
+
+  stack.forEach((val, i) => {
+    const box = document.createElement("div");
+    box.className = "box";
+    if (i === stack.length - 1 && highlightTop) box.classList.add("top");
+    box.textContent = val;
+    container.appendChild(box);
+  });
+
+  document.getElementById("stats").textContent = "Size: " + stack.length + " | Operations: " + operations;
+  document.getElementById("math").textContent = "Push: O(1) | Pop: O(1) | Peek: O(1)\nModel: LIFO (Last In, First Out)";
+}
+
+function pushValue() {
+  stopDemo();
+  const val = document.getElementById("valueInput").value.trim();
+  if (val === "") return setMessage("Enter a value to push.", "error");
+  stack.push(val);
+  operations++;
+  render(true);
+  setMessage("Pushed '" + val + "' to the top.", "success");
+  victorySound();
+}
+
+function popValue() {
+  stopDemo();
+  if (stack.length === 0) {
+    setMessage("Stack is empty.", "error");
+    clickSound();
+    return;
+  }
+  const removed = stack.pop();
+  operations++;
+  render(true);
+  setMessage("Popped '" + removed + "' from the top.", "success");
+  victorySound();
+}
+
+function peekValue() {
+  stopDemo();
+  if (stack.length === 0) return setMessage("Stack is empty.", "error");
+  operations++;
+  render(true);
+  setMessage("Top value is '" + stack[stack.length - 1] + "'.", "search");
+  clickSound();
+}
+
+function clearStack() {
+  stopDemo();
+  stack = [];
+  operations = 0;
+  render();
+  setMessage("Stack cleared.", "info");
+}
+
+function runDemo() {
+  stopDemo();
+  stack = [];
+  operations = 0;
+  render();
+  setMessage("Running demo: Push A, B, C, D.", "search");
+  const values = ["A", "B", "C", "D"];
+  let i = 0;
+  interval = setInterval(() => {
+    if (i < values.length) {
+      stack.push(values[i]);
+      operations++;
+      render(true);
+      i++;
+    } else {
+      clearInterval(interval);
+      interval = null;
+      setMessage("Demo finished. Top is '" + stack[stack.length - 1] + "'.", "success");
+      victorySound();
+    }
+  }, 600);
+}
+
+function clickSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = 900;
+  gain.gain.value = 0.1;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.05);
+}
+
+function victorySound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(400, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.5);
+  gain.gain.setValueAtTime(0.2, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.6);
+}
+
+render();
+setMessage("Stack initialized.", "info");
+</script>
+</body>
+</html>
