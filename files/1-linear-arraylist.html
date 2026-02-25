@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ArrayList Visualizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #04050d;
+  --text: #e9f5ff;
+  --neon-cyan: #00e5ff;
+  --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+  --neon-pink: #ff4fd8;
+  --neon-lime: #7dff9b;
+  --neon-amber: #ffb347;
+}
+body{
+  margin:0;
+  background:radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+  color:var(--text);
+  font-family:'Fira Code',monospace;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:unset;
+  padding:0;
+}
+.container{
+  width:calc(100% - 32px);
+  max-width:1200px;
+  min-height:unset;
+  height:auto;
+  background:linear-gradient(180deg, rgba(10,13,26,0.9), rgba(6,9,20,0.95));
+  border:1px solid var(--neon-cyan-soft);
+  border-radius:14px;
+  box-shadow:0 0 28px rgba(0,229,255,0.2), 0 0 70px rgba(0,229,255,0.08);
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:16px;
+  margin:16px auto;
+}
+.array{
+  display:flex;
+  gap:5px;
+  justify-content:center;
+  margin-top:12px;
+  flex-wrap:wrap;
+}
+.cell{
+  width:60px;
+  height:60px;
+  border:2px solid var(--neon-cyan);
+  background:rgba(0, 229, 255, 0.05);
+  box-shadow:inset 0 0 12px rgba(0,229,255,0.12);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-size:18px;
+  transition:all 0.2s ease;
+}
+.index{
+  text-align:center;
+  color:var(--neon-pink);
+  font-size:12px;
+}
+button,input{
+  padding:6px 10px;
+  background:rgba(5,8,18,0.8);
+  border:2px solid var(--neon-cyan);
+  color:var(--neon-cyan);
+  border-radius:8px;
+  box-shadow:0 0 10px rgba(0,229,255,0.15);
+}
+button:hover{
+  background:var(--neon-cyan);
+  color:#031018;
+}
+.form-rows{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.row{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.input-group{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.stats{ color:var(--neon-amber); }
+.math{ color:var(--neon-lime); font-size:13px; }
+.operation-box{
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+  color: var(--text);
+  transition: all 0.25s ease;
+}
+.operation-box.info{
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+}
+.operation-box.success{
+  border-color: var(--neon-lime);
+  background: rgba(125, 255, 155, 0.12);
+  box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+}
+.operation-box.error{
+  border-color: var(--neon-pink);
+  background: rgba(255, 79, 216, 0.1);
+  box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+}
+.operation-box.search{
+  border-color: var(--neon-amber);
+  background: rgba(255, 179, 71, 0.1);
+  box-shadow: 0 0 16px rgba(255, 179, 71, 0.24);
+}
+@media (max-width: 900px){
+  .cell{
+    width:52px;
+    height:52px;
+    font-size:16px;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Dynamic ArrayList Visualizer</h2>
+
+  <div class="form-rows">
+    <div class="row">
+      <div class="input-group">
+        <input id="capacityInput" type="number" min="1" max="50" value="4" placeholder="Initial capacity"/>
+        <button onclick="setCapacity()">Apply capacity</button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-group">
+        <input id="valueInput" placeholder="Value"/>
+        <button onclick="add()">Add</button>
+        <button onclick="search()">Search</button>
+      </div>
+      <div class="input-group">
+        <button onclick="removeLast()">Remove Last</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="arrayContainer" class="array"></div>
+  <div id="indexContainer" class="array"></div>
+
+  <div class="stats" id="stats"></div>
+  <div class="math" id="math"></div>
+  <div class="operation-box info" id="message"></div>
+</div>
+
+<script>
+let capacity = 4;
+let size = 0;
+let array = new Array(capacity).fill(null);
+let interval = null;
+
+function stopSearch() {
+  if (interval) {
+    clearInterval(interval);
+    interval = null;
+  }
+}
+
+function setMessage(text, type = "info") {
+  const messageEl = document.getElementById("message");
+  messageEl.innerText = text;
+  messageEl.className = "operation-box " + type;
+}
+
+function render(highlight = -1) {
+  const container = document.getElementById("arrayContainer");
+  const indexContainer = document.getElementById("indexContainer");
+  container.innerHTML = "";
+  indexContainer.innerHTML = "";
+
+  array.forEach((v, i) => {
+    let cell = document.createElement("div");
+    cell.className = "cell";
+    if (i >= size) cell.style.opacity = "0.35";
+    if (i === highlight) {
+      cell.style.background = "rgba(0, 229, 255, 0.85)";
+      cell.style.color = "#001018";
+    }
+    cell.innerText = v !== null ? v : "";
+    container.appendChild(cell);
+
+    let idx = document.createElement("div");
+    idx.className = "index";
+    idx.style.width = "60px";
+    idx.innerText = i;
+    indexContainer.appendChild(idx);
+  });
+
+  document.getElementById("stats").innerText = "Size: " + size + " | Capacity: " + capacity;
+  document.getElementById("math").innerText = "Add: O(1) -> Most of the time it is instantaneous; only rarely is it O(n) when the structure needs to be enlarged.";
+  document.getElementById("math").innerText+="\nAccess by index:O(1) -> It remains just as fast as a normal array.";
+  document.getElementById("math").innerText+="\nResize: O(n) -> When the structure needs to be enlarged, it must copy all the elements to a new, larger array.";
+  document.getElementById("math").innerText+="\nSearch: O(n) -> In the worst case, you must check each item.";
+  document.getElementById("math").innerText+="\nDeletion: O(n) -> If you remove one, you must “move” the spaces to close the gap.";
+}
+
+function resize() {
+  capacity *= 2;
+  const newArr = new Array(capacity).fill(null);
+  for (let i = 0; i < size; i++) {
+    newArr[i] = array[i];
+  }
+  array = newArr;
+  document.getElementById("capacityInput").value = capacity;
+  setMessage("Capacity reached. Resized to " + capacity + ".", "info");
+}
+
+function setCapacity() {
+  stopSearch();
+  const rawCapacity = parseInt(document.getElementById("capacityInput").value, 10);
+  if (Number.isNaN(rawCapacity) || rawCapacity < 1 || rawCapacity > 50) {
+    setMessage("Invalid capacity. Use a number between 1 and 50.", "error");
+    return;
+  }
+  if (rawCapacity < size) {
+    setMessage("Capacity cannot be smaller than current size (" + size + ").", "error");
+    return;
+  }
+  capacity = rawCapacity;
+  const newArr = new Array(capacity).fill(null);
+  for (let i = 0; i < size; i++) {
+    newArr[i] = array[i];
+  }
+  array = newArr;
+  render();
+  setMessage("Capacity updated to " + capacity + ".", "success");
+  clickSound();
+}
+
+function add() {
+  stopSearch();
+  const val = document.getElementById("valueInput").value.trim();
+  if (val === "") {
+    setMessage("Enter a value to add.", "error");
+    return;
+  }
+  if (size === capacity) {
+    resize();
+  }
+  array[size] = val;
+  size++;
+  render();
+  setMessage("Added '" + val + "' at index " + (size - 1) + ".", "success");
+  victorySound();
+}
+
+function removeLast() {
+  stopSearch();
+  if (size === 0) {
+    setMessage("ArrayList is already empty.", "error");
+    clickSound();
+    return;
+  }
+  const removed = array[size - 1];
+  size--;
+  array[size] = null;
+  render();
+  setMessage("Removed last value '" + removed + "'.", "success");
+  victorySound();
+}
+
+function search() {
+  stopSearch();
+  const val = document.getElementById("valueInput").value.trim();
+  if (val === "") {
+    setMessage("Enter a value to search.", "error");
+    return;
+  }
+  setMessage("Searching for '" + val + "'...", "search");
+  const target = val.toLowerCase();
+  let i = 0;
+  interval = setInterval(() => {
+    if (i < size) {
+      render(i);
+      if (array[i] !== null && String(array[i]).toLowerCase() === target) {
+        clearInterval(interval);
+        interval = null;
+        setMessage("Found at index " + i + ".", "success");
+        victorySound();
+        clickSound();
+        return;
+      }
+      i++;
+    } else {
+      clearInterval(interval);
+      interval = null;
+      render(-1);
+      setMessage("Not found.", "error");
+      clickSound();
+    }
+  }, 600);
+}
+
+function clickSound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.frequency.value = 900;
+  gain.gain.value = 0.1;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.05);
+}
+
+function victorySound() {
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(400, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.5);
+  gain.gain.setValueAtTime(0.2, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.6);
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime + 0.6);
+}
+
+render();
+setMessage("ArrayList initialized.", "info");
+</script>
+</body>
+</html>
