@@ -281,6 +281,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/linear/queue",
+              "path": "/documentation/docs/software-architecture/data-structures/linear/queue",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/linear/stack",
               "path": "/documentation/docs/software-architecture/data-structures/linear/stack",
               "sidebar": "softwareArchitectureSidebar"
