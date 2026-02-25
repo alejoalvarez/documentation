@@ -209,7 +209,11 @@ function render(highlight = -1) {
   });
 
   document.getElementById("stats").innerText = "Size: " + size + " | Capacity: " + capacity;
-  document.getElementById("math").innerText = "Add: O(1) amortized | Resize: O(n) | Search: O(n)";
+  document.getElementById("math").innerText = "Add: O(1) -> Most of the time it is instantaneous; only rarely is it O(n) when the structure needs to be enlarged.";
+  document.getElementById("math").innerText+="\nAccess by index:O(1) -> It remains just as fast as a normal array.";
+  document.getElementById("math").innerText+="\nResize: O(n) -> When the structure needs to be enlarged, it must copy all the elements to a new, larger array.";
+  document.getElementById("math").innerText+="\nSearch: O(n) -> In the worst case, you must check each item.";
+  document.getElementById("math").innerText+="\nDeletion: O(n) -> If you remove one, you must “move” the spaces to close the gap.";
 }
 
 function resize() {

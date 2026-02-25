@@ -276,6 +276,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/linear/linked-list",
+              "path": "/documentation/docs/software-architecture/data-structures/linear/linked-list",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/non-linear/binary-search-tree",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-search-tree",
               "sidebar": "softwareArchitectureSidebar"
