@@ -27,8 +27,8 @@ Un AI Engineer implementa, optimiza y despliega modelos de inteligencia artifici
 
 ## Por dónde empezar
 
-Si vienes de cero en programación → empieza por [Python Avanzado](./python-avanzado).
+Si vienes de cero en programación → empieza por [Python Avanzado](/docs/ai-engineer/python-avanzado).
 
-Si ya sabes programar → ve directo a [ML Clásico](./ml-clasico).
+Si ya sabes programar → ve directo a [ML Clásico](/docs/ai-engineer/ml-clasico).
 
-Si ya conoces ML → salta a [LLMs y Transformers](./llms-transformers).
+Si ya conoces ML → salta a [LLMs y Transformers](/docs/ai-engineer/llms-transformers).

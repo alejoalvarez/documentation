@@ -27,4 +27,4 @@ A diferencia del AI Engineer (que implementa), el Architect **diseña el sistema
 
 ## Punto de partida recomendado
 
-Empieza por [Clean Architecture](./clean-architecture) — es el fundamento que unifica todo lo demás.
+Empieza por [Clean Architecture](/docs/ai-architect/clean-architecture) — es el fundamento que unifica todo lo demás.

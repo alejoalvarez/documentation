@@ -60,6 +60,10 @@ export default {
             {
               "to": "/docs/ai-architect/",
               "label": "🏗️ AI Architect"
+            },
+            {
+              "to": "/docs/software-architecture/",
+              "label": "🧱 Software Architect"
             }
           ]
         },
@@ -123,6 +127,27 @@ export default {
             {
               "label": "AI Governance",
               "to": "/docs/ai-architect/ai-governance"
+            }
+          ]
+        },
+        {
+          "title": "Software Architect",
+          "items": [
+            {
+              "label": "System Design",
+              "to": "/docs/software-architecture/system-design-principles"
+            },
+            {
+              "label": "Patterns",
+              "to": "/docs/software-architecture/architectural-patterns"
+            },
+            {
+              "label": "DDD",
+              "to": "/docs/software-architecture/domain-driven-design"
+            },
+            {
+              "label": "Scalability",
+              "to": "/docs/software-architecture/scalability-reliability"
             }
           ]
         },

@@ -244,6 +244,106 @@
               "id": "referencias2/tools-stack2",
               "path": "/documentation/docs/referencias2/tools-stack2",
               "sidebar": "references2Sidebar"
+            },
+            {
+              "id": "software-architecture/api-integration",
+              "path": "/documentation/docs/software-architecture/api-integration",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/architectural-patterns",
+              "path": "/documentation/docs/software-architecture/architectural-patterns",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-consistency",
+              "path": "/documentation/docs/software-architecture/data-consistency",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/index",
+              "path": "/documentation/docs/software-architecture/data-structures/",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/linear/array",
+              "path": "/documentation/docs/software-architecture/data-structures/linear/array",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/linear/array-list",
+              "path": "/documentation/docs/software-architecture/data-structures/linear/array-list",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/non-linear/binary-search-tree",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-search-tree",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/non-linear/binary-tree",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-tree",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/delivery-governance",
+              "path": "/documentation/docs/software-architecture/delivery-governance",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/domain-driven-design",
+              "path": "/documentation/docs/software-architecture/domain-driven-design",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/index",
+              "path": "/documentation/docs/software-architecture",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/paradigms-and-fundamental-principles/functional-programming",
+              "path": "/documentation/docs/software-architecture/paradigms-and-fundamental-principles/functional-programming",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/paradigms-and-fundamental-principles/hybrid-paradigms",
+              "path": "/documentation/docs/software-architecture/paradigms-and-fundamental-principles/hybrid-paradigms",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/paradigms-and-fundamental-principles/object-oriented-programming-oop",
+              "path": "/documentation/docs/software-architecture/paradigms-and-fundamental-principles/object-oriented-programming-oop",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/paradigms-and-fundamental-principles/reactive-programming",
+              "path": "/documentation/docs/software-architecture/paradigms-and-fundamental-principles/reactive-programming",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/programming",
+              "path": "/documentation/docs/software-architecture/programming",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/references",
+              "path": "/documentation/docs/software-architecture/references",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/scalability-reliability",
+              "path": "/documentation/docs/software-architecture/scalability-reliability",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/security-resilience",
+              "path": "/documentation/docs/software-architecture/security-resilience",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/system-design-principles",
+              "path": "/documentation/docs/software-architecture/system-design-principles",
+              "sidebar": "softwareArchitectureSidebar"
             }
           ],
           "draftIds": [],
@@ -258,6 +358,12 @@
               "link": {
                 "path": "/documentation/docs/ai-architect",
                 "label": "🏗️ Introduction"
+              }
+            },
+            "softwareArchitectureSidebar": {
+              "link": {
+                "path": "/documentation/docs/software-architecture",
+                "label": "🧱 Introduction"
               }
             },
             "referencesSidebar": {

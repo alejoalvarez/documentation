@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Bubble Sort Pro MAX</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+body{
+  margin:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:'Fira Code',monospace;
+}
+
+.reel{
+  width:380px;
+  height:700px;
+  background:#000;
+  box-shadow:0 0 40px #00ffff;
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+
+.title{
+  text-align:center;
+  color:#00ffff;
+  text-shadow:0 0 15px #00ffff;
+}
+
+.array{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  height:220px;
+}
+
+.bar{
+  width:40px;
+  background:#ff00ff;
+  color:white;
+  text-align:center;
+  transition:all .4s ease;
+  box-shadow:0 0 15px #ff00ff;
+  position:relative;
+}
+
+.active{
+  background:#00ffff!important;
+  box-shadow:0 0 25px #00ffff!important;
+}
+
+.sorted{
+  background:#00ff00!important;
+  box-shadow:0 0 25px #00ff00!important;
+}
+
+.loopI::after{
+  content:"i";
+  position:absolute;
+  top:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  color:#ff9900;
+}
+
+.loopJ::before{
+  content:"j";
+  position:absolute;
+  bottom:-20px;
+  left:50%;
+  transform:translateX(-50%);
+  color:#ffffff;
+}
+
+.info, .stats, .math{
+  text-align:center;
+  font-size:13px;
+  color:white;
+}
+
+.stats{ color:#ff9900; }
+.math{ color:#00ffcc; }
+
+.controls{
+  display:flex;
+  justify-content:space-between;
+}
+
+button{
+  flex:1;
+  margin:5px;
+  padding:8px;
+  background:black;
+  color:#00ffff;
+  border:2px solid #00ffff;
+  cursor:pointer;
+  font-weight:bold;
+}
+
+button:hover{
+  background:#00ffff;
+  color:black;
+}
+
+.hidden{ visibility:hidden; }
+
+input{
+  width:100%;
+  margin-bottom:10px;
+  padding:6px;
+  background:black;
+  border:1px solid #00ffff;
+  color:#00ffff;
+}
+</style>
+</head>
+<body>
+
+<div class="reel">
+
+<div class="title">Bubble Sort — Pro Visualization</div>
+
+<input id="arrayInput" value="5,1,4,2,8" />
+
+<div class="array" id="array"></div>
+
+<div class="info" id="info"></div>
+<div class="stats" id="stats"></div>
+<div class="math" id="math"></div>
+
+<div class="controls">
+<button id="prevBtn" onclick="prevStep()">⏮</button>
+<button onclick="playFromStart()">▶ Play</button>
+<button id="nextBtn" onclick="nextStep()">⏭</button>
+</div>
+
+</div>
+
+<script>
+let steps=[];
+let currentStep=0;
+let interval=null;
+let totalComparisons=0;
+let totalSwaps=0;
+
+const arrayContainer=document.getElementById("array");
+const info=document.getElementById("info");
+const stats=document.getElementById("stats");
+const math=document.getElementById("math");
+const prevBtn=document.getElementById("prevBtn");
+const nextBtn=document.getElementById("nextBtn");
+
+function playClick(){
+  const ctx=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctx.createOscillator();
+  const gain=ctx.createGain();
+  osc.type="square";
+  osc.frequency.value=800;
+  gain.gain.value=0.1;
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime+0.05);
+}
+
+function victorySound(){
+  const ctx = new (window.AudioContext || window.webkitAudioContext)();
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = "triangle";
+  osc.frequency.setValueAtTime(400, ctx.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(1200, ctx.currentTime + 0.4);
+
+  gain.gain.setValueAtTime(0.15, ctx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+
+  osc.start();
+  osc.stop(ctx.currentTime + 0.5);
+}
+
+function generateSteps(arr){
+  let a=[...arr];
+  let temp=[];
+  let comparisons=0;
+  let swaps=0;
+
+  for(let i=0;i<a.length;i++){
+    let swapped=false;
+    for(let j=0;j<a.length-i-1;j++){
+
+      comparisons++;
+
+      temp.push({
+        array:[...a],
+        i,j,
+        active:[j,j+1],
+        sortedFrom:a.length-i,
+        text:`Comparando ${a[j]} y ${a[j+1]}`,
+        comparisons,
+        swaps
+      });
+
+      if(a[j]>a[j+1]){
+        [a[j],a[j+1]]=[a[j+1],a[j]];
+        swaps++;
+        swapped=true;
+
+        temp.push({
+          array:[...a],
+          i,j,
+          active:[j,j+1],
+          sortedFrom:a.length-i,
+          text:`Intercambio realizado`,
+          comparisons,
+          swaps
+        });
+      }
+    }
+
+    if(!swapped) break;
+  }
+
+  totalComparisons=arr.length*(arr.length-1)/2;
+  totalSwaps=swaps;
+
+  temp.push({
+    array:[...a],
+    active:[],
+    sortedFrom:0,
+    text:"Array completamente ordenado",
+    comparisons,
+    swaps
+  });
+
+  return temp;
+}
+
+function render(step){
+  arrayContainer.innerHTML="";
+
+  step.array.forEach((v,index)=>{
+    const bar=document.createElement("div");
+    bar.className="bar";
+    bar.style.height=v*25+"px";
+    bar.textContent=v;
+
+    if(step.active.includes(index)) bar.classList.add("active");
+    if(index>=step.sortedFrom) bar.classList.add("sorted");
+    if(index===step.i) bar.classList.add("loopI");
+    if(index===step.j) bar.classList.add("loopJ");
+
+    arrayContainer.appendChild(bar);
+  });
+
+  info.textContent=step.text;
+  stats.textContent=`Comparaciones: ${step.comparisons} | Swaps: ${step.swaps}`;
+  math.textContent=`Teórico: n(n-1)/2 = ${totalComparisons}  |  Complejidad: O(n²)`;
+
+  playClick();
+  if(currentStep === steps.length - 1){
+    victorySound();
+  }
+  updateButtons();
+}
+
+function updateButtons(){
+  prevBtn.classList.toggle("hidden",currentStep===0);
+  nextBtn.classList.toggle("hidden",currentStep===steps.length-1);
+}
+
+function nextStep(){
+  if(currentStep<steps.length-1){
+    currentStep++;
+    render(steps[currentStep]);
+  }
+}
+
+function prevStep(){
+  if(currentStep>0){
+    currentStep--;
+    render(steps[currentStep]);
+  }
+}
+
+function playFromStart(){
+  clearInterval(interval);
+  currentStep=0;
+  render(steps[currentStep]);
+
+  interval=setInterval(()=>{
+    if(currentStep<steps.length-1){
+      nextStep();
+    }else{
+      clearInterval(interval);
+    }
+  },900);
+}
+
+function init(){
+  clearInterval(interval);
+  let input=document.getElementById("arrayInput").value;
+  let arr=input.split(",").map(Number);
+  steps=generateSteps(arr);
+  currentStep=0;
+  render(steps[currentStep]);
+}
+
+document.getElementById("arrayInput").addEventListener("change",init);
+
+init();
+</script>
+
+</body>
+</html>
