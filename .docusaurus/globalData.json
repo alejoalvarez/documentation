@@ -296,6 +296,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/non-linear/AVL-tree",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/AVL-tree",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/non-linear/binary-search-tree",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-search-tree",
               "sidebar": "softwareArchitectureSidebar"
