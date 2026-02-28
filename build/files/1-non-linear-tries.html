@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Trie Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 1060px;
+      align-self: center;
+    }
+
+    button,
+    input {
+      padding: 6px 10px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: var(--neon-cyan);
+      color: #031018;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .form-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stats {
+      color: var(--neon-amber);
+    }
+
+    .math {
+      color: var(--neon-lime);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Trie (Prefix Tree) Visualizer</h2>
+
+    <div class="form-rows">
+      <div class="row">
+        <div class="input-group">
+          <input id="wordsInput" value="cat,car,cart,dog,dot" style="width: 250px;"
+            placeholder="Words (e.g. cat,car,dog)" />
+          <button onclick="init()">Build Trie</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-group">
+          <input id="searchInput" placeholder="Search word..." />
+          <button onclick="startSearch()">Search</button>
+        </div>
+        <div class="input-group">
+          <input id="deleteInput" placeholder="Delete word..." />
+          <button onclick="startDelete()">Delete</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="controls">
+          <button onclick="prevStep()">⏮ Previous</button>
+          <button onclick="playFromStart()">▶ Play Build</button>
+          <button onclick="nextStep()">Next ⏭</button>
+        </div>
+      </div>
+    </div>
+
+    <canvas id="trieCanvas" width="1060" height="500"></canvas>
+
+    <div class="stats" id="stats"></div>
+    <div class="math" id="math"></div>
+    <div class="operation-box info" id="message">Visualizer initialized.</div>
+
+  </div>
+
+  <script>
+    class TrieNode {
+      constructor(char = "") {
+        this.char = char;
+        this.children = {};
+        this.isEnd = false;
+      }
+    }
+
+    let root = new TrieNode();
+    let steps = [];
+    let currentStep = 0;
+    let interval = null;
+    let totalWords = 0;
+
+    const canvas = document.getElementById("trieCanvas");
+    const ctx = canvas.getContext("2d");
+    const stats = document.getElementById("stats");
+    const math = document.getElementById("math");
+
+    function cloneNode(node) {
+      let newNode = new TrieNode(node.char);
+      newNode.isEnd = node.isEnd;
+      for (let c in node.children) {
+        newNode.children[c] = cloneNode(node.children[c]);
+      }
+      return newNode;
+    }
+
+    function insert(word) {
+      let node = root;
+      for (let char of word) {
+        if (!node.children[char]) {
+          node.children[char] = new TrieNode(char);
+        }
+        node = node.children[char];
+      }
+      if (!node.isEnd) {
+        node.isEnd = true;
+        totalWords++;
+      }
+    }
+
+    function deleteWord(node, word, index = 0) {
+      if (index === word.length) {
+        if (!node.isEnd) return false;
+        node.isEnd = false;
+        totalWords--;
+        return Object.keys(node.children).length === 0;
+      }
+
+      let char = word[index];
+      if (!node.children[char]) return false;
+
+      let shouldDelete = deleteWord(node.children[char], word, index + 1);
+
+      if (shouldDelete) {
+        delete node.children[char];
+        return Object.keys(node.children).length === 0 && !node.isEnd;
+      }
+
+      return false;
+    }
+
+    function generateSteps(words) {
+      root = new TrieNode();
+      steps = [];
+      totalWords = 0;
+
+      words.forEach(w => {
+        insert(w);
+        steps.push(cloneNode(root));
+      });
+    }
+
+    function height(node) {
+      if (!node) return 0;
+      let max = 0;
+      for (let c in node.children) {
+        max = Math.max(max, height(node.children[c]));
+      }
+      return 1 + max;
+    }
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function drawNode(node, x, y, levelWidth, highlightPath = []) {
+      let keys = Object.keys(node.children);
+      let numChildren = keys.length;
+
+      if (numChildren > 0) {
+        let startX = x - levelWidth / 2;
+        let childAlloc = levelWidth / numChildren;
+
+        keys.forEach((k, i) => {
+          let child = node.children[k];
+          let childX = startX + childAlloc / 2 + i * childAlloc;
+
+          ctx.beginPath();
+          ctx.moveTo(x, y + 20);
+          ctx.lineTo(childX, y + 90 - 20);
+          if (highlightPath.includes(child)) {
+            ctx.strokeStyle = "rgba(0, 229, 255, 1)";
+            ctx.lineWidth = 3;
+          } else {
+            ctx.strokeStyle = "rgba(0, 229, 255, 0.4)";
+            ctx.lineWidth = 2;
+          }
+          ctx.stroke();
+
+          drawNode(child, childX, y + 90, childAlloc * 0.9, highlightPath);
+        });
+      }
+
+      ctx.beginPath();
+      ctx.arc(x, y, 20, 0, 2 * Math.PI);
+
+      if (highlightPath.includes(node)) {
+        ctx.fillStyle = "rgba(0, 229, 255, 0.2)";
+        ctx.strokeStyle = "#00e5ff";
+      } else if (node.isEnd) {
+        ctx.fillStyle = "rgba(255, 79, 216, 0.15)";
+        ctx.strokeStyle = "#ff4fd8";
+      } else {
+        ctx.fillStyle = "rgba(0, 229, 255, 0.05)";
+        ctx.strokeStyle = "rgba(0, 229, 255, 0.5)";
+      }
+
+      ctx.lineWidth = 2;
+      ctx.fill();
+      ctx.stroke();
+
+      ctx.fillStyle = "#e9f5ff";
+      ctx.textAlign = "center";
+      ctx.textBaseline = "middle";
+      ctx.font = "bold 16px 'Fira Code'";
+      ctx.fillText(node.char || "R", x, y);
+    }
+
+    function render(step, stepIndex, highlightPath = [], customMsg = "") {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (step) {
+        let spread = canvas.width * 0.95;
+        drawNode(step, canvas.width / 2, 40, spread, highlightPath);
+
+        stats.textContent = "Current Height: " + height(step) + " | Words Stored: " + totalWords;
+        math.textContent = "Search/Insert/Delete Complexity: O(L) (L = word length)";
+
+        if (customMsg) {
+          setMessage(customMsg, "info");
+        } else if (stepIndex !== undefined) {
+          setMessage("Showing build step " + (stepIndex + 1) + " of " + steps.length, "info");
+        }
+      } else {
+        stats.textContent = "Current Height: 0 | Words Stored: 0";
+        math.textContent = "Search/Insert/Delete Complexity: O(L) (L = word length)";
+      }
+      clickSound();
+    }
+
+    function clickSound() {
+      const ctxA = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxA.createOscillator();
+      const gain = ctxA.createGain();
+      osc.frequency.value = 950;
+      gain.gain.value = 0.1;
+      osc.connect(gain);
+      gain.connect(ctxA.destination);
+      osc.start();
+      osc.stop(ctxA.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const ctxA = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxA.createOscillator();
+      const gain = ctxA.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(400, ctxA.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctxA.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, ctxA.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctxA.currentTime + 0.6);
+      osc.connect(gain);
+      gain.connect(ctxA.destination);
+      osc.start();
+      osc.stop(ctxA.currentTime + 0.6);
+    }
+
+    function nextStep() {
+      clearInterval(interval);
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        render(steps[currentStep], currentStep);
+        if (currentStep === steps.length - 1) victorySound();
+      }
+    }
+
+    function prevStep() {
+      clearInterval(interval);
+      if (currentStep > 0) {
+        currentStep--;
+        render(steps[currentStep], currentStep);
+      }
+    }
+
+    function playFromStart() {
+      clearInterval(interval);
+      currentStep = 0;
+      if (steps.length > 0) render(steps[currentStep], currentStep);
+      interval = setInterval(() => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          render(steps[currentStep], currentStep);
+        } else {
+          clearInterval(interval);
+          setMessage("Build animation completed.", "success");
+          victorySound();
+        }
+      }, 1000);
+    }
+
+    function startSearch() {
+      clearInterval(interval);
+      let word = document.getElementById("searchInput").value.trim();
+      if (!word) {
+        setMessage("Please enter a word to search.", "error");
+        return;
+      }
+
+      let node = root;
+      let path = [root];
+
+      for (let char of word) {
+        if (!node.children[char]) break;
+        node = node.children[char];
+        path.push(node);
+      }
+
+      let i = 0;
+      interval = setInterval(() => {
+        if (i < path.length) {
+          render(root, undefined, path.slice(0, i + 1), "Searching... Checking '" + word.slice(0, i) + "'");
+          i++;
+        } else {
+          clearInterval(interval);
+          let foundNode = path[path.length - 1];
+          if (foundNode && foundNode.char === word[word.length - 1] && foundNode.isEnd) {
+            setMessage("Word '" + word + "' found!", "success");
+            victorySound();
+          } else {
+            setMessage("Word '" + word + "' not found.", "error");
+          }
+        }
+      }, 800);
+    }
+
+    function startDelete() {
+      clearInterval(interval);
+      let word = document.getElementById("deleteInput").value.trim();
+      if (!word) {
+        setMessage("Please enter a word to delete.", "error");
+        return;
+      }
+
+      // Basic check if it exists first
+      let tempNode = root;
+      let exists = true;
+      for (let char of word) {
+        if (!tempNode.children[char]) {
+          exists = false;
+          break;
+        }
+        tempNode = tempNode.children[char];
+      }
+      if (!exists || !tempNode.isEnd) {
+        setMessage("Word '" + word + "' not found, cannot delete.", "error");
+        return;
+      }
+
+      deleteWord(root, word);
+
+      // Update steps sequentially
+      let words = document.getElementById("wordsInput").value.split(",").map(v => v.trim()).filter(v => v);
+      let index = words.indexOf(word);
+      if (index !== -1) {
+        words.splice(index, 1);
+        document.getElementById("wordsInput").value = words.join(",");
+      }
+      // Regenerate steps
+      generateSteps(words);
+      currentStep = steps.length > 0 ? steps.length - 1 : 0;
+
+      render(root, undefined, [], "Word '" + word + "' deleted successfully.");
+      victorySound();
+    }
+
+    function init() {
+      clearInterval(interval);
+      const valStr = document.getElementById("wordsInput").value;
+      if (!valStr.trim()) {
+        setMessage("Please enter comma separated words.", "error");
+        return;
+      }
+      let words = valStr.split(",").map(v => v.trim()).filter(v => v);
+      if (words.length === 0) {
+        setMessage("No valid words found.", "error");
+        return;
+      }
+      generateSteps(words);
+      currentStep = steps.length > 0 ? steps.length - 1 : 0;
+      if (steps.length > 0) {
+        render(steps[currentStep], currentStep);
+        setMessage("Trie built with " + words.length + " words.", "success");
+        victorySound();
+      } else {
+        render(root, currentStep);
+      }
+    }
+
+    // Initial render
+    let initialValues = document.getElementById("wordsInput").value.split(",").map(v => v.trim()).filter(v => v);
+    if (initialValues.length > 0) {
+      generateSteps(initialValues);
+      currentStep = steps.length > 0 ? steps.length - 1 : 0;
+      render(steps[currentStep], currentStep);
+      setMessage("Trie visualizer initialized.", "info");
+    } else {
+      render(root, currentStep);
+      setMessage("Trie visualizer initialized.", "info");
+    }
+  </script>
+
+</body>
+
+</html>

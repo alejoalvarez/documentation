@@ -316,6 +316,16 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/non-linear/graph-adjacency-list",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/graph-adjacency-list",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/non-linear/heaps",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/heaps",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/non-linear/red-black-trees",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/red-black-trees",
               "sidebar": "softwareArchitectureSidebar"
