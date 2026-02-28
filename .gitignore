@@ -41,3 +41,5 @@ docs/
 .docusaurus/
 ci
 tsconfig.tsbuildinfo
+
+build/

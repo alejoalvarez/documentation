@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Graph Traversal - BFS & DFS Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 1060px;
+      align-self: center;
+    }
+
+    button,
+    input,
+    select {
+      padding: 6px 10px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: var(--neon-cyan);
+      color: #031018;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stats {
+      color: var(--neon-amber);
+      margin-bottom: 5px;
+    }
+
+    .order {
+      color: var(--neon-lime);
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .math {
+      color: var(--neon-lime);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Graph Traversal - BFS & DFS Visualizer</h2>
+
+    <div class="row">
+      <div class="controls">
+        <button onclick="startBFS()">Start BFS</button>
+        <button onclick="startDFS()">Start DFS</button>
+        <button onclick="resetGraph()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Reset
+          Graph</button>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="1060" height="420"></canvas>
+
+    <div class="stats">
+      Traversal Order: <span class="order" id="order"></span>
+    </div>
+    <div class="math" id="math">Complexity: Space/Time -> O(|V| + |E|)</div>
+
+    <div class="operation-box info" id="message">Visualizer initialized. Choose BFS or DFS to begin traversal from Node
+      A.</div>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const nodes = {
+      A: { x: 530, y: 60 },
+      B: { x: 265, y: 180 },
+      C: { x: 795, y: 180 },
+      D: { x: 160, y: 300 },
+      E: { x: 370, y: 300 },
+      F: { x: 690, y: 300 },
+      G: { x: 900, y: 300 }
+    };
+
+    const graph = {
+      A: ["B", "C"],
+      B: ["A", "D", "E"],
+      C: ["A", "F", "G"],
+      D: ["B"],
+      E: ["B"],
+      F: ["C"],
+      G: ["C"]
+    };
+
+    let visited = {};
+    let traversalOrder = [];
+    let interval = null;
+    let processingQueue = [];
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function drawGraph(highlightNode = null, evaluatingQueue = false) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Edges
+      ctx.lineWidth = 2;
+      let drawnUndirected = new Set();
+
+      for (let node in graph) {
+        graph[node].forEach(nei => {
+          let edgeHash = [node, nei].sort().join("-");
+          if (drawnUndirected.has(edgeHash)) return;
+          drawnUndirected.add(edgeHash);
+
+          ctx.beginPath();
+          ctx.moveTo(nodes[node].x, nodes[node].y);
+          ctx.lineTo(nodes[nei].x, nodes[nei].y);
+
+          // Highlight edge if traversal occurred
+          if (visited[node] && visited[nei]) {
+            ctx.strokeStyle = "rgba(0, 229, 255, 0.4)";
+          } else {
+            ctx.strokeStyle = "rgba(255, 255, 255, 0.1)";
+          }
+          ctx.stroke();
+        });
+      }
+
+      // Draw Nodes
+      for (let node in nodes) {
+        ctx.beginPath();
+        ctx.arc(nodes[node].x, nodes[node].y, 22, 0, 2 * Math.PI);
+
+        // Style based on state
+        if (node === highlightNode) {
+          ctx.fillStyle = "rgba(255, 79, 216, 0.15)";
+          ctx.strokeStyle = "#ff4fd8";
+        } else if (visited[node]) {
+          ctx.fillStyle = "rgba(0, 229, 255, 0.15)";
+          ctx.strokeStyle = "#00e5ff";
+        } else {
+          ctx.fillStyle = "rgba(5, 8, 18, 0.8)";
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        }
+
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#e9f5ff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 16px 'Fira Code'";
+        ctx.fillText(node, nodes[node].x, nodes[node].y);
+      }
+    }
+
+    function resetGraph() {
+      visited = {};
+      traversalOrder = [];
+      processingQueue = [];
+      document.getElementById("order").innerText = "";
+      clearInterval(interval);
+      drawGraph();
+      setMessage("Graph state reset.", "info");
+    }
+
+    function startBFS() {
+      resetGraph();
+      let queue = ["A"];
+      visited["A"] = true;
+
+      setMessage("Starting Breadth First Search (BFS)...", "info");
+
+      interval = setInterval(() => {
+        if (queue.length === 0) {
+          clearInterval(interval);
+          setMessage("BFS traversal completed successfully.", "success");
+          drawGraph();
+          victorySound();
+          return;
+        }
+
+        let node = queue.shift();
+        traversalOrder.push(node);
+        document.getElementById("order").innerText = traversalOrder.join(" → ");
+
+        setMessage(`Visiting Node '${node}' (Neighbors added to Queue)`, "info");
+        drawGraph(node);
+        clickSound();
+
+        graph[node].forEach(nei => {
+          if (!visited[nei]) {
+            visited[nei] = true;
+            queue.push(nei);
+          }
+        });
+      }, 800);
+    }
+
+    function startDFS() {
+      resetGraph();
+      let stack = ["A"];
+      // For DFS visual, we normally don't mark visited until popped
+      let dfsVisited = {};
+
+      setMessage("Starting Depth First Search (DFS)...", "info");
+
+      interval = setInterval(() => {
+        if (stack.length === 0) {
+          clearInterval(interval);
+          setMessage("DFS traversal completed successfully.", "success");
+          drawGraph();
+          victorySound();
+          return;
+        }
+
+        let node = stack.pop();
+        if (!dfsVisited[node]) {
+          dfsVisited[node] = true;
+          visited[node] = true; // update master visited map for painting
+          traversalOrder.push(node);
+          document.getElementById("order").innerText = traversalOrder.join(" → ");
+
+          setMessage(`Exploring deep into Node '${node}' (Added to Stack)`, "info");
+          drawGraph(node);
+          clickSound();
+
+          // Push all neighbors not visited
+          graph[node].slice().reverse().forEach(nei => {
+            if (!dfsVisited[nei]) {
+              stack.push(nei);
+            }
+          });
+        } else {
+          // Small fast forward when popping already visited nodes
+          drawGraph();
+        }
+      }, 800);
+    }
+
+    function clickSound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.frequency.value = 900;
+      gain.gain.value = 0.1;
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(400, ctxAudio.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1400, ctxAudio.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, ctxAudio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctxAudio.currentTime + 0.6);
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.6);
+    }
+
+    drawGraph();
+
+  </script>
+
+</body>
+
+</html>
