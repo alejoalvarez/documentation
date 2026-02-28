@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Graph - Adjacency Matrix Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    .main-content {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .canvas-container {
+      flex: 1 1 500px;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 1060px;
+      display: block;
+    }
+
+    .matrix-container {
+      flex: 1 1 350px;
+      background: rgba(5, 8, 18, 0.6);
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 10px;
+      padding: 15px;
+      max-height: 400px;
+      overflow: auto;
+    }
+
+    .matrix-title {
+      color: var(--neon-pink);
+      margin-top: 0;
+      margin-bottom: 10px;
+      font-size: 16px;
+      border-bottom: 1px dashed var(--neon-cyan-soft);
+      padding-bottom: 5px;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin-top: 10px;
+      width: auto;
+    }
+
+    td,
+    th {
+      border: 1px solid rgba(0, 229, 255, 0.3);
+      padding: 8px 12px;
+      text-align: center;
+      min-width: 30px;
+      transition: all 0.3s ease;
+    }
+
+    th {
+      color: var(--neon-cyan);
+      background: rgba(0, 229, 255, 0.05);
+    }
+
+    td.active-edge {
+      color: #000;
+      background: var(--neon-pink);
+      box-shadow: 0 0 10px var(--neon-pink);
+      font-weight: bold;
+    }
+
+    td.inactive-edge {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    button,
+    input,
+    select {
+      padding: 6px 10px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: var(--neon-cyan);
+      color: #031018;
+      cursor: pointer;
+    }
+
+    select option {
+      background: var(--panel);
+    }
+
+    .form-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .input-group {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .stats {
+      color: var(--neon-amber);
+      margin-bottom: 5px;
+    }
+
+    .math {
+      color: var(--neon-lime);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Graph - Adjacency Matrix Visualizer</h2>
+
+    <div class="form-rows">
+      <div class="row">
+        <div class="input-group">
+          <select id="graphType" onchange="resetGraph()">
+            <option value="undirected">Undirected Fast</option>
+            <option value="directed">Directed</option>
+          </select>
+          <button onclick="loadSample()">Load Sample</button>
+          <button onclick="resetGraph()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Clear
+            Graph</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-group">
+          <input id="nodeInput" placeholder="Node Name (e.g. A)" style="width: 160px;" />
+          <button onclick="addNodeBtn()">Add Node</button>
+          <button onclick="removeNodeBtn()">Remove Node</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-group">
+          <input id="edgeFrom" placeholder="From Node" style="width: 120px;" />
+          <input id="edgeTo" placeholder="To Node" style="width: 120px;" />
+          <button onclick="addEdgeBtn()">Add Edge</button>
+          <button onclick="removeEdgeBtn()">Remove Edge</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="main-content">
+      <div class="canvas-container">
+        <canvas id="graphCanvas" width="600" height="400"></canvas>
+      </div>
+      <div class="matrix-container" id="matrixContainerWrapper">
+        <h3 class="matrix-title">Adjacency Matrix</h3>
+        <div id="matrixWrapper"></div>
+      </div>
+    </div>
+
+    <div class="stats" id="stats"></div>
+    <div class="math" id="math"></div>
+    <div class="operation-box info" id="message">Visualizer initialized. Use the controls above to build the graph.
+    </div>
+
+  </div>
+
+  <script>
+    let nodes = [];
+    let matrix = [];
+    let edgesCount = 0;
+    let isDirected = false;
+
+    const canvas = document.getElementById("graphCanvas");
+    const ctx = canvas.getContext("2d");
+    const stats = document.getElementById("stats");
+    const math = document.getElementById("math");
+    const matrixWrapper = document.getElementById("matrixWrapper");
+
+    // Utility to draw arrow head for directed graphs
+    function drawArrowhead(ctx, fromX, fromY, toX, toY, radius) {
+      const headlen = 12; // length of head in pixels
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const angle = Math.atan2(dy, dx);
+
+      // Adjust target point to be at the border of the circle, not the center
+      const targetX = toX - radius * Math.cos(angle);
+      const targetY = toY - radius * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(targetX, targetY);
+      ctx.lineTo(targetX - headlen * Math.cos(angle - Math.PI / 6), targetY - headlen * Math.sin(angle - Math.PI / 6));
+      ctx.moveTo(targetX, targetY);
+      ctx.lineTo(targetX - headlen * Math.cos(angle + Math.PI / 6), targetY - headlen * Math.sin(angle + Math.PI / 6));
+      ctx.stroke();
+    }
+
+    function updateGraphStats() {
+      isDirected = document.getElementById("graphType").value === "directed";
+      let edgePairs = 0;
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = 0; j < nodes.length; j++) {
+          if (matrix[i][j] === 1) edgePairs++;
+        }
+      }
+      edgesCount = isDirected ? edgePairs : edgePairs / 2;
+
+      stats.textContent = `Vertices (|V|): ${nodes.length} | Edges (|E|): ${edgesCount} | Type: ${isDirected ? 'Directed' : 'Undirected'}`;
+      math.textContent = "Space Complexity: O(|V|²)\nAdd Node: O(|V|²) (reallocating matrix) | Add/Check Edge: O(1)";
+    }
+
+    function drawGraph() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Calculate circular layout positions
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
+      const radius = Math.min(centerX, centerY) - 40;
+      const nodeRadius = 18;
+
+      let positions = {};
+      nodes.forEach((node, i) => {
+        const theta = (i / nodes.length) * 2 * Math.PI - Math.PI / 2;
+        positions[node] = {
+          x: centerX + radius * Math.cos(theta),
+          y: centerY + radius * Math.sin(theta)
+        };
+      });
+
+      // Draw Edges
+      ctx.lineWidth = 2;
+      let drawnUndirected = new Set();
+
+      for (let i = 0; i < nodes.length; i++) {
+        for (let j = 0; j < nodes.length; j++) {
+          if (matrix[i][j] === 1) {
+            let u = nodes[i];
+            let v = nodes[j];
+
+            // For undirected, avoid drawing the same line twice
+            if (!isDirected) {
+              let edgeHash = [u, v].sort().join("-");
+              if (drawnUndirected.has(edgeHash)) continue;
+              drawnUndirected.add(edgeHash);
+            }
+
+            ctx.beginPath();
+            ctx.moveTo(positions[u].x, positions[u].y);
+            ctx.lineTo(positions[v].x, positions[v].y);
+            ctx.strokeStyle = "rgba(0, 229, 255, 0.4)";
+            ctx.stroke();
+
+            if (isDirected) {
+              drawArrowhead(ctx, positions[u].x, positions[u].y, positions[v].x, positions[v].y, nodeRadius + 2);
+            }
+          }
+        }
+      }
+
+      // Draw Nodes
+      nodes.forEach(node => {
+        let { x, y } = positions[node];
+        ctx.beginPath();
+        ctx.arc(x, y, nodeRadius, 0, 2 * Math.PI);
+        ctx.fillStyle = "rgba(0, 229, 255, 0.08)";
+        ctx.fill();
+        ctx.strokeStyle = "#00e5ff";
+        ctx.stroke();
+
+        ctx.fillStyle = "#ff4fd8";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 14px 'Fira Code'";
+        ctx.fillText(node, x, y);
+      });
+    }
+
+    function renderMatrix() {
+      matrixWrapper.innerHTML = "";
+
+      if (nodes.length === 0) {
+        let emptyLabel = document.createElement("span");
+        emptyLabel.style.color = "gray";
+        emptyLabel.style.fontSize = "13px";
+        emptyLabel.textContent = "Graph is empty.";
+        matrixWrapper.appendChild(emptyLabel);
+        return;
+      }
+
+      let table = document.createElement("table");
+
+      // Header Row
+      let header = document.createElement("tr");
+      header.appendChild(document.createElement("th")); // empty top-left cell
+      nodes.forEach(n => {
+        let th = document.createElement("th");
+        th.textContent = n;
+        header.appendChild(th);
+      });
+      table.appendChild(header);
+
+      // Matrix Rows
+      nodes.forEach((n, i) => {
+        let row = document.createElement("tr");
+        let th = document.createElement("th");
+        th.textContent = n;
+        row.appendChild(th);
+
+        nodes.forEach((_, j) => {
+          let td = document.createElement("td");
+          td.textContent = matrix[i][j];
+          if (matrix[i][j] === 1) {
+            td.className = "active-edge";
+          } else {
+            td.className = "inactive-edge";
+          }
+          row.appendChild(td);
+        });
+
+        table.appendChild(row);
+      });
+
+      matrixWrapper.appendChild(table);
+    }
+
+    function fullRender() {
+      updateGraphStats();
+      drawGraph();
+      renderMatrix();
+      clickSound();
+    }
+
+    function addNode(n, quiet = false) {
+      if (!n) {
+        if (!quiet) setMessage("Please enter a node name.", "error");
+        return false;
+      }
+      if (nodes.includes(n)) {
+        if (!quiet) setMessage("Node '" + n + "' already exists.", "error");
+        return false;
+      }
+
+      nodes.push(n);
+
+      // Add new column to existing rows
+      matrix.forEach(row => row.push(0));
+
+      // Add new row full of 0s for the new node
+      matrix.push(new Array(nodes.length).fill(0));
+
+      if (!quiet) {
+        fullRender();
+        setMessage("Node '" + n + "' added successfully.", "success");
+        victorySound();
+      }
+      return true;
+    }
+
+    function removeNode(n) {
+      let index = nodes.indexOf(n);
+      if (index === -1) {
+        setMessage("Node '" + n + "' does not exist.", "error");
+        return;
+      }
+
+      // Remove the row
+      matrix.splice(index, 1);
+
+      // Remove the column in remaining rows
+      matrix.forEach(row => row.splice(index, 1));
+
+      // Remove node
+      nodes.splice(index, 1);
+
+      fullRender();
+      setMessage("Node '" + n + "' removed.", "success");
+      victorySound();
+    }
+
+    function addEdge(u, v, quiet = false) {
+      isDirected = document.getElementById("graphType").value === "directed";
+      if (!u || !v) {
+        if (!quiet) setMessage("Please provide both From and To nodes.", "error");
+        return false;
+      }
+
+      let i = nodes.indexOf(u);
+      let j = nodes.indexOf(v);
+
+      if (i === -1) {
+        if (!quiet) setMessage("Node '" + u + "' does not exist.", "error");
+        return false;
+      }
+      if (j === -1) {
+        if (!quiet) setMessage("Node '" + v + "' does not exist.", "error");
+        return false;
+      }
+
+      // Check if edge already exists
+      if (matrix[i][j] === 1) {
+        if (!quiet) setMessage("Edge from '" + u + "' to '" + v + "' already exists.", "info");
+        return false;
+      }
+
+      matrix[i][j] = 1;
+
+      if (!isDirected && u !== v) {
+        matrix[j][i] = 1;
+      }
+
+      if (!quiet) {
+        fullRender();
+        setMessage(`Edge added from '${u}' to '${v}'.`, "success");
+        victorySound();
+      }
+      return true;
+    }
+
+    function removeEdge(u, v) {
+      isDirected = document.getElementById("graphType").value === "directed";
+      if (!u || !v) {
+        setMessage("Please provide both From and To nodes.", "error");
+        return;
+      }
+
+      let i = nodes.indexOf(u);
+      let j = nodes.indexOf(v);
+
+      if (i === -1 || j === -1) {
+        setMessage("One or both nodes do not exist.", "error");
+        return;
+      }
+
+      if (matrix[i][j] === 0) {
+        setMessage("Edge from '" + u + "' to '" + v + "' does not exist.", "info");
+        return;
+      }
+
+      matrix[i][j] = 0;
+
+      if (!isDirected && u !== v) {
+        matrix[j][i] = 0;
+      }
+
+      fullRender();
+      setMessage(`Edge removed from '${u}' to '${v}'.`, "success");
+      victorySound();
+    }
+
+    // Button Wrappers
+    function addNodeBtn() {
+      addNode(document.getElementById("nodeInput").value.trim());
+      document.getElementById("nodeInput").value = "";
+    }
+
+    function removeNodeBtn() {
+      removeNode(document.getElementById("nodeInput").value.trim());
+      document.getElementById("nodeInput").value = "";
+    }
+
+    function addEdgeBtn() {
+      addEdge(
+        document.getElementById("edgeFrom").value.trim(),
+        document.getElementById("edgeTo").value.trim()
+      );
+      document.getElementById("edgeFrom").value = "";
+      document.getElementById("edgeTo").value = "";
+    }
+
+    function removeEdgeBtn() {
+      removeEdge(
+        document.getElementById("edgeFrom").value.trim(),
+        document.getElementById("edgeTo").value.trim()
+      );
+      document.getElementById("edgeFrom").value = "";
+      document.getElementById("edgeTo").value = "";
+    }
+
+    function resetGraph() {
+      nodes = [];
+      matrix = [];
+      isDirected = document.getElementById("graphType").value === "directed";
+      fullRender();
+      setMessage("Graph cleared and mode updated to: " + (isDirected ? "Directed" : "Undirected Fast"), "info");
+    }
+
+    function loadSample() {
+      resetGraph();
+      let sampleNodes = ["A", "B", "C", "D", "E"];
+      sampleNodes.forEach(n => addNode(n, true));
+
+      let sampleEdges = [
+        ["A", "B"], ["A", "C"],
+        ["B", "D"], ["C", "D"],
+        ["D", "E"]
+      ];
+
+      // If directed, add a cycle
+      if (document.getElementById("graphType").value === "directed") {
+        sampleEdges.push(["E", "A"]);
+      }
+
+      sampleEdges.forEach(e => addEdge(e[0], e[1], true));
+
+      fullRender();
+      setMessage("Sample graph loaded successfully.", "success");
+      victorySound();
+    }
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function clickSound() {
+      const ctxA = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxA.createOscillator();
+      const gain = ctxA.createGain();
+      osc.frequency.value = 900;
+      gain.gain.value = 0.1;
+      osc.connect(gain);
+      gain.connect(ctxA.destination);
+      osc.start();
+      osc.stop(ctxA.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const ctxA = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxA.createOscillator();
+      const gain = ctxA.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(400, ctxA.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1200, ctxA.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, ctxA.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctxA.currentTime + 0.6);
+      osc.connect(gain);
+      gain.connect(ctxA.destination);
+      osc.start();
+      osc.stop(ctxA.currentTime + 0.6);
+    }
+
+    // Init empty rendering
+    fullRender();
+
+  </script>
+
+</body>
+
+</html>

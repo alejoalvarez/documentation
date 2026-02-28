@@ -321,6 +321,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/non-linear/graph-adjacency-matrix",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/graph-adjacency-matrix",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/non-linear/heaps",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/heaps",
               "sidebar": "softwareArchitectureSidebar"
