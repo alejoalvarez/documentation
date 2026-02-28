@@ -321,6 +321,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/non-linear/tries",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/tries",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/delivery-governance",
               "path": "/documentation/docs/software-architecture/delivery-governance",
               "sidebar": "softwareArchitectureSidebar"
