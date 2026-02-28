@@ -301,6 +301,11 @@
               "sidebar": "softwareArchitectureSidebar"
             },
             {
+              "id": "software-architecture/data-structures/non-linear/b-trees",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/b-trees",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
               "id": "software-architecture/data-structures/non-linear/binary-search-tree",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-search-tree",
               "sidebar": "softwareArchitectureSidebar"
@@ -308,6 +313,11 @@
             {
               "id": "software-architecture/data-structures/non-linear/binary-tree",
               "path": "/documentation/docs/software-architecture/data-structures/non-linear/binary-tree",
+              "sidebar": "softwareArchitectureSidebar"
+            },
+            {
+              "id": "software-architecture/data-structures/non-linear/red-black-trees",
+              "path": "/documentation/docs/software-architecture/data-structures/non-linear/red-black-trees",
               "sidebar": "softwareArchitectureSidebar"
             },
             {

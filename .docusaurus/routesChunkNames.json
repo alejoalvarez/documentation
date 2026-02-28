@@ -48,13 +48,13 @@
       "plugin": "plugin---documentation-search-138-f87"
     }
   },
-  "/documentation/docs-e28": {
+  "/documentation/docs-373": {
     "__comp": "__comp---theme-docs-root-5-e-9-0b6",
     "__context": {
       "plugin": "plugin---documentation-docsaba-b17"
     }
   },
-  "/documentation/docs-73d": {
+  "/documentation/docs-7c3": {
     "__comp": "__comp---theme-doc-version-roota-7-b-5de",
     "__props": "__props---documentation-docsf-0-e-064"
   },
@@ -102,7 +102,7 @@
     "__comp": "__comp---theme-doc-tag-doc-list-pagedf-2-9f0",
     "__props": "__props---documentation-docs-tags-testing-5-dc-6c9"
   },
-  "/documentation/docs-c99": {
+  "/documentation/docs-043": {
     "__comp": "__comp---theme-doc-roota-94-67a"
   },
   "/documentation/docs/ai-architect-b56": {
@@ -341,6 +341,10 @@
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---documentation-docs-software-architecture-data-structures-non-linear-avl-tree-2-ac-f54"
   },
+  "/documentation/docs/software-architecture/data-structures/non-linear/b-trees-7c4": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---documentation-docs-software-architecture-data-structures-non-linear-b-treesbf-2-263"
+  },
   "/documentation/docs/software-architecture/data-structures/non-linear/binary-search-tree-a6c": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---documentation-docs-software-architecture-data-structures-non-linear-binary-search-tree-6-d-4-299"
@@ -348,6 +352,10 @@
   "/documentation/docs/software-architecture/data-structures/non-linear/binary-tree-3ef": {
     "__comp": "__comp---theme-doc-item-178-a40",
     "content": "content---documentation-docs-software-architecture-data-structures-non-linear-binary-tree-27-c-08d"
+  },
+  "/documentation/docs/software-architecture/data-structures/non-linear/red-black-trees-968": {
+    "__comp": "__comp---theme-doc-item-178-a40",
+    "content": "content---documentation-docs-software-architecture-data-structures-non-linear-red-black-trees-6-bf-912"
   },
   "/documentation/docs/software-architecture/delivery-governance-ca4": {
     "__comp": "__comp---theme-doc-item-178-a40",

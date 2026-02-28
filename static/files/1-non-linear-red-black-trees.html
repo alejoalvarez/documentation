@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Red-Black Tree Visualizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg: #04050d;
+  --panel: #0a0d1a;
+  --text: #e9f5ff;
+  --neon-cyan: #00e5ff;
+  --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+  --neon-pink: #ff4fd8;
+  --neon-lime: #7dff9b;
+  --neon-amber: #ffb347;
+}
+body{
+  margin:0;
+  background:radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+  color:var(--text);
+  font-family:'Fira Code',monospace;
+  display:flex;
+  justify-content:center;
+  align-items:flex-start;
+  min-height:unset;
+  padding:0;
+}
+.container{
+  width:calc(100% - 32px);
+  max-width:1200px;
+  min-height:unset;
+  height:auto;
+  background:linear-gradient(180deg, rgba(10,13,26,0.9), rgba(6,9,20,0.95));
+  border:1px solid var(--neon-cyan-soft);
+  border-radius:14px;
+  box-shadow:0 0 28px rgba(0,229,255,0.2), 0 0 70px rgba(0,229,255,0.08);
+  padding:20px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+  gap:16px;
+  margin:16px auto;
+}
+h2{
+  margin: 0;
+}
+canvas{
+  background:rgba(0, 229, 255, 0.02);
+  border:2px solid var(--neon-cyan);
+  border-radius:10px;
+  box-shadow:inset 0 0 12px rgba(0,229,255,0.12);
+  width: 100%;
+  max-width: 960px;
+  align-self: center;
+}
+button,input{
+  padding:6px 10px;
+  background:rgba(5,8,18,0.8);
+  border:2px solid var(--neon-cyan);
+  color:var(--neon-cyan);
+  border-radius:8px;
+  box-shadow:0 0 10px rgba(0,229,255,0.15);
+  font-family:'Fira Code',monospace;
+  font-size: 14px;
+}
+button:hover{
+  background:var(--neon-cyan);
+  color:#031018;
+  cursor:pointer;
+}
+.controls{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.form-rows{
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+}
+.row{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  flex-wrap:wrap;
+}
+.input-group{
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.stats{ color:var(--neon-amber); }
+.math{ color:var(--neon-lime); font-size:13px; white-space:pre-wrap; }
+.operation-box{
+  margin-top: 8px;
+  padding: 10px 12px;
+  border: 2px solid var(--neon-cyan);
+  border-radius: 10px;
+  background: rgba(0, 229, 255, 0.08);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+  color: var(--text);
+  transition: all 0.25s ease;
+}
+.operation-box.info{
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+}
+.operation-box.success{
+  border-color: var(--neon-lime);
+  background: rgba(125, 255, 155, 0.12);
+  box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+}
+.operation-box.error{
+  border-color: var(--neon-pink);
+  background: rgba(255, 79, 216, 0.1);
+  box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+}
+@media (max-width: 900px){
+  canvas {
+    height: auto;
+  }
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<h2>Red-Black Tree Visualizer</h2>
+
+<div class="form-rows">
+  <div class="row">
+    <div class="input-group">
+      <input id="valuesInput" value="10,20,30,15,25,5,1" style="width: 250px;" placeholder="Values (e.g. 10,20,30)" />
+      <button onclick="init()">Build Tree</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="controls">
+      <button onclick="prevStep()">⏮ Previous</button>
+      <button onclick="playFromStart()">▶ Play</button>
+      <button onclick="nextStep()">Next ⏭</button>
+    </div>
+  </div>
+</div>
+
+<canvas id="treeCanvas" width="960" height="420"></canvas>
+
+<div class="stats" id="stats"></div>
+<div class="math" id="math"></div>
+<div class="operation-box info" id="message">Visualizer initialized.</div>
+
+</div>
+
+<script>
+class Node{
+  constructor(value,color="red"){
+    this.value=value;
+    this.color=color;
+    this.left=null;
+    this.right=null;
+    this.parent=null;
+  }
+}
+
+let root=null;
+let steps=[];
+let currentStep=0;
+let interval=null;
+
+const canvas=document.getElementById("treeCanvas");
+const ctx=canvas.getContext("2d");
+const stats=document.getElementById("stats");
+const math=document.getElementById("math");
+
+function cloneTree(node){
+  if(!node) return null;
+  let newNode=new Node(node.value,node.color);
+  newNode.left=cloneTree(node.left);
+  newNode.right=cloneTree(node.right);
+  return newNode;
+}
+
+function leftRotate(x){
+  let y=x.right;
+  x.right=y.left;
+  if(y.left) y.left.parent=x;
+  y.parent=x.parent;
+  if(!x.parent) root=y;
+  else if(x===x.parent.left) x.parent.left=y;
+  else x.parent.right=y;
+  y.left=x;
+  x.parent=y;
+}
+
+function rightRotate(y){
+  let x=y.left;
+  y.left=x.right;
+  if(x.right) x.right.parent=y;
+  x.parent=y.parent;
+  if(!y.parent) root=x;
+  else if(y===y.parent.left) y.parent.left=x;
+  else y.parent.right=x;
+  x.right=y;
+  y.parent=x;
+}
+
+function fixInsert(z){
+  while(z.parent && z.parent.color==="red"){
+    if(z.parent===z.parent.parent.left){
+      let y=z.parent.parent.right;
+      if(y && y.color==="red"){
+        z.parent.color="black";
+        y.color="black";
+        z.parent.parent.color="red";
+        z=z.parent.parent;
+      }else{
+        if(z===z.parent.right){
+          z=z.parent;
+          leftRotate(z);
+        }
+        z.parent.color="black";
+        z.parent.parent.color="red";
+        rightRotate(z.parent.parent);
+      }
+    }else{
+      let y=z.parent.parent.left;
+      if(y && y.color==="red"){
+        z.parent.color="black";
+        y.color="black";
+        z.parent.parent.color="red";
+        z=z.parent.parent;
+      }else{
+        if(z===z.parent.left){
+          z=z.parent;
+          rightRotate(z);
+        }
+        z.parent.color="black";
+        z.parent.parent.color="red";
+        leftRotate(z.parent.parent);
+      }
+    }
+  }
+  root.color="black";
+}
+
+function insert(value){
+  let newNode=new Node(value);
+  let y=null;
+  let x=root;
+
+  while(x){
+    y=x;
+    if(value<x.value) x=x.left;
+    else x=x.right;
+  }
+
+  newNode.parent=y;
+
+  if(!y) root=newNode;
+  else if(value<y.value) y.left=newNode;
+  else y.right=newNode;
+
+  fixInsert(newNode);
+}
+
+function generateSteps(values){
+  root=null;
+  let temp=[];
+  values.forEach(v=>{
+    insert(v);
+    temp.push(cloneTree(root));
+  });
+  return temp;
+}
+
+function height(node){
+  if(!node) return 0;
+  return 1+Math.max(height(node.left),height(node.right));
+}
+
+function setMessage(text,type="info"){
+  const messageEl=document.getElementById("message");
+  if(messageEl){
+    messageEl.innerText=text;
+    messageEl.className="operation-box "+type;
+  }
+}
+
+function drawTree(node,x,y,offset){
+  if(!node) return;
+
+  if(node.left){
+    ctx.beginPath();
+    ctx.moveTo(x,y+20);
+    ctx.lineTo(x-offset,y+80-20);
+    ctx.strokeStyle="rgba(0, 229, 255, 0.4)";
+    ctx.lineWidth=2;
+    ctx.stroke();
+    drawTree(node.left,x-offset,y+80,offset/1.7);
+  }
+  if(node.right){
+    ctx.beginPath();
+    ctx.moveTo(x,y+20);
+    ctx.lineTo(x+offset,y+80-20);
+    ctx.strokeStyle="rgba(0, 229, 255, 0.4)";
+    ctx.lineWidth=2;
+    ctx.stroke();
+    drawTree(node.right,x+offset,y+80,offset/1.7);
+  }
+
+  ctx.beginPath();
+  ctx.arc(x,y,20,0,2*Math.PI);
+  // Using neon colors to represent Red and Black
+  if(node.color==="red"){
+    ctx.fillStyle="rgba(255, 79, 216, 0.15)";
+    ctx.strokeStyle="#ff4fd8";
+  } else {
+    ctx.fillStyle="rgba(0, 229, 255, 0.05)";
+    ctx.strokeStyle="#00e5ff";
+  }
+  ctx.lineWidth=2;
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.fillStyle="#e9f5ff";
+  ctx.textAlign="center";
+  ctx.textBaseline="middle";
+  ctx.fillText(node.value,x,y);
+}
+
+function render(step, stepIndex){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.font="bold 16px 'Fira Code'";
+  if(step){
+    drawTree(step,canvas.width/2,40,200);
+    stats.textContent="Current Height: "+height(step);
+    math.textContent="Search complexity: O(log n)\nInsertion/Deletion complexity: O(log n)";
+    if (stepIndex !== undefined) {
+      setMessage("Showing step " + (stepIndex + 1) + " of " + steps.length, "info");
+    }
+  } else {
+    stats.textContent="Current Height: 0";
+    math.textContent="Search complexity: O(log n)\nInsertion/Deletion complexity: O(log n)";
+  }
+  clickSound();
+}
+
+function clickSound(){
+  const ctxA=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctxA.createOscillator();
+  const gain=ctxA.createGain();
+  osc.frequency.value=900;
+  gain.gain.value=0.1;
+  osc.connect(gain);
+  gain.connect(ctxA.destination);
+  osc.start();
+  osc.stop(ctxA.currentTime+0.05);
+}
+
+function victorySound(){
+  const ctxA=new (window.AudioContext||window.webkitAudioContext)();
+  const osc=ctxA.createOscillator();
+  const gain=ctxA.createGain();
+  osc.type="triangle";
+  osc.frequency.setValueAtTime(400,ctxA.currentTime);
+  osc.frequency.exponentialRampToValueAtTime(1200,ctxA.currentTime+0.5);
+  gain.gain.setValueAtTime(0.2,ctxA.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.001,ctxA.currentTime+0.6);
+  osc.connect(gain);
+  gain.connect(ctxA.destination);
+  osc.start();
+  osc.stop(ctxA.currentTime+0.6);
+}
+
+function nextStep(){
+  clearInterval(interval);
+  if(currentStep<steps.length-1){
+    currentStep++;
+    render(steps[currentStep], currentStep);
+    if(currentStep===steps.length-1) victorySound();
+  }
+}
+
+function prevStep(){
+  clearInterval(interval);
+  if(currentStep>0){
+    currentStep--;
+    render(steps[currentStep], currentStep);
+  }
+}
+
+function playFromStart(){
+  clearInterval(interval);
+  currentStep=0;
+  if(steps.length > 0) render(steps[currentStep], currentStep);
+  interval=setInterval(()=>{
+    if(currentStep<steps.length-1){
+      currentStep++;
+      render(steps[currentStep], currentStep);
+    }else{
+      clearInterval(interval);
+      setMessage("Animation completed.", "success");
+      victorySound();
+    }
+  },1000);
+}
+
+function init(){
+  clearInterval(interval);
+  const valStr = document.getElementById("valuesInput").value;
+  if(!valStr.trim()){
+    setMessage("Please enter comma separated values.", "error");
+    return;
+  }
+  let values=valStr.split(",").map(v => parseInt(v.trim())).filter(v => !isNaN(v));
+  if(values.length===0){
+    setMessage("No valid numbers found.", "error");
+    return;
+  }
+  steps=generateSteps(values);
+  currentStep=steps.length > 0 ? steps.length - 1 : 0;
+  if(steps.length > 0){
+    render(steps[currentStep], currentStep);
+    setMessage("Tree built with " + values.length + " items.", "success");
+    victorySound();
+  }
+}
+
+// Initial render
+let initialValues=document.getElementById("valuesInput").value.split(",").map(v => parseInt(v.trim())).filter(v => !isNaN(v));
+if(initialValues.length>0){
+    steps=generateSteps(initialValues);
+    currentStep=steps.length > 0 ? steps.length - 1 : 0;
+    render(steps[currentStep], currentStep);
+    setMessage("Tree initialized.", "info");
+}
+</script>
+
+</body>
+</html>
