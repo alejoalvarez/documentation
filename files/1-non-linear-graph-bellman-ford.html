@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Bellman-Ford Algorithm Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 1060px;
+      align-self: center;
+    }
+
+    button,
+    input,
+    select {
+      padding: 6px 10px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: var(--neon-cyan);
+      color: #031018;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stats {
+      color: var(--neon-amber);
+      margin-bottom: 5px;
+    }
+
+    .order {
+      color: var(--neon-lime);
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .math {
+      color: var(--neon-lime);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Bellman-Ford Algorithm Visualizer</h2>
+
+    <div class="row">
+      <div class="controls">
+        <button onclick="startBellmanFord()">Start Bellman-Ford (Origin: A)</button>
+        <button onclick="resetGraph()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Reset
+          Graph</button>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="1060" height="420"></canvas>
+
+    <div class="stats">
+      Current Distances: <span class="order" id="distances"></span>
+    </div>
+    <div class="math" id="math">Complexity: Space/Time -> O(|V| * |E|) | Allows negative weights</div>
+
+    <div class="operation-box info" id="message">Visualizer initialized. Choose Start Bellman-Ford to begin traversal
+      from Node A.</div>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const nodes = {
+      A: { x: 230, y: 210 },
+      B: { x: 530, y: 100 },
+      C: { x: 530, y: 320 },
+      D: { x: 830, y: 210 }
+    };
+
+    const edgeList = [
+      { from: "A", to: "B", w: 4 },
+      { from: "A", to: "C", w: 2 },
+      { from: "B", to: "C", w: -2 },
+      { from: "B", to: "D", w: 5 },
+      { from: "C", to: "D", w: 3 }
+    ];
+
+    let dist = {};
+    let interval = null;
+    let outerLoop = 0;
+    let edgeIndex = 0;
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function drawArrow(fromX, fromY, toX, toY, color) {
+      const headlen = 10;
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const angle = Math.atan2(dy, dx);
+      // We reduce the line so it stops at the node edge
+      const r = 22;
+      const startX = fromX + r * Math.cos(angle);
+      const startY = fromY + r * Math.sin(angle);
+      const endX = toX - r * Math.cos(angle);
+      const endY = toY - r * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Arrowhead
+      ctx.beginPath();
+      ctx.moveTo(endX, endY);
+      ctx.lineTo(endX - headlen * Math.cos(angle - Math.PI / 6), endY - headlen * Math.sin(angle - Math.PI / 6));
+      ctx.lineTo(endX - headlen * Math.cos(angle + Math.PI / 6), endY - headlen * Math.sin(angle + Math.PI / 6));
+      ctx.lineTo(endX, endY);
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    function drawGraph(highlightEdge = null, highlightNode = null) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Edges
+      edgeList.forEach(e => {
+        let isHighlighted = highlightEdge && highlightEdge.from === e.from && highlightEdge.to === e.to;
+        let edgeColor = isHighlighted ? "rgba(255, 79, 216, 0.8)" : "rgba(255, 255, 255, 0.1)";
+        if (!isHighlighted && dist[e.to] !== Infinity && dist[e.from] !== Infinity) {
+          edgeColor = "rgba(0, 229, 255, 0.3)";
+        }
+
+        let from = nodes[e.from];
+        let to = nodes[e.to];
+
+        drawArrow(from.x, from.y, to.x, to.y, edgeColor);
+
+        // Draw Weight
+        const midX = (from.x + to.x) / 2;
+        const midY = (from.y + to.y) / 2 - 10;
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(5, 8, 18, 0.9)";
+        ctx.fillRect(midX - 10, midY - 10, 20, 20); // Background for weight
+        ctx.fillStyle = isHighlighted ? "#ff4fd8" : "var(--neon-amber)";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 14px 'Fira Code'";
+        ctx.fillText(e.w, midX, midY);
+      });
+
+      // Draw Nodes
+      for (let node in nodes) {
+        ctx.beginPath();
+        ctx.arc(nodes[node].x, nodes[node].y, 22, 0, 2 * Math.PI);
+
+        // Style based on state
+        if (node === highlightNode) {
+          ctx.fillStyle = "rgba(255, 79, 216, 0.15)";
+          ctx.strokeStyle = "#ff4fd8";
+        } else if (dist[node] !== Infinity && dist[node] !== undefined) {
+          ctx.fillStyle = "rgba(0, 229, 255, 0.15)";
+          ctx.strokeStyle = "#00e5ff";
+        } else {
+          ctx.fillStyle = "rgba(5, 8, 18, 0.8)";
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        }
+
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#e9f5ff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 16px 'Fira Code'";
+        ctx.fillText(node, nodes[node].x, nodes[node].y);
+
+        // Draw distance below node
+        let nodeDist = dist[node];
+        let distText = nodeDist === Infinity || nodeDist === undefined ? "∞" : nodeDist;
+        if (nodeDist !== undefined) {
+          ctx.fillStyle = dist[node] !== Infinity ? "var(--neon-lime)" : "var(--neon-amber)";
+          ctx.font = "bold 16px 'Fira Code'";
+          ctx.fillText(distText, nodes[node].x, nodes[node].y + 35);
+        }
+      }
+    }
+
+    function resetGraph() {
+      dist = { A: Infinity, B: Infinity, C: Infinity, D: Infinity };
+      clearInterval(interval);
+      outerLoop = 0;
+      edgeIndex = 0;
+      document.getElementById("distances").innerText = "";
+      drawGraph();
+      setMessage("Graph state reset.", "info");
+    }
+
+    function updateDistancesText() {
+      let distStr = Object.entries(dist).map(([n, d]) => `${n}: ${d === Infinity || d === undefined ? '∞' : d}`).join(",   ");
+      document.getElementById("distances").innerText = `{  ${distStr}  }`;
+    }
+
+    function startBellmanFord() {
+      resetGraph();
+
+      dist = { A: 0, B: Infinity, C: Infinity, D: Infinity };
+      outerLoop = 0; // runs |V| - 1 times
+      edgeIndex = 0;
+
+      setMessage("Starting Bellman-Ford's Algorithm from Node A...", "info");
+      updateDistancesText();
+      drawGraph(null, "A");
+
+      interval = setInterval(() => {
+        if (outerLoop >= Object.keys(nodes).length - 1) {
+          clearInterval(interval);
+          setMessage("Bellman-Ford traversal completed successfully.", "success");
+          drawGraph();
+          victorySound();
+          return;
+        }
+
+        let e = edgeList[edgeIndex];
+
+        setMessage(`Iteration ${outerLoop + 1} / ${Object.keys(nodes).length - 1}: Evaluating edge ${e.from} → ${e.to} (weight ${e.w})`, "info");
+
+        drawGraph(e, e.to);
+
+        if (dist[e.from] !== Infinity && dist[e.from] + e.w < dist[e.to]) {
+          dist[e.to] = dist[e.from] + e.w;
+          updateDistancesText();
+          clickSound();
+        }
+
+        edgeIndex++;
+        if (edgeIndex >= edgeList.length) {
+          edgeIndex = 0;
+          outerLoop++;
+        }
+      }, 800);
+    }
+
+    function clickSound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.frequency.value = 900;
+      gain.gain.value = 0.1;
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(400, ctxAudio.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1400, ctxAudio.currentTime + 0.5);
+      gain.gain.setValueAtTime(0.2, ctxAudio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctxAudio.currentTime + 0.6);
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.6);
+    }
+
+    // Initial state setup
+    resetGraph();
+
+  </script>
+
+</body>
+
+</html>
