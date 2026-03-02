@@ -192,6 +192,7 @@ const sidebars = {
                 'software-architecture/data-structures/non-linear/graph-traversal-bfs-dfs',
                 'software-architecture/data-structures/non-linear/graph-dijkstra',
                 'software-architecture/data-structures/non-linear/graph-bellman-ford',
+                'software-architecture/data-structures/non-linear/graph-kruskal',
               ],
             },
           ],
