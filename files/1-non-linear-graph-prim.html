@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Prim Algorithm Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 1060px;
+      align-self: center;
+    }
+
+    button,
+    input,
+    select {
+      padding: 6px 10px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+    }
+
+    button:hover {
+      background: var(--neon-cyan);
+      color: #031018;
+      cursor: pointer;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .stats {
+      color: var(--neon-amber);
+      margin-bottom: 5px;
+    }
+
+    .order {
+      color: var(--neon-lime);
+      font-size: 15px;
+      font-weight: bold;
+    }
+
+    .math {
+      color: var(--neon-lime);
+      font-size: 13px;
+      white-space: pre-wrap;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Prim Algorithm Visualizer (MST)</h2>
+
+    <div class="row">
+      <div class="controls">
+        <button onclick="startPrim()">Start Prim (Origin: A)</button>
+        <button onclick="resetGraph()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Reset
+          Graph</button>
+      </div>
+    </div>
+
+    <canvas id="canvas" width="1060" height="420"></canvas>
+
+    <div class="stats">
+      Current MST Weight: <span class="order" id="info">0</span>
+    </div>
+    <div class="math" id="math">Complexity: Space/Time -> O(|E| log |V|) | Frontier Expansion</div>
+
+    <div class="operation-box info" id="message">Visualizer initialized. Choose Start Prim to begin Minimum Spanning
+      Tree evaluation starting at A.</div>
+
+  </div>
+
+  <script>
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    const nodes = {
+      A: { x: 230, y: 210 },
+      B: { x: 530, y: 100 },
+      C: { x: 530, y: 320 },
+      D: { x: 830, y: 210 }
+    };
+
+    const edges = [
+      { u: "A", v: "B", w: 4 },
+      { u: "A", v: "C", w: 2 },
+      { u: "B", v: "C", w: 1 },
+      { u: "B", v: "D", w: 5 },
+      { u: "C", v: "D", w: 3 }
+    ];
+
+    let visited = {};
+    let mst = [];
+    let total = 0;
+    let interval = null;
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function drawLine(fromX, fromY, toX, toY, color, width = 2) {
+      const dx = toX - fromX;
+      const dy = toY - fromY;
+      const angle = Math.atan2(dy, dx);
+      const r = 22;
+      const startX = fromX + r * Math.cos(angle);
+      const startY = fromY + r * Math.sin(angle);
+      const endX = toX - r * Math.cos(angle);
+      const endY = toY - r * Math.sin(angle);
+
+      ctx.beginPath();
+      ctx.moveTo(startX, startY);
+      ctx.lineTo(endX, endY);
+      ctx.strokeStyle = color;
+      ctx.lineWidth = width;
+      ctx.stroke();
+    }
+
+    function drawGraph(highlightEdge = null) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Edges
+      edges.forEach(e => {
+        let isMST = mst.find(m => m.u === e.u && m.v === e.v);
+        let isHighlighted = highlightEdge && highlightEdge.u === e.u && highlightEdge.v === e.v;
+
+        let edgeColor = "rgba(255, 255, 255, 0.1)";
+        let lineWidth = 2;
+
+        if (isHighlighted) {
+          edgeColor = "rgba(255, 79, 216, 0.8)";
+        } else if (isMST) {
+          edgeColor = "var(--neon-lime)";
+          lineWidth = 3;
+        } else if (visited[e.u] || visited[e.v]) {
+          edgeColor = "rgba(0, 229, 255, 0.3)";
+        }
+
+        drawLine(nodes[e.u].x, nodes[e.u].y, nodes[e.v].x, nodes[e.v].y, edgeColor, lineWidth);
+
+        // Draw Weight
+        const midX = (nodes[e.u].x + nodes[e.v].x) / 2;
+        const midY = (nodes[e.u].y + nodes[e.v].y) / 2 - 10;
+
+        ctx.beginPath();
+        ctx.fillStyle = "rgba(5, 8, 18, 0.9)";
+        ctx.fillRect(midX - 10, midY - 10, 20, 20); // Background for weight
+
+        if (isHighlighted) {
+          ctx.fillStyle = "#ff4fd8";
+        } else if (isMST) {
+          ctx.fillStyle = "var(--neon-lime)";
+        } else {
+          ctx.fillStyle = "var(--neon-amber)";
+        }
+
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 14px 'Fira Code'";
+        ctx.fillText(e.w, midX, midY);
+      });
+
+      // Draw Nodes
+      for (let node in nodes) {
+        ctx.beginPath();
+        ctx.arc(nodes[node].x, nodes[node].y, 22, 0, 2 * Math.PI);
+
+        if (visited[node]) {
+          ctx.fillStyle = "rgba(0, 229, 255, 0.15)";
+          ctx.strokeStyle = "#00e5ff";
+        } else {
+          ctx.fillStyle = "rgba(5, 8, 18, 0.8)";
+          ctx.strokeStyle = "rgba(255, 255, 255, 0.2)";
+        }
+
+        ctx.lineWidth = 2;
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.fillStyle = "#e9f5ff";
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.font = "bold 16px 'Fira Code'";
+        ctx.fillText(node, nodes[node].x, nodes[node].y);
+      }
+    }
+
+    function resetGraph() {
+      visited = {};
+      mst = [];
+      total = 0;
+      clearInterval(interval);
+      document.getElementById("info").innerText = "0";
+      drawGraph();
+      setMessage("Graph state reset.", "info");
+    }
+
+    function startPrim() {
+      resetGraph();
+
+      visited = { A: true };
+
+      setMessage("Starting Prim Algorithm from node A. Finding lowest cost neighbor...", "info");
+      drawGraph();
+
+      interval = setInterval(() => {
+        let minEdge = null;
+
+        // Find minimum edge connecting visited set to unvisited set
+        edges.forEach(e => {
+          if ((visited[e.u] && !visited[e.v]) || (visited[e.v] && !visited[e.u])) {
+            if (!minEdge || e.w < minEdge.w) {
+              minEdge = e;
+            }
+          }
+        });
+
+        if (!minEdge) {
+          clearInterval(interval);
+          setMessage(`Prim traversal completed! Minimum Spanning Tree Total Weight: ${total}`, "success");
+          drawGraph();
+          victorySound();
+          return;
+        }
+
+        mst.push(minEdge);
+        total += minEdge.w;
+
+        let newNode = visited[minEdge.u] ? minEdge.v : minEdge.u;
+        visited[minEdge.u] = true;
+        visited[minEdge.v] = true;
+
+        setMessage(`Expanding to node ${newNode} via edge ${minEdge.u} -- ${minEdge.v} (Weight: ${minEdge.w})`, "success");
+
+        drawGraph(minEdge);
+        clickSound();
+
+        document.getElementById("info").innerText = total;
+
+      }, 1200);
+    }
+
+    function clickSound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.frequency.value = 900;
+      gain.gain.value = 0.1;
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const ctxAudio = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = ctxAudio.createOscillator();
+      const gain = ctxAudio.createGain();
+      osc.type = "triangle";
+      osc.frequency.setValueAtTime(400, ctxAudio.currentTime);
+      osc.frequency.exponentialRampToValueAtTime(1500, ctxAudio.currentTime + 0.6);
+      gain.gain.setValueAtTime(0.2, ctxAudio.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctxAudio.currentTime + 0.7);
+      osc.connect(gain);
+      gain.connect(ctxAudio.destination);
+      osc.start();
+      osc.stop(ctxAudio.currentTime + 0.7);
+    }
+
+    // Initial state setup
+    resetGraph();
+
+  </script>
+
+</body>
+
+</html>
