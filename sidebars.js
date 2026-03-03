@@ -193,6 +193,7 @@ const sidebars = {
                 'software-architecture/data-structures/non-linear/graph-dijkstra',
                 'software-architecture/data-structures/non-linear/graph-bellman-ford',
                 'software-architecture/data-structures/non-linear/graph-kruskal',
+                'software-architecture/data-structures/non-linear/graph-prim',
               ],
             },
           ],
