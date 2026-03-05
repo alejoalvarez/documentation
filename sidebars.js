@@ -164,7 +164,7 @@ const sidebars = {
           items: [
             {
               type: 'category',
-              label: '1-linear',
+              label: 'linear',
               collapsed: true,
               items: [
                 'software-architecture/data-structures/linear/array',
@@ -177,7 +177,7 @@ const sidebars = {
             },
             {
               type: 'category',
-              label: '2-non-linear',
+              label: 'non-linear',
               collapsed: true,
               items: [
                 'software-architecture/data-structures/non-linear/binary-tree',
@@ -197,6 +197,48 @@ const sidebars = {
                 'software-architecture/data-structures/non-linear/graph-topological-sort',
               ],
             },
+          ],
+        },
+        {
+          type: 'category',
+          label: 'algorithms',
+          collapsed: true,
+          link: {
+            type: 'doc',
+            id: 'software-architecture/algorithms/index',
+          },
+          items: [
+            {
+              type: 'category',
+              label: 'sorting',
+              collapsed: true,
+              items: [
+                'software-architecture/algorithms/sorting/bubble-sort',
+                // 'software-architecture/algorithms/sorting/selection-sort',
+                // 'software-architecture/algorithms/sorting/insertion-sort',
+                // 'software-architecture/algorithms/sorting/merge-sort',
+                // 'software-architecture/algorithms/sorting/quick-sort',
+                // 'software-architecture/algorithms/sorting/heap-sort',
+                // 'software-architecture/algorithms/sorting/radix-sort',
+                // 'software-architecture/algorithms/sorting/counting-sort',
+                // 'software-architecture/algorithms/sorting/bucket-sort',
+              ],
+            },
+            // {
+            //   type: 'category',
+            //   label: 'searching',
+            //   collapsed: true,
+            //   items: [
+            //     // 'software-architecture/algorithms/searching/linear-search',
+            //     // 'software-architecture/algorithms/searching/binary-search',
+            //     // 'software-architecture/algorithms/searching/jump-search',
+            //     // 'software-architecture/algorithms/searching/interpolation-search',
+            //     // 'software-architecture/algorithms/searching/exponential-search',
+            //     // 'software-architecture/algorithms/searching/ternary-search',
+            //     // 'software-architecture/algorithms/searching/fibonacci-search',
+            //     // 'software-architecture/algorithms/searching/hash-search',
+            //   ],
+            // },
           ],
         },
         'software-architecture/system-design-principles',
