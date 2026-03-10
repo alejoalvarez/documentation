@@ -215,7 +215,7 @@ const sidebars = {
               items: [
                 'software-architecture/algorithms/sorting/bubble-sort',
                 'software-architecture/algorithms/sorting/selection-sort',
-                // 'software-architecture/algorithms/sorting/insertion-sort',
+                'software-architecture/algorithms/sorting/insertion-sort',
                 // 'software-architecture/algorithms/sorting/merge-sort',
                 // 'software-architecture/algorithms/sorting/quick-sort',
                 // 'software-architecture/algorithms/sorting/heap-sort',
