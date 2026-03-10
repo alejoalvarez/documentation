@@ -13,6 +13,21 @@ import useBaseUrl from '@docusaurus/useBaseUrl';
 
 It works similarly to how most people sort a hand of playing cards — pick up a new card and slide it into the correct spot among the cards already in your hand.
 
+## Interactive Visualizer
+
+<iframe
+  src={useBaseUrl('/files/sorting-insertion-sort.html')}
+  title="Insertion Sort Visual"
+  style={{
+    width: '100%',
+    height: '800px',
+    border: 'none',
+    borderRadius: '12px',
+    background: '#030507',
+  }}
+/>
+
+
 ---
 
 ## How It Works
@@ -182,16 +197,3 @@ Insertion Sort is **online** — it can sort a list as it receives elements one 
 
 ---
 
-## Interactive Visualizer
-
-<iframe
-  src={useBaseUrl('/files/sorting-insertion-sort.html')}
-  title="Insertion Sort Visual"
-  style={{
-    width: '100%',
-    height: '800px',
-    border: 'none',
-    borderRadius: '12px',
-    background: '#030507',
-  }}
-/>
