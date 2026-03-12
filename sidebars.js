@@ -217,7 +217,7 @@ const sidebars = {
                 'software-architecture/algorithms/sorting/selection-sort',
                 'software-architecture/algorithms/sorting/insertion-sort',
                 'software-architecture/algorithms/sorting/merge-sort',
-                // 'software-architecture/algorithms/sorting/quick-sort',
+                'software-architecture/algorithms/sorting/quick-sort',
                 // 'software-architecture/algorithms/sorting/heap-sort',
                 // 'software-architecture/algorithms/sorting/radix-sort',
                 // 'software-architecture/algorithms/sorting/counting-sort',

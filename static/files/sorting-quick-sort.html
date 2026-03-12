@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Quick Sort Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+      --neon-yellow: #ffe94f;
+      --neon-red: #ff5555;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      min-height: unset;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+      text-align: center;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 600px;
+      align-self: center;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin: 5px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--neon-cyan);
+      color: #031018;
+    }
+
+    button:disabled {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: rgba(5, 8, 18, 0.8);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 250px;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .bar {
+      width: 50px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 6px 6px 0 0;
+      color: var(--text);
+      text-align: center;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 5px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, height 0.3s;
+    }
+
+    /* Pivot element */
+    .pivot {
+      background: rgba(255, 85, 85, 0.25) !important;
+      border-color: var(--neon-red) !important;
+      box-shadow: 0 0 18px rgba(255, 85, 85, 0.6) !important;
+      color: var(--neon-red);
+    }
+
+    /* Current pointer element being compared to pivot */
+    .pointer {
+      background: rgba(255, 233, 79, 0.2) !important;
+      border-color: var(--neon-yellow) !important;
+      box-shadow: 0 0 15px rgba(255, 233, 79, 0.5) !important;
+      color: var(--neon-yellow);
+    }
+
+    /* Element just swapped into place */
+    .swapped {
+      background: rgba(125, 255, 155, 0.2) !important;
+      border-color: var(--neon-lime) !important;
+      box-shadow: 0 0 15px rgba(125, 255, 155, 0.4) !important;
+      color: var(--neon-lime);
+    }
+
+    .stats {
+      text-align: center;
+      color: var(--neon-amber);
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .stats span {
+      font-weight: bold;
+    }
+
+    .math {
+      text-align: center;
+      color: var(--neon-lime);
+      font-size: 14px;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Quick Sort Algorithm Visualizer</h2>
+
+    <div class="controls">
+      <button id="prevBtn" onclick="prev()">⬅ Back</button>
+      <button id="nextBtn" onclick="next()">Next ➡</button>
+      <button id="playBtn" onclick="play()">▶ Play</button>
+      <button onclick="reset()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Reset</button>
+    </div>
+
+    <div class="bars" id="bars"></div>
+
+    <div class="stats">
+      Comparisons: <span id="comparisons">0</span>
+    </div>
+
+    <div class="math">
+      Complexity: Time -> O(n log n) avg / O(n²) worst | Space -> O(log n) | Not stable
+    </div>
+
+    <div class="operation-box info" id="message">Visualizer initialized. Press Play or Next to begin.</div>
+
+    <canvas id="complexityChart" width="600" height="200"></canvas>
+
+  </div>
+
+  <script>
+    let original = [8, 3, 5, 1, 9, 6];
+    let steps = [];
+    let current = 0;
+    let interval;
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function generateSteps(arr) {
+      let localSteps = [];
+      let comp = 0;
+
+      // Initial state
+      localSteps.push({
+        array: [...arr],
+        pivotIndex: -1,
+        pointer: -1,
+        swapped: -1,
+        comp: comp,
+        message: "Initial array state."
+      });
+
+      function quickSort(a, low, high) {
+        if (low < high) {
+          let pi = partition(a, low, high);
+          quickSort(a, low, pi - 1);
+          quickSort(a, pi + 1, high);
+        }
+      }
+
+      function partition(a, low, high) {
+        let pivot = a[high];
+
+        localSteps.push({
+          array: [...a],
+          pivotIndex: high,
+          pointer: -1,
+          swapped: -1,
+          comp: comp,
+          message: `Pivot selected: ${pivot} at index ${high}.`
+        });
+
+        let i = low - 1;
+
+        for (let j = low; j < high; j++) {
+          comp++;
+          localSteps.push({
+            array: [...a],
+            pivotIndex: high,
+            pointer: j,
+            swapped: -1,
+            comp: comp,
+            message: `Comparing ${a[j]} with pivot ${pivot}${a[j] < pivot ? " — smaller, will swap." : " — no swap."}`
+          });
+
+          if (a[j] < pivot) {
+            i++;
+            [a[i], a[j]] = [a[j], a[i]];
+            localSteps.push({
+              array: [...a],
+              pivotIndex: high,
+              pointer: j,
+              swapped: i,
+              comp: comp,
+              message: `Swapped ${a[j]} and ${a[i]}.`
+            });
+          }
+        }
+
+        [a[i + 1], a[high]] = [a[high], a[i + 1]];
+        localSteps.push({
+          array: [...a],
+          pivotIndex: -1,
+          pointer: -1,
+          swapped: i + 1,
+          comp: comp,
+          message: `Pivot ${a[i + 1]} placed at its final position: index ${i + 1}.`
+        });
+
+        return i + 1;
+      }
+
+      let copy = [...arr];
+      quickSort(copy, 0, copy.length - 1);
+
+      // Final state
+      localSteps.push({
+        array: [...copy],
+        pivotIndex: -1,
+        pointer: -1,
+        swapped: -1,
+        comp: comp,
+        message: "Array perfectly sorted!"
+      });
+
+      return localSteps;
+    }
+
+    function render() {
+      let container = document.getElementById("bars");
+      container.innerHTML = "";
+
+      let step = steps[current];
+      const isFinal = current === steps.length - 1;
+
+      step.array.forEach((val, index) => {
+        let div = document.createElement("div");
+        div.className = "bar";
+        div.style.height = (val * 25) + "px";
+        div.innerText = val;
+
+        if (isFinal) {
+          div.classList.add("swapped");
+        } else if (index === step.pivotIndex) {
+          div.classList.add("pivot");
+        } else if (index === step.swapped) {
+          div.classList.add("swapped");
+        } else if (index === step.pointer) {
+          div.classList.add("pointer");
+        }
+
+        container.appendChild(div);
+      });
+
+      document.getElementById("comparisons").innerText = step.comp;
+
+      if (isFinal) {
+        setMessage(step.message || "Array is sorted!", "success");
+      } else {
+        setMessage(step.message || "Visualizing quick sort...", "info");
+      }
+
+      drawComplexity(current);
+      updateButtons();
+    }
+
+    function next() {
+      if (current < steps.length - 1) {
+        current++;
+        clickSound();
+        render();
+      }
+    }
+
+    function prev() {
+      if (current > 0) {
+        current--;
+        render();
+      }
+    }
+
+    function play() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "⏸ Pause";
+      document.getElementById("playBtn").onclick = pause;
+
+      if (current >= steps.length - 1) {
+        current = 0;
+      }
+
+      interval = setInterval(() => {
+        if (current < steps.length - 1) {
+          current++;
+          clickSound();
+          render();
+        } else {
+          pause();
+          victorySound();
+        }
+      }, 500);
+    }
+
+    function pause() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "▶ Play";
+      document.getElementById("playBtn").onclick = play;
+    }
+
+    function reset() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "▶ Play";
+      document.getElementById("playBtn").onclick = play;
+      current = 0;
+      setMessage("Visualizer reset. Press Play or Next to begin.", "info");
+      render();
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = current === 0;
+      document.getElementById("nextBtn").disabled = current === steps.length - 1;
+    }
+
+    function drawComplexity(stepIndex) {
+      let canvas = document.getElementById("complexityChart");
+      let ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#00e5ff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+
+      let maxSteps = steps.length - 1;
+      if (maxSteps <= 0) return;
+
+      for (let i = 0; i <= stepIndex; i++) {
+        let val = steps[i].comp;
+        let maxComp = steps[maxSteps].comp || 1;
+
+        let x = (i / maxSteps) * canvas.width;
+        let y = canvas.height - (val / maxComp) * (canvas.height - 20) - 10;
+
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    function clickSound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.frequency.value = 1200;
+      g.gain.value = 0.1;
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(400, a.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1500, a.currentTime + 0.7);
+      g.gain.setValueAtTime(0.2, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.8);
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.8);
+    }
+
+    steps = generateSteps(original);
+    render();
+  </script>
+</body>
+
+</html>
