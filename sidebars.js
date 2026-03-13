@@ -230,7 +230,8 @@ const sidebars = {
               collapsed: true,
               items: [
                 'software-architecture/algorithms/searching/linear-search',
-                // 'software-architecture/algorithms/searching/binary-search',
+                'software-architecture/algorithms/searching/binary-search',
+                'software-architecture/algorithms/searching/binary-search-tree',
                 // 'software-architecture/algorithms/searching/jump-search',
                 // 'software-architecture/algorithms/searching/interpolation-search',
                 // 'software-architecture/algorithms/searching/exponential-search',
