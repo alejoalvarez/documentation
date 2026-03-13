@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Fibonacci Search Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+      --neon-yellow: #ffe94f;
+      --neon-purple: #b549ff;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      padding: 8px 12px;
+      background: rgba(5, 8, 18, 0.8);
+      color: var(--neon-cyan);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 16px;
+      outline: none;
+      width: 150px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    button {
+      padding: 8px 16px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--neon-cyan);
+      color: #031018;
+    }
+
+    button:disabled {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: rgba(5, 8, 18, 0.8);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .array {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 30px 0;
+      min-height: 80px;
+    }
+
+    .box {
+      width: 65px;
+      height: 65px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 255, 0.05);
+      border: 2px solid rgba(0, 229, 255, 0.3);
+      border-radius: 12px;
+      font-size: 20px;
+      font-weight: bold;
+      color: rgba(233, 245, 255, 0.5);
+      /* Dimmed by default */
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    /* Range boundaries */
+    .in-range {
+      background: rgba(0, 229, 255, 0.1);
+      border-color: var(--neon-cyan);
+      color: var(--text);
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.2);
+    }
+
+    /* The offset pointer */
+    .in-range::before {
+      content: '';
+      position: absolute;
+      top: -25px;
+      font-size: 12px;
+      color: var(--neon-cyan);
+    }
+
+    .offset::before {
+      content: 'OFFSET';
+      color: var(--neon-cyan);
+      font-weight: bold;
+    }
+
+    /* The middle element being checked (i) */
+    .mid {
+      background: rgba(255, 79, 216, 0.2) !important;
+      border-color: var(--neon-pink) !important;
+      box-shadow: 0 0 20px rgba(255, 79, 216, 0.5) !important;
+      color: var(--neon-pink);
+      transform: scale(1.1);
+      z-index: 2;
+    }
+
+    .mid::after {
+      content: 'i';
+      position: absolute;
+      bottom: -25px;
+      font-size: 12px;
+      color: var(--neon-pink);
+      font-weight: bold;
+    }
+
+    /* Target found */
+    .found {
+      background: rgba(125, 255, 155, 0.25) !important;
+      border-color: var(--neon-lime) !important;
+      box-shadow: 0 0 25px rgba(125, 255, 155, 0.6) !important;
+      color: var(--neon-lime);
+      transform: scale(1.15);
+      z-index: 3;
+    }
+
+    .found::after {
+      content: '🎯';
+      position: absolute;
+      bottom: -25px;
+      font-size: 14px;
+    }
+
+    .stats {
+      text-align: center;
+      color: var(--neon-amber);
+      font-size: 15px;
+      margin-bottom: 5px;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .stats span {
+      font-weight: bold;
+    }
+
+    .math {
+      text-align: center;
+      color: var(--neon-lime);
+      font-size: 14px;
+    }
+
+    .fib-info {
+      text-align: center;
+      color: var(--neon-purple);
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .fib-info span {
+      font-weight: bold;
+      margin: 0 5px;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 12px 16px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.warning {
+      border-color: var(--neon-amber);
+      background: rgba(255, 179, 71, 0.1);
+      box-shadow: 0 0 16px rgba(255, 179, 71, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Fibonacci Search Visualizer</h2>
+
+    <div class="input-group">
+      <input type="number" id="targetInput" placeholder="Target value" value="21">
+      <button onclick="initSearch()">Start Search</button>
+    </div>
+
+    <div class="controls">
+      <button id="prevBtn" onclick="prevStep()" disabled>⬅ Back</button>
+      <button id="nextBtn" onclick="nextStep()" disabled>Next ➡</button>
+      <button id="playBtn" onclick="togglePlay()" disabled>▶ Play</button>
+    </div>
+
+    <div class="fib-info" id="fibDisplay">
+      fibM2: <span>-</span> | fibM1: <span>-</span> | fibM: <span>-</span>
+    </div>
+
+    <div class="array" id="arrayContainer"></div>
+
+    <div class="stats">
+      <div>Comparisons: <span id="comparisons">0</span></div>
+      <div>Offset: <span id="offsetVal">-1</span></div>
+    </div>
+
+    <div class="math">
+      Complexity: Time -> O(log n) | Space -> O(1)
+    </div>
+
+    <div class="operation-box info" id="message">Enter a target value and click Start Search. (Array sorted).</div>
+
+  </div>
+
+  <script>
+    let array = [2, 5, 8, 12, 15, 18, 21, 25, 30, 35, 40, 45, 50]; // 13 elements
+    let steps = [];
+    let currentStep = -1;
+    let interval = null;
+    let isPlaying = false;
+
+    // Initial render
+    function renderInitial() {
+      const container = document.getElementById("arrayContainer");
+      container.innerHTML = "";
+      array.forEach(value => {
+        const box = document.createElement("div");
+        box.className = "box in-range";
+        box.innerText = value;
+        container.appendChild(box);
+      });
+    }
+    renderInitial();
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function generateSteps(target) {
+      steps = [];
+      let comparisons = 0;
+      let n = array.length;
+
+      // Initialize fibonacci numbers
+      let fib2 = 0; // (m-2)'th Fibonacci 
+      let fib1 = 1; // (m-1)'th Fibonacci 
+      let fibM = fib2 + fib1; // m'th Fibonacci 
+
+      // fibM is going to store the smallest Fibonacci number >= n
+      while (fibM < n) {
+        fib2 = fib1;
+        fib1 = fibM;
+        fibM = fib2 + fib1;
+      }
+
+      let offset = -1;
+
+      // Initial state
+      steps.push({
+        fib2, fib1, fibM, offset, i: null,
+        comparisons: 0,
+        message: `Base state: Smallest Fibonacci >= ${n} is ${fibM}. offset = -1.`,
+        status: "info",
+        found: false
+      });
+
+      while (fibM > 1) {
+        // i = min(offset + fib2, n-1)
+        let i = Math.min(offset + fib2, n - 1);
+        comparisons++;
+
+        steps.push({
+          fib2, fib1, fibM, offset, i,
+          comparisons,
+          message: `Calculating i = min(${offset} + ${fib2}, ${n - 1}) = ${i}. Comparing arr[${i}] (${array[i]}) to ${target}...`,
+          status: "info",
+          found: false
+        });
+
+        // Match
+        if (array[i] === target) {
+          steps.push({
+            fib2, fib1, fibM, offset, i,
+            comparisons,
+            message: `Target ${target} found successfully at index ${i}!`,
+            status: "success",
+            found: true
+          });
+          return;
+        }
+
+        // Target greater, chop off left subarray
+        if (array[i] < target) {
+          let oldFibM = fibM;
+          fibM = fib1;
+          fib1 = fib2;
+          fib2 = fibM - fib1;
+          offset = i;
+          steps.push({
+            fib2, fib1, fibM, offset, i,
+            comparisons,
+            message: `${array[i]} < ${target}. Target is further right. Shifting Fibonacci down by 1 sequence step. Offset becomes ${offset}.`,
+            status: "warning",
+            found: false
+          });
+        }
+        // Target smaller, chop off right subarray
+        else {
+          let oldFibM = fibM;
+          fibM = fib2;
+          fib1 = fib1 - fib2;
+          fib2 = fibM - fib1;
+          steps.push({
+            fib2, fib1, fibM, offset, i,
+            comparisons,
+            message: `${array[i]} > ${target}. Target is further left. Shifting Fibonacci down by 2 sequence steps.`,
+            status: "warning",
+            found: false
+          });
+        }
+      }
+
+      // Check last element
+      if (fib1 && array[offset + 1] === target) {
+        comparisons++;
+        steps.push({
+          fib2, fib1, fibM, offset: offset + 1, i: offset + 1,
+          comparisons,
+          message: `Checking final remainder element index ${offset + 1}. Target ${target} found!`,
+          status: "success",
+          found: true
+        });
+        return;
+      }
+
+      steps.push({
+        fib2, fib1, fibM, offset, i: null,
+        comparisons,
+        message: `Fibonacci bounds exhausted. Target ${target} not found in array.`,
+        status: "error",
+        found: false
+      });
+    }
+
+    function render(step) {
+      if (!step) return;
+
+      const container = document.getElementById("arrayContainer");
+      container.innerHTML = "";
+
+      array.forEach((value, index) => {
+        const box = document.createElement("div");
+        box.className = "box";
+        box.innerText = value;
+
+        // Visual logic based on pointers
+        if (step.offset !== null && step.i !== null && !step.found && step.status !== "error") {
+          // Gray out everything before offset
+          if (index > step.offset) {
+            box.classList.add("in-range");
+          }
+        } else if (step.found || step.status === "error" || step.status === "info" && step.offset === -1) {
+          if (index > step.offset) box.classList.add("in-range");
+        }
+
+        if (step.offset !== -1 && index === step.offset) {
+          box.classList.add("offset");
+        }
+
+        if (index === step.i) {
+          if (step.found) {
+            box.classList.add("found");
+          } else {
+            box.classList.add("mid");
+          }
+        }
+
+        container.appendChild(box);
+      });
+
+      document.getElementById("fibDisplay").innerHTML = `fibM2: <span>${step.fib2}</span> | fibM1: <span>${step.fib1}</span> | fibM: <span>${step.fibM}</span>`;
+      document.getElementById("offsetVal").innerText = step.offset;
+      document.getElementById("comparisons").innerText = step.comparisons;
+      setMessage(step.message, step.status);
+      updateButtons();
+    }
+
+    function initSearch() {
+      clearInterval(interval);
+      isPlaying = false;
+      document.getElementById("playBtn").innerText = "▶ Play";
+
+      const targetStr = document.getElementById("targetInput").value;
+      if (targetStr.trim() === "") {
+        setMessage("Please enter a valid number.", "error");
+        return;
+      }
+
+      const target = parseInt(targetStr);
+      generateSteps(target);
+      currentStep = 0;
+
+      document.getElementById("prevBtn").disabled = false;
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("playBtn").disabled = false;
+
+      render(steps[currentStep]);
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        render(steps[currentStep]);
+        clickSound();
+        if (steps[currentStep].found || currentStep === steps.length - 1) {
+          if (steps[currentStep].found) victorySound();
+          pause();
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        render(steps[currentStep]);
+        clickSound();
+      }
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
+    }
+
+    function play() {
+      if (steps.length === 0) return;
+      if (currentStep >= steps.length - 1) currentStep = 0;
+
+      isPlaying = true;
+      document.getElementById("playBtn").innerText = "⏸ Pause";
+
+      clearInterval(interval);
+      render(steps[currentStep]);
+
+      interval = setInterval(() => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          render(steps[currentStep]);
+          clickSound();
+          if (steps[currentStep].found || currentStep === steps.length - 1) {
+            if (steps[currentStep].found) victorySound();
+            pause();
+          }
+        } else {
+          pause();
+        }
+      }, 1200);
+    }
+
+    function pause() {
+      clearInterval(interval);
+      isPlaying = false;
+      document.getElementById("playBtn").innerText = "▶ Play";
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = currentStep <= 0;
+      document.getElementById("nextBtn").disabled = currentStep >= steps.length - 1;
+    }
+
+    /* SOUNDS */
+    function clickSound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.frequency.value = 1100;
+      g.gain.value = 0.1;
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(400, a.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1200, a.currentTime + 0.6);
+      g.gain.setValueAtTime(0.2, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.7);
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.7);
+    }
+
+  </script>
+</body>
+
+</html>
