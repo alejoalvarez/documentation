@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Linear Search Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+      --neon-yellow: #ffe94f;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+      text-align: center;
+    }
+
+    .input-group {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    input {
+      padding: 8px 12px;
+      background: rgba(5, 8, 18, 0.8);
+      color: var(--neon-cyan);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 8px;
+      font-family: 'Fira Code', monospace;
+      font-size: 16px;
+      outline: none;
+      width: 150px;
+      text-align: center;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      transition: all 0.2s;
+    }
+
+    input:focus {
+      box-shadow: 0 0 15px var(--neon-cyan);
+    }
+
+    button {
+      padding: 8px 16px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 15px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--neon-cyan);
+      color: #031018;
+    }
+
+    button:disabled {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: rgba(5, 8, 18, 0.8);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .array {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin: 30px 0;
+      min-height: 80px;
+    }
+
+    .box {
+      width: 70px;
+      height: 70px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 229, 255, 0.1);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 12px;
+      font-size: 22px;
+      font-weight: bold;
+      color: var(--text);
+      box-shadow: 0 0 12px rgba(0, 229, 255, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    /* Element currently being compared */
+    .active {
+      background: rgba(255, 233, 79, 0.25) !important;
+      border-color: var(--neon-yellow) !important;
+      box-shadow: 0 0 20px rgba(255, 233, 79, 0.6) !important;
+      color: var(--neon-yellow);
+      transform: scale(1.1);
+    }
+
+    /* Target found */
+    .found {
+      background: rgba(125, 255, 155, 0.25) !important;
+      border-color: var(--neon-lime) !important;
+      box-shadow: 0 0 25px rgba(125, 255, 155, 0.6) !important;
+      color: var(--neon-lime);
+      transform: scale(1.15);
+    }
+
+    .stats {
+      text-align: center;
+      color: var(--neon-amber);
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .stats span {
+      font-weight: bold;
+    }
+
+    .math {
+      text-align: center;
+      color: var(--neon-lime);
+      font-size: 14px;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 12px 16px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+      text-align: center;
+      font-size: 16px;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Linear Search Visualizer</h2>
+
+    <div class="input-group">
+      <input type="number" id="targetInput" placeholder="Target value" value="9">
+      <button onclick="initSearch()">Start Search</button>
+    </div>
+
+    <div class="controls">
+      <button id="prevBtn" onclick="prevStep()" disabled>⬅ Back</button>
+      <button id="nextBtn" onclick="nextStep()" disabled>Next ➡</button>
+      <button id="playBtn" onclick="togglePlay()" disabled>▶ Play</button>
+    </div>
+
+    <div class="array" id="arrayContainer"></div>
+
+    <div class="stats">
+      Comparisons: <span id="comparisons">0</span>
+    </div>
+
+    <div class="math">
+      Complexity: Time -> O(n) | Space -> O(1)
+    </div>
+
+    <div class="operation-box info" id="message">Enter a target value and click Start Search.</div>
+
+  </div>
+
+  <script>
+    let array = [8, 3, 15, 6, 12, 9, 2, 18];
+    let steps = [];
+    let currentStep = -1;
+    let interval = null;
+    let isPlaying = false;
+
+    // Initial render
+    function renderInitial() {
+      const container = document.getElementById("arrayContainer");
+      container.innerHTML = "";
+      array.forEach(value => {
+        const box = document.createElement("div");
+        box.className = "box";
+        box.innerText = value;
+        container.appendChild(box);
+      });
+    }
+    renderInitial();
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function generateSteps(target) {
+      steps = [];
+      let comparisons = 0;
+
+      // Initial state
+      steps.push({
+        index: -1,
+        comparisons: 0,
+        message: `Starting linear search for target: ${target}.`,
+        status: "info"
+      });
+
+      let found = false;
+
+      for (let i = 0; i < array.length; i++) {
+        comparisons++;
+
+        steps.push({
+          index: i,
+          comparisons,
+          message: `Comparing element at index ${i} (${array[i]}) with target (${target})...`,
+          status: "info",
+          found: false
+        });
+
+        if (array[i] === target) {
+          steps.push({
+            index: i,
+            comparisons,
+            message: `Target ${target} found at index ${i}! Search complete.`,
+            status: "success",
+            found: true
+          });
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        steps.push({
+          index: -1,
+          comparisons,
+          message: `Target ${target} not found in the array. Reached the end.`,
+          status: "error",
+          found: false
+        });
+      }
+    }
+
+    function render(step) {
+      if (!step) return;
+
+      const container = document.getElementById("arrayContainer");
+      container.innerHTML = "";
+
+      array.forEach((value, index) => {
+        const box = document.createElement("div");
+        box.className = "box";
+        box.innerText = value;
+
+        if (index === step.index) {
+          box.classList.add(step.found ? "found" : "active");
+        }
+
+        container.appendChild(box);
+      });
+
+      document.getElementById("comparisons").innerText = step.comparisons;
+      setMessage(step.message, step.status);
+      updateButtons();
+    }
+
+    function initSearch() {
+      clearInterval(interval);
+      isPlaying = false;
+      document.getElementById("playBtn").innerText = "▶ Play";
+
+      const targetStr = document.getElementById("targetInput").value;
+      if (targetStr.trim() === "") {
+        setMessage("Please enter a valid number.", "error");
+        return;
+      }
+
+      const target = parseInt(targetStr);
+      generateSteps(target);
+      currentStep = 0;
+
+      document.getElementById("prevBtn").disabled = false;
+      document.getElementById("nextBtn").disabled = false;
+      document.getElementById("playBtn").disabled = false;
+
+      render(steps[currentStep]);
+    }
+
+    function nextStep() {
+      if (currentStep < steps.length - 1) {
+        currentStep++;
+        render(steps[currentStep]);
+        clickSound();
+        if (steps[currentStep].found || currentStep === steps.length - 1) {
+          victorySound();
+          pause();
+        }
+      }
+    }
+
+    function prevStep() {
+      if (currentStep > 0) {
+        currentStep--;
+        render(steps[currentStep]);
+        clickSound();
+      }
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        pause();
+      } else {
+        play();
+      }
+    }
+
+    function play() {
+      if (steps.length === 0) return;
+      if (currentStep >= steps.length - 1) currentStep = 0;
+
+      isPlaying = true;
+      document.getElementById("playBtn").innerText = "⏸ Pause";
+
+      clearInterval(interval);
+      render(steps[currentStep]);
+
+      interval = setInterval(() => {
+        if (currentStep < steps.length - 1) {
+          currentStep++;
+          render(steps[currentStep]);
+          clickSound();
+          if (steps[currentStep].found || currentStep === steps.length - 1) {
+            victorySound();
+            pause();
+          }
+        } else {
+          pause();
+        }
+      }, 700);
+    }
+
+    function pause() {
+      clearInterval(interval);
+      isPlaying = false;
+      document.getElementById("playBtn").innerText = "▶ Play";
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = currentStep <= 0;
+      document.getElementById("nextBtn").disabled = currentStep >= steps.length - 1;
+    }
+
+    /* SOUNDS */
+    function clickSound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.frequency.value = 1100;
+      g.gain.value = 0.1;
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(400, a.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1200, a.currentTime + 0.6);
+      g.gain.setValueAtTime(0.2, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.7);
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.7);
+    }
+
+  </script>
+</body>
+
+</html>
