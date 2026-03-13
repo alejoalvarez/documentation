@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Counting Sort Visualizer</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #04050d;
+      --panel: #0a0d1a;
+      --text: #e9f5ff;
+      --neon-cyan: #00e5ff;
+      --neon-cyan-soft: rgba(0, 229, 255, 0.2);
+      --neon-pink: #ff4fd8;
+      --neon-lime: #7dff9b;
+      --neon-amber: #ffb347;
+      --neon-yellow: #ffe94f;
+    }
+
+    body {
+      margin: 0;
+      background: radial-gradient(circle at 50% 20%, #11152b 0%, var(--bg) 45%, #02030a 100%);
+      color: var(--text);
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: unset;
+      padding: 0;
+    }
+
+    .container {
+      width: calc(100% - 32px);
+      max-width: 1200px;
+      height: auto;
+      background: linear-gradient(180deg, rgba(10, 13, 26, 0.9), rgba(6, 9, 20, 0.95));
+      border: 1px solid var(--neon-cyan-soft);
+      border-radius: 14px;
+      box-shadow: 0 0 28px rgba(0, 229, 255, 0.2), 0 0 70px rgba(0, 229, 255, 0.08);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      gap: 16px;
+      margin: 16px auto;
+    }
+
+    h2 {
+      margin: 0;
+      text-align: center;
+    }
+
+    canvas {
+      background: rgba(0, 229, 255, 0.02);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      box-shadow: inset 0 0 12px rgba(0, 229, 255, 0.12);
+      width: 100%;
+      max-width: 600px;
+      align-self: center;
+    }
+
+    button {
+      padding: 6px 12px;
+      margin: 5px;
+      background: rgba(5, 8, 18, 0.8);
+      border: 2px solid var(--neon-cyan);
+      color: var(--neon-cyan);
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.15);
+      font-family: 'Fira Code', monospace;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    button:hover:not(:disabled) {
+      background: var(--neon-cyan);
+      color: #031018;
+    }
+
+    button:disabled {
+      border-color: #555;
+      color: #555;
+      cursor: not-allowed;
+      box-shadow: none;
+      background: rgba(5, 8, 18, 0.8);
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .bars {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      height: 250px;
+      margin-top: 20px;
+      gap: 10px;
+    }
+
+    .bar {
+      width: 50px;
+      background: rgba(0, 229, 255, 0.15);
+      border: 2px solid var(--neon-cyan);
+      border-radius: 6px 6px 0 0;
+      color: var(--text);
+      text-align: center;
+      font-weight: bold;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 5px;
+      box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s, height 0.3s;
+    }
+
+    /* Element currently being counted */
+    .active {
+      background: rgba(255, 233, 79, 0.2) !important;
+      border-color: var(--neon-yellow) !important;
+      box-shadow: 0 0 15px rgba(255, 233, 79, 0.5) !important;
+      color: var(--neon-yellow);
+    }
+
+    /* Element placed into the output array */
+    .placed {
+      background: rgba(125, 255, 155, 0.2) !important;
+      border-color: var(--neon-lime) !important;
+      box-shadow: 0 0 15px rgba(125, 255, 155, 0.4) !important;
+      color: var(--neon-lime);
+    }
+
+    .stats {
+      text-align: center;
+      color: var(--neon-amber);
+      font-size: 15px;
+      margin-bottom: 5px;
+    }
+
+    .stats span {
+      font-weight: bold;
+    }
+
+    .math {
+      text-align: center;
+      color: var(--neon-lime);
+      font-size: 14px;
+    }
+
+    .operation-box {
+      margin-top: 8px;
+      padding: 10px 12px;
+      border: 2px solid var(--neon-cyan);
+      border-radius: 10px;
+      background: rgba(0, 229, 255, 0.08);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+      color: var(--text);
+      transition: all 0.25s ease;
+      text-align: center;
+    }
+
+    .operation-box.info {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 14px rgba(0, 229, 255, 0.2);
+    }
+
+    .operation-box.success {
+      border-color: var(--neon-lime);
+      background: rgba(125, 255, 155, 0.12);
+      box-shadow: 0 0 16px rgba(125, 255, 155, 0.28);
+    }
+
+    .operation-box.error {
+      border-color: var(--neon-pink);
+      background: rgba(255, 79, 216, 0.1);
+      box-shadow: 0 0 16px rgba(255, 79, 216, 0.24);
+    }
+
+    @media (max-width: 900px) {
+      canvas {
+        height: auto;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="container">
+
+    <h2>Counting Sort Algorithm Visualizer</h2>
+
+    <div class="controls">
+      <button id="prevBtn" onclick="prev()">⬅ Back</button>
+      <button id="nextBtn" onclick="next()">Next ➡</button>
+      <button id="playBtn" onclick="play()">▶ Play</button>
+      <button onclick="reset()" style="border-color: var(--neon-pink); color: var(--neon-pink);">Reset</button>
+    </div>
+
+    <div class="bars" id="bars"></div>
+
+    <div class="stats">
+      Operations: <span id="ops">0</span>
+    </div>
+
+    <div class="math">
+      Complexity: Time -> O(n + k) | Space -> O(n + k) | Stable | Non-comparative
+    </div>
+
+    <div class="operation-box info" id="message">Visualizer initialized. Press Play or Next to begin.</div>
+
+    <canvas id="complexityChart" width="600" height="200"></canvas>
+
+  </div>
+
+  <script>
+    let original = [4, 2, 2, 8, 3, 3, 1];
+    let steps = [];
+    let current = 0;
+    let interval;
+
+    function setMessage(text, type = "info") {
+      const messageEl = document.getElementById("message");
+      if (messageEl) {
+        messageEl.innerText = text;
+        messageEl.className = "operation-box " + type;
+      }
+    }
+
+    function generateSteps(arr) {
+      let local = [];
+      let ops = 0;
+      let max = Math.max(...arr);
+      let count = new Array(max + 1).fill(0);
+      let output = new Array(arr.length).fill(undefined);
+
+      // Initial state
+      local.push({
+        array: [...arr],
+        active: -1,
+        phase: "count",
+        ops: ops,
+        message: `Initial array: [${arr.join(", ")}]. Phase 1: counting occurrences...`
+      });
+
+      // Phase 1 — Count occurrences
+      for (let i = 0; i < arr.length; i++) {
+        count[arr[i]]++;
+        ops++;
+        local.push({
+          array: [...arr],
+          active: i,
+          phase: "count",
+          ops: ops,
+          message: `Counting: value ${arr[i]} → count[${arr[i]}] = ${count[arr[i]]}.`
+        });
+      }
+
+      local.push({
+        array: [...arr],
+        active: -1,
+        phase: "count",
+        ops: ops,
+        message: `Count array built. Phase 2: accumulating prefix sums...`
+      });
+
+      // Phase 2 — Prefix sums
+      for (let i = 1; i < count.length; i++) {
+        count[i] += count[i - 1];
+        ops++;
+      }
+
+      local.push({
+        array: [...arr],
+        active: -1,
+        phase: "count",
+        ops: ops,
+        message: `Prefix sums computed. Phase 3: placing elements into output array...`
+      });
+
+      // Phase 3 — Place into output (right to left for stability)
+      for (let i = arr.length - 1; i >= 0; i--) {
+        output[count[arr[i]] - 1] = arr[i];
+        count[arr[i]]--;
+        ops++;
+        local.push({
+          array: [...output],
+          active: -1,
+          phase: "place",
+          ops: ops,
+          message: `Placing ${arr[i]} → output index ${count[arr[i]]}.`
+        });
+      }
+
+      // Final state
+      local.push({
+        array: [...output],
+        active: -1,
+        phase: "done",
+        ops: ops,
+        message: "Array perfectly sorted!"
+      });
+
+      return local;
+    }
+
+    function render() {
+      let container = document.getElementById("bars");
+      container.innerHTML = "";
+      let step = steps[current];
+      const isFinal = current === steps.length - 1;
+      const isPlacing = step.phase === "place" || isFinal;
+
+      step.array.forEach((val, index) => {
+        let div = document.createElement("div");
+        div.className = "bar";
+        div.style.height = (val ? val * 25 : 5) + "px";
+        div.innerText = val !== undefined ? val : "";
+
+        if (isFinal || isPlacing) {
+          div.classList.add("placed");
+        } else if (step.active === index) {
+          div.classList.add("active");
+        }
+
+        container.appendChild(div);
+      });
+
+      document.getElementById("ops").innerText = step.ops;
+
+      if (isFinal) {
+        setMessage(step.message || "Array is sorted!", "success");
+      } else {
+        setMessage(step.message || "Visualizing counting sort...", "info");
+      }
+
+      drawComplexity(current);
+      updateButtons();
+    }
+
+    function next() {
+      if (current < steps.length - 1) {
+        current++;
+        clickSound();
+        render();
+      }
+    }
+
+    function prev() {
+      if (current > 0) {
+        current--;
+        render();
+      }
+    }
+
+    function play() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "⏸ Pause";
+      document.getElementById("playBtn").onclick = pause;
+
+      if (current >= steps.length - 1) {
+        current = 0;
+      }
+
+      interval = setInterval(() => {
+        if (current < steps.length - 1) {
+          current++;
+          clickSound();
+          render();
+        } else {
+          pause();
+          victorySound();
+        }
+      }, 600);
+    }
+
+    function pause() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "▶ Play";
+      document.getElementById("playBtn").onclick = play;
+    }
+
+    function reset() {
+      clearInterval(interval);
+      document.getElementById("playBtn").innerText = "▶ Play";
+      document.getElementById("playBtn").onclick = play;
+      current = 0;
+      setMessage("Visualizer reset. Press Play or Next to begin.", "info");
+      render();
+    }
+
+    function updateButtons() {
+      document.getElementById("prevBtn").disabled = current === 0;
+      document.getElementById("nextBtn").disabled = current === steps.length - 1;
+    }
+
+    function drawComplexity(stepIndex) {
+      let canvas = document.getElementById("complexityChart");
+      let ctx = canvas.getContext("2d");
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#00e5ff";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(0, canvas.height);
+
+      let maxSteps = steps.length - 1;
+      if (maxSteps <= 0) return;
+
+      for (let i = 0; i <= stepIndex; i++) {
+        let val = steps[i].ops;
+        let maxOps = steps[maxSteps].ops || 1;
+
+        let x = (i / maxSteps) * canvas.width;
+        let y = canvas.height - (val / maxOps) * (canvas.height - 20) - 10;
+
+        ctx.lineTo(x, y);
+      }
+      ctx.stroke();
+    }
+
+    function clickSound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.frequency.value = 1100;
+      g.gain.value = 0.1;
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.05);
+    }
+
+    function victorySound() {
+      const a = new (window.AudioContext || window.webkitAudioContext)();
+      const o = a.createOscillator();
+      const g = a.createGain();
+      o.type = "triangle";
+      o.frequency.setValueAtTime(400, a.currentTime);
+      o.frequency.exponentialRampToValueAtTime(1500, a.currentTime + 0.7);
+      g.gain.setValueAtTime(0.2, a.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, a.currentTime + 0.8);
+      o.connect(g);
+      g.connect(a.destination);
+      o.start();
+      o.stop(a.currentTime + 0.8);
+    }
+
+    steps = generateSteps([...original]);
+    render();
+  </script>
+</body>
+
+</html>

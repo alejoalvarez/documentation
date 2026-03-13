@@ -220,7 +220,7 @@ const sidebars = {
                 'software-architecture/algorithms/sorting/quick-sort',
                 'software-architecture/algorithms/sorting/heap-sort',
                 'software-architecture/algorithms/sorting/radix-sort',
-                // 'software-architecture/algorithms/sorting/counting-sort',
+                'software-architecture/algorithms/sorting/counting-sort',
                 // 'software-architecture/algorithms/sorting/bucket-sort',
               ],
             },
