@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amortized Complexity Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-item: #00ff9d;
+            --c-expensive: #ff3c00;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--c-item);
+            border: 1px solid var(--c-item);
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 157, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        .stats-row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-val {
+            font-family: monospace;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+
+        .stat-val.highlight {
+            color: var(--c-expensive);
+            text-shadow: 0 0 10px rgba(255, 60, 0, 0.5);
+        }
+
+        .array-container {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 25px;
+            position: relative;
+        }
+
+        .array-title {
+            font-family: monospace;
+            font-size: 1rem;
+            color: #fff;
+            margin-bottom: 15px;
+        }
+
+        .slots-wrapper {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            min-height: 50px;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        .slot {
+            width: 40px;
+            height: 40px;
+            border: 2px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .slot.filled {
+            border: 2px solid var(--c-item);
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .slot-val {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: var(--c-item);
+            transform: scale(0);
+            animation: popIn 0.3s forwards;
+            text-shadow: 0 0 5px var(--c-item);
+        }
+
+        @keyframes popIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .message-box {
+            position: absolute;
+            top: 25px;
+            right: 25px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: bold;
+            opacity: 0;
+            transition: 0.3s;
+        }
+
+        .msg-fast {
+            background: rgba(0, 255, 157, 0.2);
+            color: var(--c-item);
+            border: 1px solid var(--c-item);
+        }
+
+        .msg-slow {
+            background: rgba(255, 60, 0, 0.2);
+            color: var(--c-expensive);
+            border: 1px solid var(--c-expensive);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">Dynamic Array: Amortized O(1) Push</div>
+        <button class="btn" id="push-btn" onclick="pushItem()">array.push()</button>
+    </div>
+
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-label">Total Elements (N)</div>
+            <div class="stat-val" id="val-n">0</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Memory Capacity</div>
+            <div class="stat-val" id="val-cap" style="color:var(--text-dim)">4</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Cost of Last Push</div>
+            <div class="stat-val" id="val-cost">0 Ops</div>
+        </div>
+    </div>
+
+    <div class="array-container">
+        <div class="array-title">Physical Memory Allocation</div>
+        <div class="slots-wrapper" id="slots">
+            <!-- Slots added via JS -->
+        </div>
+        <div class="message-box" id="msg-box">O(1) Fast Push</div>
+    </div>
+
+    <script>
+        let capacity = 4;
+        let elements = 0;
+        let isResizing = false;
+
+        const btn = document.getElementById('push-btn');
+        const vN = document.getElementById('val-n');
+        const vCap = document.getElementById('val-cap');
+        const vCost = document.getElementById('val-cost');
+        const slotsWrapper = document.getElementById('slots');
+        const msgBox = document.getElementById('msg-box');
+
+        function renderSlots() {
+            slotsWrapper.innerHTML = '';
+            for (let i = 0; i < capacity; i++) {
+                if (i < elements) {
+                    slotsWrapper.innerHTML += `<div class="slot filled"><div class="slot-val">${i + 1}</div></div>`;
+                } else {
+                    slotsWrapper.innerHTML += `<div class="slot"></div>`;
+                }
+            }
+        }
+
+        async function pushItem() {
+            if (isResizing) return;
+
+            if (elements < capacity) {
+                // Easy O(1) push
+                elements++;
+                vN.textContent = elements;
+                vCost.textContent = "1 Op";
+                vCost.className = "stat-val";
+
+                showMsg('O(1) Quick Insert', 'msg-fast');
+                renderSlots();
+            } else {
+                // O(n) Resize required!
+                isResizing = true;
+                btn.disabled = true;
+
+                showMsg(`O(N) Capacity Full! Resizing...`, 'msg-slow');
+                vCost.textContent = (elements + 1) + " Ops!";
+                vCost.className = "stat-val highlight";
+
+                // Simulate delay mapping to O(n) copy
+                const oldCap = capacity;
+                capacity = capacity * 2;
+                vCap.textContent = capacity;
+
+                // Clear out everything visually to show reallocation
+                slotsWrapper.innerHTML = `<div style="color:var(--c-expensive); font-family:monospace; margin: 10px;">Copying ${oldCap} elements to new memory address...</div>`;
+
+                await new Promise(r => setTimeout(r, 1500));
+
+                elements++;
+                vN.textContent = elements;
+                showMsg('Reallocation Complete', 'msg-fast');
+                renderSlots();
+
+                isResizing = false;
+                btn.disabled = false;
+            }
+        }
+
+        function showMsg(txt, cls) {
+            msgBox.textContent = txt;
+            msgBox.className = 'message-box ' + cls;
+            msgBox.style.opacity = '1';
+            setTimeout(() => { msgBox.style.opacity = '0'; }, 1000);
+        }
+
+        renderSlots();
+    </script>
+</body>
+
+</html>

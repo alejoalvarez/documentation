@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space Complexity Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-o1: #00ff9d;
+            --c-on: #00ffff;
+            --c-on2: #ff3c00;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .value-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(125, 211, 252, 0.2);
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--c-o1);
+            width: 30px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 150px;
+            accent-color: var(--c-on);
+        }
+
+        .ram-stick {
+            background: #0d1a1b;
+            border: 2px solid var(--c-on);
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+        }
+
+        .ram-pins {
+            position: absolute;
+            bottom: -5px;
+            left: 20px;
+            right: 20px;
+            height: 5px;
+            background: linear-gradient(90deg, #ffd700 0%, #daa520 50%, #ffd700 100%);
+            border-radius: 0 0 4px 4px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 5%;
+        }
+
+        .pin-cut {
+            width: 8px;
+            height: 100%;
+            background: var(--bg-dark);
+        }
+
+        .section-title {
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-dim);
+            margin-bottom: 5px;
+        }
+
+        .memory-row {
+            display: flex;
+            gap: 5px;
+            flex-wrap: wrap;
+            min-height: 40px;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 6px;
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .mem-block {
+            width: 25px;
+            height: 25px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: monospace;
+            font-size: 0.7rem;
+            font-weight: bold;
+            color: #000;
+            transition: all 0.2s;
+            transform: scale(0);
+            animation: popIn 0.3s forwards;
+        }
+
+        @keyframes popIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .mem-block.o1 {
+            background: var(--c-o1);
+            box-shadow: 0 0 8px var(--c-o1);
+        }
+
+        .mem-block.on {
+            background: var(--c-on);
+            box-shadow: 0 0 8px var(--c-on);
+        }
+
+        .mem-block.on2 {
+            background: var(--c-on2);
+            box-shadow: 0 0 8px var(--c-on2);
+            width: 15px;
+            height: 15px;
+            /* smaller for matrix */
+            font-size: 0px;
+        }
+
+        .totals {
+            display: flex;
+            gap: 20px;
+        }
+
+        .total-box {
+            flex: 1;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-family: monospace;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .val-num {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .v-o1 {
+            color: var(--c-o1);
+            text-shadow: 0 0 5px var(--c-o1);
+        }
+
+        .v-on {
+            color: var(--c-on);
+            text-shadow: 0 0 5px var(--c-on);
+        }
+
+        .v-on2 {
+            color: var(--c-on2);
+            text-shadow: 0 0 5px var(--c-on2);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">Physical Memory Allocation Tracker</div>
+        <div class="controls">
+            <span style="font-size:0.9rem; color:var(--text-dim);">Data Size (N)</span>
+            <input type="range" id="n-slider" min="1" max="15" value="5">
+            <div class="value-box" id="n-display">5</div>
+        </div>
+    </div>
+
+    <div class="ram-stick">
+        <!-- O(1) Memory -->
+        <div>
+            <div class="section-title">O(1) Memory Allocation (Variables / Pointers)</div>
+            <div class="memory-row" id="mem-o1"></div>
+        </div>
+
+        <!-- O(n) Memory -->
+        <div>
+            <div class="section-title">O(n) Memory Allocation (1D Arrays / Lists)</div>
+            <div class="memory-row" id="mem-on"></div>
+        </div>
+
+        <!-- O(n^2) Memory -->
+        <div>
+            <div class="section-title">O(n²) Memory Allocation (2D Matrices / Grids)</div>
+            <div class="memory-row" id="mem-on2" style="max-width: 400px;"></div>
+        </div>
+
+        <div class="ram-pins">
+            <div class="pin-cut"></div>
+            <div class="pin-cut"></div>
+            <div class="pin-cut"></div>
+        </div>
+    </div>
+
+    <div class="totals">
+        <div class="total-box">
+            <div style="font-size:0.8rem; color:#7dd3fc">O(1) Blocks</div>
+            <div class="val-num v-o1" id="tot-o1">2</div>
+        </div>
+        <div class="total-box">
+            <div style="font-size:0.8rem; color:#7dd3fc">O(n) Blocks</div>
+            <div class="val-num v-on" id="tot-on">5</div>
+        </div>
+        <div class="total-box">
+            <div style="font-size:0.8rem; color:#7dd3fc">O(n²) Blocks</div>
+            <div class="val-num v-on2" id="tot-on2">25</div>
+        </div>
+    </div>
+
+    <script>
+        const slider = document.getElementById('n-slider');
+        const nDisplay = document.getElementById('n-display');
+
+        const rO1 = document.getElementById('mem-o1');
+        const rOn = document.getElementById('mem-on');
+        const rOn2 = document.getElementById('mem-on2');
+
+        const tO1 = document.getElementById('tot-o1');
+        const tOn = document.getElementById('tot-on');
+        const tOn2 = document.getElementById('tot-on2');
+
+        function updateMemory(N) {
+            // O(1) always takes 2 mock variables (e.g., counters or pointers)
+            rO1.innerHTML = '';
+            for (let i = 1; i <= 2; i++) {
+                rO1.innerHTML += `<div class="mem-block o1" style="animation-delay:${i * 0.05}s">V</div>`;
+            }
+
+            // O(n) array expanding exactly relative to N
+            rOn.innerHTML = '';
+            for (let i = 1; i <= N; i++) {
+                rOn.innerHTML += `<div class="mem-block on" style="animation-delay:${i * 0.02}s">${i}</div>`;
+            }
+
+            // O(n^2) matrix expanding exponentially
+            const sq = N * N;
+            rOn2.innerHTML = '';
+            for (let i = 1; i <= sq; i++) {
+                rOn2.innerHTML += `<div class="mem-block on2" style="animation-delay:${(i / sq) * 0.3}s"></div>`;
+            }
+
+            tOn.textContent = N;
+            tOn2.textContent = sq;
+        }
+
+        slider.addEventListener('input', (e) => {
+            const val = parseInt(e.target.value);
+            nDisplay.textContent = val;
+            updateMemory(val);
+        });
+
+        // Init
+        updateMemory(parseInt(slider.value));
+    </script>
+</body>
+
+</html>

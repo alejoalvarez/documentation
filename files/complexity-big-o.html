@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Big O Visualizer</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-o1: #00ff9d;
+            /* Excellent */
+            --c-ologn: #00ffff;
+            /* Good */
+            --c-on: #ffff00;
+            /* Fair */
+            --c-onlogn: #ff9900;
+            /* Bad */
+            --c-on2: #ff3c00;
+            /* Terrible */
+            --c-o2n: #ff003c;
+            /* Horrible */
+            --c-onf: #b500ff;
+            /* Disastrous */
+        }
+
+        body {
+            margin: 0;
+            padding: 15px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 12px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+            margin-bottom: 20px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--c-ologn);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-label {
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+        }
+
+        .value-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(125, 211, 252, 0.2);
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--c-o1);
+            width: 40px;
+            text-align: center;
+        }
+
+        input[type="range"] {
+            width: 200px;
+            accent-color: var(--c-ologn);
+        }
+
+        .main-layout {
+            display: flex;
+            gap: 20px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        .chart-panel {
+            flex: 1;
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            position: relative;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.6);
+            padding: 20px 20px 30px 40px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .axes-labels {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+        }
+
+        .y-label {
+            position: absolute;
+            left: 10px;
+            top: 20px;
+            color: rgba(125, 211, 252, 0.6);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            writing-mode: vertical-rl;
+            transform: rotate(180deg);
+        }
+
+        .x-label {
+            position: absolute;
+            bottom: 5px;
+            right: 20px;
+            color: rgba(125, 211, 252, 0.6);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .sidebar {
+            width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(0, 210, 255, 0.3);
+            border-radius: 3px;
+        }
+
+        .legend-item {
+            background: var(--bg-panel);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 12px 15px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .legend-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 4px;
+            background: var(--item-color);
+            opacity: 0.3;
+            transition: 0.3s;
+        }
+
+        .legend-item:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateX(-2px);
+        }
+
+        .legend-item.active {
+            border-color: rgba(255, 255, 255, 0.15);
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .legend-item.active::before {
+            opacity: 1;
+            box-shadow: 0 0 10px var(--item-color);
+        }
+
+        .color-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--item-color);
+            box-shadow: 0 0 8px var(--item-color);
+            flex-shrink: 0;
+            opacity: 0.3;
+        }
+
+        .legend-item.active .color-dot {
+            opacity: 1;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .item-desc {
+            font-size: 0.75rem;
+            color: var(--text-dim);
+            line-height: 1.3;
+        }
+
+        .item-ops {
+            font-family: monospace;
+            font-size: 1.1rem;
+            color: var(--item-color);
+            font-weight: bold;
+            text-align: right;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+            min-width: 60px;
+        }
+
+        .item-ops.infinity {
+            font-size: 1.4rem;
+        }
+
+        .tooltip {
+            position: absolute;
+            background: rgba(10, 15, 22, 0.95);
+            border: 1px solid var(--border-glow);
+            padding: 12px;
+            border-radius: 8px;
+            pointer-events: none;
+            display: none;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+            transform: translate(-50%, -100%);
+            margin-top: -15px;
+            min-width: 150px;
+        }
+
+        .tooltip-header {
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 4px;
+        }
+
+        .tooltip-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+            font-size: 0.9rem;
+        }
+
+        /* Quality zones overlay */
+        .zone-bg {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            pointer-events: none;
+            z-index: 1;
+            mix-blend-mode: screen;
+        }
+
+        .zone-terrible {
+            top: 0;
+            height: 30%;
+            background: linear-gradient(180deg, rgba(255, 0, 60, 0.05) 0%, transparent 100%);
+        }
+
+        .zone-bad {
+            top: 30%;
+            height: 30%;
+            background: linear-gradient(180deg, rgba(255, 153, 0, 0.03) 0%, transparent 100%);
+        }
+
+        .zone-fair {
+            top: 60%;
+            height: 20%;
+            background: linear-gradient(180deg, rgba(255, 255, 0, 0.03) 0%, transparent 100%);
+        }
+
+        .zone-excellent {
+            bottom: 0;
+            height: 20%;
+            background: linear-gradient(0deg, rgba(0, 255, 157, 0.05) 0%, transparent 100%);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="header">
+        <div class="title">Big O Complexity Chart</div>
+        <div class="controls">
+            <span class="slider-label">Input Size (Elements):</span>
+            <input type="range" id="n-slider" min="1" max="100" value="10">
+            <div class="value-box" id="n-display">10</div>
+        </div>
+    </div>
+
+    <div class="main-layout">
+        <div class="chart-panel">
+            <div class="zone-bg zone-terrible"></div>
+            <div class="zone-bg zone-bad"></div>
+            <div class="zone-bg zone-fair"></div>
+            <div class="zone-bg zone-excellent"></div>
+
+            <div class="chart-wrapper" id="chart-wrapper">
+                <canvas id="lines-canvas"></canvas>
+                <canvas id="interactive-canvas"></canvas>
+            </div>
+
+            <div class="axes-labels">
+                <div class="y-label">Operations required</div>
+                <div class="x-label">Input Size (n) &rarr;</div>
+            </div>
+
+            <div class="tooltip" id="tooltip">
+                <div class="tooltip-header" id="tt-header">n = 10</div>
+                <div id="tt-content"></div>
+            </div>
+        </div>
+
+        <div class="sidebar" id="legend-container">
+            <!-- Populated by JS -->
+        </div>
+    </div>
+
+    <script>
+        const algorithms = [
+            {
+                id: 'o1', name: 'O(1)', desc: 'Constant Time<br><span style="color:#888">Array idx, Hash Map lookup</span>', color: 'var(--c-o1)', active: true,
+                calc: (n) => 1
+            },
+            {
+                id: 'ologn', name: 'O(log n)', desc: 'Logarithmic<br><span style="color:#888">Binary Search, finding in BST</span>', color: 'var(--c-ologn)', active: true,
+                calc: (n) => Math.log2(n) || 0.1
+            },
+            {
+                id: 'on', name: 'O(n)', desc: 'Linear Time<br><span style="color:#888">Linear Search, simple loop</span>', color: 'var(--c-on)', active: true,
+                calc: (n) => n
+            },
+            {
+                id: 'onlogn', name: 'O(n log n)', desc: 'Linearithmic<br><span style="color:#888">Merge Sort, Quick Sort</span>', color: 'var(--c-onlogn)', active: true,
+                calc: (n) => n * (Math.log2(n) || 0.1)
+            },
+            {
+                id: 'on2', name: 'O(n²)', desc: 'Quadratic Time<br><span style="color:#888">Bubble Sort, nested loop</span>', color: 'var(--c-on2)', active: true,
+                calc: (n) => Math.pow(n, 2)
+            },
+            {
+                id: 'o2n', name: 'O(2ⁿ)', desc: 'Exponential<br><span style="color:#888">Recursive Fibonacci</span>', color: 'var(--c-o2n)', active: true,
+                calc: (n) => Math.pow(2, n)
+            },
+            {
+                id: 'onf', name: 'O(n!)', desc: 'Factorial Time<br><span style="color:#888">Traveling Salesperson</span>', color: 'var(--c-onf)', active: true,
+                calc: (n) => { let f = 1; for (let i = 2; i <= Math.min(n, 12); i++) f *= i; return n > 12 ? Infinity : f; }
+            }
+        ];
+
+        const C_MAX_N = 100;
+        const C_MAX_OPS = 130; // logical maximum
+
+        const slider = document.getElementById('n-slider');
+        const nDisplay = document.getElementById('n-display');
+        const legendContainer = document.getElementById('legend-container');
+        const wrapper = document.getElementById('chart-wrapper');
+        const linesCanvas = document.getElementById('lines-canvas');
+        const intCanvas = document.getElementById('interactive-canvas');
+        const tooltip = document.getElementById('tooltip');
+        const headerTT = document.getElementById('tt-header');
+        const contentTT = document.getElementById('tt-content');
+
+        let ctxL = linesCanvas.getContext('2d');
+        let ctxI = intCanvas.getContext('2d');
+        let w, h;
+        let pM = { x: -100, y: -100 };
+
+        const formatNumber = (num) => {
+            if (num === Infinity || num > 1e12) return '∞';
+            if (num > 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+            if (num > 1000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num > 1000) return (num / 1000).toFixed(1) + 'k';
+            return Math.round(num).toString();
+        };
+
+        function init() {
+            legendContainer.innerHTML = '';
+            algorithms.forEach(algo => {
+                const el = document.createElement('div');
+                el.className = 'legend-item active';
+                el.style.setProperty('--item-color', algo.color);
+                el.innerHTML = `
+                    <div class="color-dot"></div>
+                    <div class="item-info">
+                        <div class="item-name">${algo.name}</div>
+                        <div class="item-desc">${algo.desc}</div>
+                    </div>
+                    <div class="item-ops" id="ops-${algo.id}">0</div>
+                `;
+                el.onclick = () => {
+                    algo.active = !algo.active;
+                    el.classList.toggle('active', algo.active);
+                    drawChart();
+                    updateStatsDisplay(parseInt(slider.value));
+                };
+                legendContainer.appendChild(el);
+            });
+
+            const ro = new ResizeObserver(entries => {
+                for (let entry of entries) {
+                    w = entry.contentRect.width;
+                    h = entry.contentRect.height;
+                    linesCanvas.width = w; linesCanvas.height = h;
+                    intCanvas.width = w; intCanvas.height = h;
+                    drawChart();
+                    drawInteractive();
+                }
+            });
+            ro.observe(wrapper);
+
+            slider.addEventListener('input', (e) => {
+                const n = parseInt(e.target.value);
+                nDisplay.textContent = n;
+                updateStatsDisplay(n);
+                drawInteractive();
+            });
+
+            intCanvas.addEventListener('mousemove', (e) => {
+                const rect = intCanvas.getBoundingClientRect();
+                pM.x = e.clientX - rect.left;
+                pM.y = e.clientY - rect.top;
+                updateTooltip();
+            });
+
+            intCanvas.addEventListener('mouseleave', () => {
+                pM.x = -100; pM.y = -100;
+                tooltip.style.display = 'none';
+                drawInteractive();
+            });
+
+            updateStatsDisplay(parseInt(slider.value));
+        }
+
+        const mapX = (x) => (x / C_MAX_N) * w;
+        const mapY = (y) => h - Math.min((y / C_MAX_OPS) * h, h + 10);
+
+        const getRawColor = (varStr) => {
+            const temp = document.createElement("div");
+            temp.style.color = varStr;
+            document.body.appendChild(temp);
+            const rgb = window.getComputedStyle(temp).color;
+            document.body.removeChild(temp);
+            return rgb;
+        };
+
+        function drawChart() {
+            if (!w || !h) return;
+            ctxL.clearRect(0, 0, w, h);
+
+            // Grid
+            ctxL.strokeStyle = 'rgba(255,255,255,0.05)';
+            ctxL.lineWidth = 1;
+            ctxL.beginPath();
+            for (let i = 1; i < 10; i++) {
+                let y = h - (i / 10) * h;
+                ctxL.moveTo(0, y); ctxL.lineTo(w, y);
+                let x = (i / 10) * w;
+                ctxL.moveTo(x, 0); ctxL.lineTo(x, h);
+            }
+            ctxL.stroke();
+
+            // Curves
+            algorithms.forEach(algo => {
+                if (!algo.active) return;
+
+                ctxL.beginPath();
+                ctxL.moveTo(mapX(1), mapY(algo.calc(1)));
+
+                for (let x = 2; x <= C_MAX_N; x++) {
+                    let ops = algo.calc(x);
+                    ctxL.lineTo(mapX(x), mapY(ops));
+                    if (ops > C_MAX_OPS * 1.5) break;
+                }
+
+                ctxL.strokeStyle = getRawColor(algo.color);
+                ctxL.lineWidth = 3;
+                ctxL.lineCap = 'round';
+                ctxL.lineJoin = 'round';
+
+                // Glow
+                ctxL.shadowColor = ctxL.strokeStyle;
+                ctxL.shadowBlur = 12;
+                ctxL.stroke();
+                ctxL.shadowBlur = 0;
+            });
+        }
+
+        function drawInteractive() {
+            if (!w || !h) return;
+            ctxI.clearRect(0, 0, w, h);
+
+            const n = parseInt(slider.value);
+            const xPx = mapX(n);
+
+            ctxI.beginPath();
+            ctxI.moveTo(xPx, 0);
+            ctxI.lineTo(xPx, h);
+            ctxI.strokeStyle = 'rgba(0, 210, 255, 0.4)';
+            ctxI.setLineDash([5, 5]);
+            ctxI.lineWidth = 2;
+            ctxI.stroke();
+            ctxI.setLineDash([]);
+
+            algorithms.forEach(algo => {
+                if (!algo.active) return;
+                const ops = algo.calc(n);
+                if (ops > C_MAX_OPS * 1.1) return;
+
+                const yPx = mapY(ops);
+
+                ctxI.beginPath();
+                ctxI.arc(xPx, yPx, 6, 0, Math.PI * 2);
+                ctxI.fillStyle = '#000';
+                ctxI.fill();
+
+                ctxI.beginPath();
+                ctxI.arc(xPx, yPx, 4, 0, Math.PI * 2);
+                ctxI.fillStyle = getRawColor(algo.color);
+                ctxI.shadowColor = ctxI.fillStyle;
+                ctxI.shadowBlur = 10;
+                ctxI.fill();
+                ctxI.shadowBlur = 0;
+            });
+        }
+
+        function updateStatsDisplay(n) {
+            algorithms.forEach(algo => {
+                const el = document.getElementById(`ops-${algo.id}`);
+                const ops = algo.calc(n);
+                if (!algo.active) {
+                    el.textContent = '-';
+                    el.classList.remove('infinity');
+                } else if (ops > 1e6 || ops === Infinity) {
+                    el.innerHTML = '&infin;';
+                    el.classList.add('infinity');
+                } else {
+                    el.textContent = formatNumber(ops);
+                    el.classList.remove('infinity');
+                }
+            });
+        }
+
+        function updateTooltip() {
+            if (pM.x < 0) return;
+
+            const hoverN = Math.max(1, Math.min(100, Math.round((pM.x / w) * C_MAX_N)));
+            const cursorYOps = ((h - pM.y) / h) * C_MAX_OPS;
+
+            let closestAlgo = null;
+            let minDist = Infinity;
+
+            algorithms.forEach(algo => {
+                if (!algo.active) return;
+                const ops = algo.calc(hoverN);
+                const yDist = Math.abs(ops - cursorYOps);
+                if (yDist < minDist && yDist < (C_MAX_OPS * 0.15)) {
+                    minDist = yDist;
+                    closestAlgo = algo;
+                }
+            });
+
+            if (closestAlgo) {
+                tooltip.style.display = 'block';
+                tooltip.style.left = (pM.x + 10) + 'px';
+
+                let ty = pM.y - 15;
+                if (ty - 60 < 0) ty = pM.y + 40;
+                tooltip.style.top = ty + 'px';
+
+                headerTT.textContent = `Input Size: n = ${hoverN}`;
+
+                const val = formatNumber(closestAlgo.calc(hoverN));
+                const rgb = getRawColor(closestAlgo.color);
+                contentTT.innerHTML = `
+                    <div class="tooltip-row">
+                        <span style="color:${rgb}; font-weight:bold; font-family:monospace; font-size: 1.1em">${closestAlgo.name}</span>
+                    </div>
+                    <div class="tooltip-row" style="color:#aaa; font-family:sans-serif; margin-top:5px;">
+                        <span>Ops required: <strong style="color:#fff">${val}</strong></span>
+                    </div>
+                `;
+            } else {
+                tooltip.style.display = 'none';
+            }
+        }
+
+        init();
+    </script>
+</body>
+
+</html>
