@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Greedy Algorithm Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-greedy: #00ff9d;
+            --c-fail: #ff3c00;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .btn {
+            background: rgba(0, 255, 157, 0.1);
+            color: var(--c-greedy);
+            border: 1px solid var(--c-greedy);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 157, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        .stat-bar {
+            background: rgba(0, 0, 0, 0.4);
+            padding: 5px 12px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 15px;
+        }
+
+        .stat-item {
+            display: flex;
+            gap: 6px;
+        }
+
+        .viz-window {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-height: 400px;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            position: relative;
+        }
+
+        .coins-tray {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+
+        .coin-stack {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 25px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .coin-stack.considering {
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        }
+
+        .coin-stack.selected {
+            border-color: var(--c-greedy);
+            background: rgba(0, 255, 157, 0.1);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.3);
+        }
+
+        .coin-stack.rejected {
+            border-color: var(--c-fail);
+            background: rgba(255, 60, 0, 0.1);
+        }
+
+        .c-val {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.8), 0 0 10px rgba(0, 0, 0, 0.8);
+            border: 2px solid #fff;
+        }
+
+        .c-label {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        .target-box {
+            text-align: center;
+            margin: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .target-bar-bg {
+            width: 80%;
+            max-width: 600px;
+            height: 30px;
+            background: #111;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid #333;
+            position: relative;
+        }
+
+        .target-bar-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #00ff9d, #00ffff);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.5);
+        }
+
+        .target-text {
+            font-family: monospace;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .target-text span {
+            color: var(--c-greedy);
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        .inventory {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            min-height: 80px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .inv-coin {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #ffd700 0%, #b8860b 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #000;
+            font-weight: bold;
+            font-size: 1rem;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            animation: dropIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            transform: scale(0);
+        }
+
+        @keyframes dropIn {
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .system-msg {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-weight: bold;
+            opacity: 0;
+            transition: 0.3s;
+            background: rgba(0, 255, 157, 0.2);
+            color: var(--c-greedy);
+            border: 1px solid var(--c-greedy);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.2);
+        }
+
+        .preset-btns {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .preset-btn {
+            background: transparent;
+            color: var(--text-dim);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">Coin Change: Greedy Approach</div>
+        <div class="controls">
+            <div class="stat-bar">
+                <div class="stat-item"><span style="color:#7dd3fc">Coins Yielded:</span> <span id="ccount"
+                        style="color:#fff">0</span></div>
+            </div>
+            <button class="btn" id="run-btn" onclick="startSim()">Run Algorithm</button>
+        </div>
+    </div>
+
+    <div class="viz-window">
+        <!-- Coins available -->
+        <div class="coins-tray" id="tray">
+            <div class="coin-stack" id="c-25">
+                <div class="c-val">25</div>
+                <div class="c-label">Quarter</div>
+            </div>
+            <div class="coin-stack" id="c-10">
+                <div class="c-val">10</div>
+                <div class="c-label">Dime</div>
+            </div>
+            <div class="coin-stack" id="c-5">
+                <div class="c-val">5</div>
+                <div class="c-label">Nickel</div>
+            </div>
+            <div class="coin-stack" id="c-1">
+                <div class="c-val">1</div>
+                <div class="c-label">Penny</div>
+            </div>
+        </div>
+
+        <div class="target-box">
+            <div class="target-text">Target: <span id="v-current">0</span> / <span id="v-target">41</span></div>
+            <div class="target-bar-bg">
+                <div class="target-bar-fill" id="p-bar"></div>
+            </div>
+            <div class="preset-btns">
+                <button class="preset-btn" onclick="setTarget(41)">Target 41</button>
+                <button class="preset-btn" onclick="setTarget(89)">Target 89</button>
+                <button class="preset-btn" onclick="setTarget(7)">Target 7</button>
+            </div>
+        </div>
+
+        <div class="inventory" id="inv"></div>
+        <div class="system-msg" id="msg">Greedy Choice Made!</div>
+    </div>
+
+    <script>
+        const coins = [25, 10, 5, 1];
+        let target = 41;
+        let runningCount = 0;
+        let coinsYielded = 0;
+        let isRunning = false;
+
+        const vCurr = document.getElementById('v-current');
+        const vTarg = document.getElementById('v-target');
+        const pBar = document.getElementById('p-bar');
+        const countTxt = document.getElementById('ccount');
+        const inv = document.getElementById('inv');
+        const btn = document.getElementById('run-btn');
+        const msgBox = document.getElementById('msg');
+
+        function setTarget(t) {
+            if (isRunning) return;
+            target = t;
+            vTarg.textContent = t;
+            resetUI();
+        }
+
+        function resetUI() {
+            runningCount = 0;
+            coinsYielded = 0;
+            vCurr.textContent = runningCount;
+            countTxt.textContent = "0";
+            pBar.style.width = "0%";
+            pBar.style.background = "linear-gradient(90deg, #00ff9d, #00ffff)";
+            pBar.style.boxShadow = "0 0 20px rgba(0,255,157,0.5)";
+            inv.innerHTML = '';
+
+            coins.forEach(c => {
+                document.getElementById(`c-${c}`).className = 'coin-stack';
+            });
+        }
+
+        async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function showMsg(txt, cls, color) {
+            msgBox.textContent = txt;
+            msgBox.style.background = `rgba(${color}, 0.2)`;
+            msgBox.style.color = `rgb(${color})`;
+            msgBox.style.borderColor = `rgb(${color})`;
+            msgBox.style.boxShadow = `0 0 20px rgba(${color}, 0.2)`;
+
+            msgBox.style.opacity = '1';
+            setTimeout(() => { msgBox.style.opacity = '0'; }, 1200);
+        }
+
+        async function startSim() {
+            if (isRunning) return;
+            isRunning = true;
+            btn.disabled = true;
+            resetUI();
+
+            for (let i = 0; i < coins.length; i++) {
+                const coin = coins[i];
+                const stack = document.getElementById(`c-${coin}`);
+
+                // Focus ring
+                stack.classList.add('considering');
+                await sleep(600);
+
+                // Keep pulling this coin while valid!
+                while (runningCount + coin <= target) {
+                    stack.classList.remove('considering');
+                    stack.classList.add('selected');
+
+                    showMsg(`Greedy: Takes largest possible (${coin})`, 'success', '0, 255, 157');
+
+                    runningCount += coin;
+                    coinsYielded++;
+
+                    vCurr.textContent = runningCount;
+                    countTxt.textContent = coinsYielded;
+                    pBar.style.width = `${(runningCount / target) * 100}%`;
+
+                    inv.innerHTML += `<div class="inv-coin">${coin}</div>`;
+
+                    await sleep(800);
+                }
+
+                // Invalid / Finished with this coin
+                stack.classList.remove('considering');
+                stack.classList.remove('selected');
+
+                if (runningCount < target) {
+                    stack.classList.add('rejected');
+                    showMsg(`Cannot fit ${coin}. Checking smaller...`, 'fail', '255, 60, 0');
+                    await sleep(600);
+                    stack.classList.remove('rejected');
+                } else {
+                    break;
+                }
+            }
+
+            pBar.style.background = "#fff";
+            pBar.style.boxShadow = "0 0 30px #fff";
+            showMsg(`Goal Reached! (${coinsYielded} coins)`, 'success', '255, 255, 255');
+
+            isRunning = false;
+            btn.disabled = false;
+        }
+
+        // Init
+        vTarg.textContent = target;
+        resetUI();
+
+    </script>
+</body>
+
+</html>

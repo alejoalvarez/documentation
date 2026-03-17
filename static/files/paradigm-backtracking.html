@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backtracking Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-queen: #00ff9d;
+            --c-attack: #ff3c00;
+            --c-explore: #00ffff;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn {
+            background: rgba(0, 255, 255, 0.1);
+            color: var(--c-explore);
+            border: 1px solid var(--c-explore);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: rgba(0, 255, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        .layout {
+            display: flex;
+            gap: 20px;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .viz-window {
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            padding: 30px;
+            box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.8);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            max-width: 500px;
+            box-sizing: border-box;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            gap: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            width: 240px;
+            height: 240px;
+        }
+
+        .cell {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .cell.light {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .cell.dark {
+            background: rgba(0, 0, 0, 0.4);
+        }
+
+        .queen {
+            color: var(--c-queen);
+            text-shadow: 0 0 15px var(--c-queen);
+            animation: dropIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            font-family: serif;
+        }
+
+        @keyframes dropIn {
+            0% {
+                transform: scale(0);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        .cell.checking .queen {
+            color: rgba(255, 255, 255, 0.5);
+            text-shadow: none;
+            opacity: 0.5;
+            animation: pulseFade 0.5s infinite alternate;
+        }
+
+        @keyframes pulseFade {
+            0% {
+                opacity: 0.3;
+            }
+
+            100% {
+                opacity: 0.8;
+            }
+        }
+
+        .cell.attacked {
+            background: rgba(255, 60, 0, 0.2) !important;
+            box-shadow: inset 0 0 10px rgba(255, 60, 0, 0.6);
+        }
+
+        .cell.attacked .queen {
+            color: var(--c-attack);
+            text-shadow: 0 0 15px var(--c-attack);
+        }
+
+        .cell.safe {
+            background: rgba(0, 255, 157, 0.1) !important;
+            box-shadow: inset 0 0 10px rgba(0, 255, 157, 0.4);
+        }
+
+        .msg-box {
+            font-family: monospace;
+            font-size: 1.1rem;
+            height: 24px;
+            text-align: center;
+            color: var(--text-main);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .stats {
+            display: flex;
+            gap: 20px;
+            font-family: monospace;
+            font-size: 1rem;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .stat-l {
+            color: var(--text-dim);
+        }
+
+        .stat-v {
+            color: #fff;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">N-Queens: 4x4 Backtracking</div>
+        <button class="btn" id="btn-run" onclick="startSim()">Solve Puzzle</button>
+    </div>
+
+    <div class="layout">
+        <div class="viz-window">
+            <div class="board" id="board"></div>
+
+            <div class="msg-box" id="msg">Awaiting Command...</div>
+
+            <div class="stats">
+                <div><span class="stat-l">Nodes Explored:</span> <span class="stat-v" id="v-nodes">0</span></div>
+                <div><span class="stat-l">Backtracks:</span> <span class="stat-v" id="v-backs"
+                        style="color:var(--c-attack)">0</span></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const N = 4;
+        let boardArr = Array(N).fill(-1);
+        let isRunning = false;
+        let nodes = 0;
+        let backtracks = 0;
+
+        const boardEl = document.getElementById('board');
+        const msgEl = document.getElementById('msg');
+        const vn = document.getElementById('v-nodes');
+        const vb = document.getElementById('v-backs');
+        const btn = document.getElementById('btn-run');
+
+        function initBoard() {
+            boardEl.innerHTML = '';
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    const c = document.createElement('div');
+                    c.className = `cell ${(i + j) % 2 === 0 ? 'light' : 'dark'}`;
+                    c.id = `c-${i}-${j}`;
+                    boardEl.appendChild(c);
+                }
+            }
+        }
+
+        async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function renderBoardState() {
+            for (let i = 0; i < N; i++) {
+                for (let j = 0; j < N; j++) {
+                    const c = document.getElementById(`c-${i}-${j}`);
+                    c.innerHTML = '';
+                    c.className = `cell ${(i + j) % 2 === 0 ? 'light' : 'dark'}`; // reset
+                    if (boardArr[i] === j) {
+                        c.innerHTML = '<span class="queen">♛</span>';
+                    }
+                }
+            }
+        }
+
+        function setMsg(txt, color) {
+            msgEl.textContent = txt;
+            msgEl.style.color = color;
+            msgEl.style.textShadow = `0 0 10px ${color}`;
+        }
+
+        async function isSafe(row, col) {
+            // Check previous rows
+            for (let i = 0; i < row; i++) {
+                let j = boardArr[i];
+                // Same column or same diagonal
+                if (j === col || Math.abs(i - row) === Math.abs(j - col)) {
+
+                    // Highlight attacking 
+                    const attacker = document.getElementById(`c-${i}-${j}`);
+                    const target = document.getElementById(`c-${row}-${col}`);
+
+                    attacker.classList.add('attacked');
+                    target.classList.add('attacked');
+
+                    setMsg('Conflict Detected! Attack path.', 'var(--c-attack)');
+                    await sleep(800);
+
+                    attacker.className = `cell ${(i + j) % 2 === 0 ? 'light' : 'dark'}`;
+                    attacker.innerHTML = '<span class="queen">♛</span>';
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        async function solveNQ(row) {
+            if (row === N) return true;
+
+            for (let col = 0; col < N; col++) {
+                nodes++;
+                vn.textContent = nodes;
+
+                // Show checking intent
+                boardArr[row] = col;
+                renderBoardState();
+                const cell = document.getElementById(`c-${row}-${col}`);
+                cell.classList.add('checking');
+                setMsg(`Exploring Row ${row}, Col ${col}...`, 'var(--c-explore)');
+                await sleep(500);
+
+                if (await isSafe(row, col)) {
+                    cell.classList.remove('checking');
+                    cell.classList.add('safe');
+                    setMsg('Safe Position. Placing Queen.', 'var(--c-queen)');
+                    await sleep(600);
+
+                    if (await solveNQ(row + 1)) return true;
+                } else {
+                    cell.classList.remove('checking');
+                }
+
+                // Backtrack!
+                boardArr[row] = -1;
+                renderBoardState();
+                backtracks++;
+                vb.textContent = backtracks;
+                setMsg('BACKTRACKING! Invalid node path.', 'var(--c-attack)');
+                await sleep(500);
+            }
+
+            return false;
+        }
+
+        async function startSim() {
+            if (isRunning) return;
+            isRunning = true;
+            btn.disabled = true;
+
+            boardArr = Array(N).fill(-1);
+            nodes = 0;
+            backtracks = 0;
+            vn.textContent = 0;
+            vb.textContent = 0;
+            initBoard();
+
+            setMsg('Initiating recursive state space search...', 'var(--text-main)');
+            await sleep(800);
+
+            if (await solveNQ(0)) {
+                setMsg('Goal Optimal Solution Found!', 'var(--c-queen)');
+                for (let i = 0; i < N; i++) {
+                    const c = document.getElementById(`c-${i}-${boardArr[i]}`);
+                    c.style.background = 'rgba(0,255,157,0.3)';
+                    c.style.boxShadow = '0 0 20px rgba(0,255,157,0.6)';
+                }
+            }
+
+            isRunning = false;
+            btn.disabled = false;
+            btn.textContent = "Restart Simulation";
+        }
+
+        initBoard();
+
+    </script>
+</body>
+
+</html>

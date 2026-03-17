@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Divide and Conquer Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-divide: #ff3c00;
+            --c-conquer: #00ffff;
+            --c-combine: #00ff9d;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--c-conquer);
+            border: 1px solid var(--c-conquer);
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: rgba(0, 210, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        .stage-indicator {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-bottom: 10px;
+        }
+
+        .stage-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #666;
+            transition: 0.3s;
+        }
+
+        .stage-badge.active.s-divide {
+            color: var(--c-divide);
+            border-color: var(--c-divide);
+            box-shadow: 0 0 10px rgba(255, 60, 0, 0.4);
+            background: rgba(255, 60, 0, 0.1);
+        }
+
+        .stage-badge.active.s-conquer {
+            color: var(--c-conquer);
+            border-color: var(--c-conquer);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
+            background: rgba(0, 255, 255, 0.1);
+        }
+
+        .stage-badge.active.s-combine {
+            color: var(--c-combine);
+            border-color: var(--c-combine);
+            box-shadow: 0 0 10px rgba(0, 255, 157, 0.4);
+            background: rgba(0, 255, 157, 0.1);
+        }
+
+        .viz-area {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-glow);
+            border-radius: 12px;
+            padding: 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            position: relative;
+        }
+
+        .tree-level {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            min-height: 50px;
+            transition: all 0.5s;
+        }
+
+        .array-box {
+            display: flex;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            background: rgba(0, 0, 0, 0.6);
+            transition: all 0.5s;
+        }
+
+        .array-box.splitting {
+            border-color: var(--c-divide);
+            box-shadow: 0 0 15px rgba(255, 60, 0, 0.2);
+            transform: scale(1.05);
+        }
+
+        .array-box.sorting {
+            border-color: var(--c-conquer);
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
+        }
+
+        .array-box.merging {
+            border-color: var(--c-combine);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+            transform: scale(1.05);
+        }
+
+        .array-box.done {
+            border-color: var(--c-combine);
+            box-shadow: 0 0 20px rgba(0, 255, 157, 0.4);
+        }
+
+        .cell {
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            font-family: monospace;
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #fff;
+            transition: all 0.3s;
+        }
+
+        .cell:last-child {
+            border-right: none;
+        }
+
+        .cell.highlight {
+            background: rgba(0, 255, 255, 0.3);
+            color: var(--c-conquer);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">Divide and Conquer (Merge Sort)</div>
+        <button class="btn" id="start-btn" onclick="startSim()">Run Simulation</button>
+    </div>
+
+    <div class="stage-indicator">
+        <div class="stage-badge s-divide" id="bdg-div">1. Divide</div>
+        <div class="stage-badge s-conquer" id="bdg-con">2. Conquer</div>
+        <div class="stage-badge s-combine" id="bdg-com">3. Combine</div>
+    </div>
+
+    <div class="viz-area" id="viz-area">
+        <!-- Tree levels generated via JS -->
+    </div>
+
+    <script>
+        const initialArray = [38, 27, 43, 3, 9, 82, 10];
+        const viz = document.getElementById('viz-area');
+        const btn = document.getElementById('start-btn');
+
+        const bDiv = document.getElementById('bdg-div');
+        const bCon = document.getElementById('bdg-con');
+        const bCom = document.getElementById('bdg-com');
+
+        let levels = [];
+
+        function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        function renderArray(arr, id, extras = "") {
+            let cells = arr.map(v => `<div class="cell">${v}</div>`).join('');
+            return `<div class="array-box ${extras}" id="${id}">${cells}</div>`;
+        }
+
+        function init() {
+            viz.innerHTML = '';
+            levels = [];
+
+            // Level 0
+            let l0 = document.createElement('div');
+            l0.className = 'tree-level';
+            l0.innerHTML = renderArray(initialArray, 'node-root');
+            viz.appendChild(l0);
+            levels.push(l0);
+
+            bDiv.classList.remove('active');
+            bCon.classList.remove('active');
+            bCom.classList.remove('active');
+        }
+
+        async function startSim() {
+            btn.disabled = true;
+            init();
+
+            // DIVIDE STAGE
+            bDiv.classList.add('active');
+
+            // L 1
+            await sleep(800);
+            document.getElementById('node-root').classList.add('splitting');
+            await sleep(600);
+
+            let l1 = document.createElement('div');
+            l1.className = 'tree-level';
+            l1.innerHTML = renderArray([38, 27, 43, 3], 'n-1-1') + renderArray([9, 82, 10], 'n-1-2');
+            viz.appendChild(l1);
+            document.getElementById('node-root').classList.remove('splitting');
+
+            // L 2
+            await sleep(800);
+            document.getElementById('n-1-1').classList.add('splitting');
+            document.getElementById('n-1-2').classList.add('splitting');
+            await sleep(600);
+
+            let l2 = document.createElement('div');
+            l2.className = 'tree-level';
+            l2.innerHTML = renderArray([38, 27], 'n-2-1') + renderArray([43, 3], 'n-2-2') + renderArray([9, 82], 'n-2-3') + renderArray([10], 'n-2-4');
+            viz.appendChild(l2);
+            document.getElementById('n-1-1').classList.remove('splitting');
+            document.getElementById('n-1-2').classList.remove('splitting');
+
+            // L 3
+            await sleep(800);
+            document.getElementById('n-2-1').classList.add('splitting');
+            document.getElementById('n-2-2').classList.add('splitting');
+            document.getElementById('n-2-3').classList.add('splitting');
+            await sleep(600);
+
+            let l3 = document.createElement('div');
+            l3.className = 'tree-level';
+            l3.innerHTML = renderArray([38], 'n-3-1') + renderArray([27], 'n-3-2') + renderArray([43], 'n-3-3') + renderArray([3], 'n-3-4') + renderArray([9], 'n-3-5') + renderArray([82], 'n-3-6') + renderArray([10], 'n-3-7');
+            viz.appendChild(l3);
+            document.getElementById('n-2-1').classList.remove('splitting');
+            document.getElementById('n-2-2').classList.remove('splitting');
+            document.getElementById('n-2-3').classList.remove('splitting');
+
+            // CONQUER (Base Cases)
+            bDiv.classList.remove('active');
+            bCon.classList.add('active');
+            await sleep(1000);
+
+            const bottomNodes = ['n-3-1', 'n-3-2', 'n-3-3', 'n-3-4', 'n-3-5', 'n-3-6', 'n-3-7'];
+            for (let id of bottomNodes) {
+                document.getElementById(id).classList.add('sorting');
+            }
+            await sleep(1000);
+            for (let id of bottomNodes) {
+                document.getElementById(id).classList.remove('sorting');
+            }
+            bCon.classList.remove('active');
+
+            // COMBINE
+            bCom.classList.add('active');
+
+            // Merge to L2
+            l3.style.opacity = '0.3';
+            await sleep(500);
+            document.getElementById('n-2-1').outerHTML = renderArray([27, 38], 'n-2-1', 'merging');
+            document.getElementById('n-2-2').outerHTML = renderArray([3, 43], 'n-2-2', 'merging');
+            document.getElementById('n-2-3').outerHTML = renderArray([9, 82], 'n-2-3', 'merging');
+            await sleep(1000);
+            document.getElementById('n-2-1').classList.remove('merging');
+            document.getElementById('n-2-2').classList.remove('merging');
+            document.getElementById('n-2-3').classList.remove('merging');
+
+            // Merge to L1
+            l2.style.opacity = '0.3';
+            await sleep(500);
+            document.getElementById('n-1-1').outerHTML = renderArray([3, 27, 38, 43], 'n-1-1', 'merging');
+            document.getElementById('n-1-2').outerHTML = renderArray([9, 10, 82], 'n-1-2', 'merging');
+            await sleep(1000);
+            document.getElementById('n-1-1').classList.remove('merging');
+            document.getElementById('n-1-2').classList.remove('merging');
+
+            // Merge to Root
+            l1.style.opacity = '0.3';
+            await sleep(500);
+            document.getElementById('node-root').outerHTML = renderArray([3, 9, 10, 27, 38, 43, 82], 'node-root', 'merging');
+            await sleep(1000);
+            document.getElementById('node-root').className = 'array-box done';
+
+            bCom.classList.remove('active');
+            btn.disabled = false;
+            btn.textContent = 'Restart Simulation';
+        }
+
+        init();
+    </script>
+</body>
+
+</html>

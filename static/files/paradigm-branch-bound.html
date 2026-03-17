@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch and Bound Visualization</title>
+    <style>
+        :root {
+            --bg-dark: #030507;
+            --bg-panel: #0a0f16;
+            --border-glow: rgba(0, 255, 255, 0.3);
+            --text-main: #e0f2fe;
+            --text-dim: #7dd3fc;
+
+            --c-node: #00ffff;
+            --c-best: #00ff9d;
+            --c-prune: #ff3c00;
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: transparent;
+            color: var(--text-main);
+            font-family: 'Inter', system-ui, sans-serif;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-panel);
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.05);
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-main);
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.5);
+        }
+
+        .btn {
+            background: rgba(0, 210, 255, 0.1);
+            color: var(--c-node);
+            border: 1px solid var(--c-node);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn:hover {
+            background: rgba(0, 210, 255, 0.2);
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.4);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            border-color: #555;
+            color: #888;
+        }
+
+        .stat-bar {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 6px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 1.1rem;
+            border: 1px dashed rgba(255, 255, 255, 0.2);
+            display: flex;
+            gap: 20px;
+        }
+
+        .val-hl {
+            color: var(--c-best);
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(0, 255, 157, 0.5);
+        }
+
+        .viz-panel {
+            flex: 1;
+            background: var(--bg-panel);
+            border-radius: 12px;
+            border: 1px solid var(--border-glow);
+            padding: 20px;
+            position: relative;
+            min-height: 400px;
+            overflow: hidden;
+            box-shadow: inset 0 0 30px rgba(0, 0, 0, 0.8);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .svg-container {
+            width: 100%;
+            height: 100%;
+            flex: 1;
+            user-select: none;
+        }
+
+        .node circle {
+            fill: #000;
+            stroke: #555;
+            stroke-width: 2px;
+            transition: all 0.3s;
+        }
+
+        .node.exploring circle {
+            stroke: var(--c-node);
+            fill: rgba(0, 255, 255, 0.1);
+            stroke-width: 3px;
+            filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.6));
+        }
+
+        .node.best circle {
+            stroke: var(--c-best);
+            fill: rgba(0, 255, 157, 0.2);
+            stroke-width: 4px;
+            filter: drop-shadow(0 0 15px rgba(0, 255, 157, 0.8));
+        }
+
+        .node.pruned circle {
+            stroke: var(--c-prune);
+            fill: rgba(255, 60, 0, 0.1);
+            opacity: 0.4;
+        }
+
+        .node text {
+            font-family: monospace;
+            font-size: 12px;
+            fill: #fff;
+            text-anchor: middle;
+            dominant-baseline: central;
+        }
+
+        .node text.t-info {
+            font-size: 10px;
+            fill: #aaa;
+            transform: translateY(22px);
+        }
+
+        .node.pruned text {
+            opacity: 0.4;
+            fill: var(--c-prune);
+        }
+
+        .link {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.1);
+            stroke-width: 2px;
+            transition: 0.3s;
+        }
+
+        .link.active {
+            stroke: var(--c-node);
+            stroke-width: 3px;
+        }
+
+        .link.pruned {
+            stroke: rgba(255, 60, 0, 0.2);
+            stroke-dasharray: 5, 5;
+        }
+
+        .sys-log {
+            font-family: monospace;
+            font-size: 0.9rem;
+            color: var(--text-dim);
+            height: 24px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 15px;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="title">B&B: Minimum Cost Path Pruning</div>
+        <div class="stat-bar">
+            <div>Global Upper Bound (Best Found): <span id="v-best" class="val-hl">∞</span></div>
+        </div>
+        <button class="btn" id="btn-run" onclick="startSim()">Execute B&B</button>
+    </div>
+
+    <div class="viz-panel">
+        <svg class="svg-container" id="svg-canvas"></svg>
+        <div class="sys-log" id="log-msg">Ready to explore state space.</div>
+    </div>
+
+    <script>
+        const treeData = {
+            id: 'Root', bound: 0, cost: 0, isLeaf: false, children: [
+                {
+                    id: 'A', bound: 10, cost: 10, isLeaf: false, children: [
+                        { id: 'A1', bound: 15, cost: 15, isLeaf: true }, /* First Solution Found = 15 */
+                        {
+                            id: 'A2', bound: 11, cost: 11, isLeaf: false, children: [
+                                { id: 'A2.1', bound: 18, cost: 18, isLeaf: true },
+                                { id: 'A2.2', bound: 12, cost: 12, isLeaf: true } /* Shorter Solution Found = 12 */
+                            ]
+                        }
+                    ]
+                },
+                {
+                    id: 'B', bound: 14, cost: 14, isLeaf: false, children: [ /* Bound 14 > Best 12 (PRUNE) */
+                        { id: 'B1', bound: 16, cost: 16, isLeaf: true },
+                        { id: 'B2', bound: 14, cost: 14, isLeaf: true }
+                    ]
+                },
+                {
+                    id: 'C', bound: 8, cost: 8, isLeaf: false, children: [
+                        { id: 'C1', bound: 15, cost: 15, isLeaf: true },
+                        { id: 'C2', bound: 9, cost: 9, isLeaf: true } /* Global Optimal Solution = 9 */
+                    ]
+                }
+            ]
+        };
+
+        let svg, g, root, treeLayout;
+        let globalBestCost = Infinity;
+        let isRunning = false;
+
+        const btn = document.getElementById('btn-run');
+        const vBest = document.getElementById('v-best');
+        const logMsg = document.getElementById('log-msg');
+
+        function setLog(txt, color = '#7dd3fc') {
+            logMsg.textContent = txt;
+            logMsg.style.color = color;
+        }
+
+        function initD3() {
+            d3.select("#svg-canvas").selectAll("*").remove();
+            const container = document.querySelector('.viz-panel');
+            const width = container.clientWidth - 40;
+            const height = 300;
+
+            svg = d3.select("#svg-canvas");
+            g = svg.append("g").attr("transform", "translate(0, 40)");
+
+            treeLayout = d3.tree().size([width, height]);
+            root = d3.hierarchy(treeData);
+            treeLayout(root);
+
+            g.selectAll(".link")
+                .data(root.links())
+                .enter().append("path")
+                .attr("class", d => `link l-${d.source.data.id.replace('.', '')} l-${d.target.data.id.replace('.', '')}`)
+                .attr("id", d => `link-${d.target.data.id.replace('.', '')}`)
+                .attr("d", d3.linkVertical().x(d => d.x).y(d => d.y));
+
+            const nodes = g.selectAll(".node")
+                .data(root.descendants())
+                .enter().append("g")
+                .attr("class", d => `node n-${d.data.id.replace('.', '')}`)
+                .attr("id", d => `node-${d.data.id.replace('.', '')}`)
+                .attr("transform", d => `translate(${d.x},${d.y})`);
+
+            nodes.append("circle").attr("r", 15);
+            nodes.append("text").text(d => d.data.id);
+            nodes.append("text").attr("class", "t-info").text(d => `B:${d.data.bound}`);
+        }
+
+        async function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+        async function traverse(d3Node) {
+            const data = d3Node.data;
+            const nid = data.id.replace('.', '');
+            const nodeEl = d3.select(`#node-${nid}`);
+
+            // Highlight current
+            nodeEl.classed('exploring', true);
+
+            // Checking BOUND limit
+            if (data.bound >= globalBestCost) {
+                setLog(`Pruning branch ${data.id}. Bound (${data.bound}) >= Best Found (${globalBestCost})`, 'var(--c-prune)');
+                nodeEl.classed('exploring', false).classed('pruned', true);
+
+                // Prune visually all children
+                const pruneDescendants = (n) => {
+                    if (!n.children) return;
+                    n.children.forEach(c => {
+                        let cid = c.data.id.replace('.', '');
+                        d3.select(`#node-${cid}`).classed('pruned', true);
+                        d3.select(`#link-${cid}`).classed('pruned', true);
+                        pruneDescendants(c);
+                    });
+                };
+                pruneDescendants(d3Node);
+
+                await sleep(1000);
+                return;
+            }
+
+            setLog(`Expanding node ${data.id} (Bound: ${data.bound} < ${globalBestCost === Infinity ? '∞' : globalBestCost})`);
+            await sleep(800);
+
+            // If it's a leaf, validate cost
+            if (data.isLeaf) {
+                if (data.cost < globalBestCost) {
+                    globalBestCost = data.cost;
+                    vBest.textContent = globalBestCost;
+
+                    // Clear previous bests
+                    d3.selectAll('.best').classed('best', false);
+                    nodeEl.classed('best', true);
+
+                    setLog(`NEW GLOBAL BEST COST FOUND: ${globalBestCost}!`, 'var(--c-best)');
+                    await sleep(1200);
+                } else {
+                    setLog(`Leaf ${data.id} cost ${data.cost} is not better than ${globalBestCost}. Ignored.`);
+                    nodeEl.classed('exploring', false);
+                    await sleep(600);
+                }
+            } else {
+                // Explore children
+                for (let i = 0; i < d3Node.children.length; i++) {
+                    const child = d3Node.children[i];
+                    const cid = child.data.id.replace('.', '');
+                    d3.select(`#link-${cid}`).classed('active', true);
+
+                    await traverse(child);
+
+                    d3.select(`#link-${cid}`).classed('active', false);
+                }
+            }
+
+            nodeEl.classed('exploring', false);
+        }
+
+        async function startSim() {
+            if (isRunning) return;
+            isRunning = true;
+            btn.disabled = true;
+
+            globalBestCost = Infinity;
+            vBest.textContent = "∞";
+            initD3();
+
+            setLog('Starting Branch and Bound Optimization Search...', '#fff');
+            await sleep(1000);
+
+            await traverse(root);
+
+            setLog(`Search Complete. Global Optimal Min Cost: ${globalBestCost}`, 'var(--c-best)');
+            isRunning = false;
+            btn.disabled = false;
+            btn.textContent = "Restart Visualizer";
+        }
+
+        // Setup
+        window.addEventListener('resize', initD3);
+        initD3();
+    </script>
+</body>
+
+</html>

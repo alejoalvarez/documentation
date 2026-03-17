@@ -60,17 +60,17 @@ const config = {
             position: 'left',
             items: [
               {
+                to: '/docs/software-architecture/',
+                label: '🧱 Software Architect',
+              },
+              {
                 to: '/docs/ai-engineer/',
                 label: '🤖 AI Engineer',
               },
               {
                 to: '/docs/ai-architect/',
                 label: '🏗️ AI Architect',
-              },
-              {
-                to: '/docs/software-architecture/',
-                label: '🧱 Software Architect',
-              },
+              }
             ],
           },
           {
@@ -81,10 +81,6 @@ const config = {
               {
                 to: '/docs/referencias/tools-stack',
                 label: 'References',
-              },
-              {
-                to: '/docs/referencias2/tools-stack2',
-                label: 'Projects',
               },
             ],
           }
